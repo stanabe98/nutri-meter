@@ -6,7 +6,7 @@ export interface FoodInfo extends Document {
   fats?: number;
   carbs?: number;
   meal?: "Breakfast" | "Lunch" | "Dinner";
-  name?: string
+  name?: string;
 }
 
 export interface FoodLogEntry extends Document {
@@ -37,7 +37,7 @@ const foodLogEntrySchema = new mongoose.Schema<FoodLogEntry>(
 );
 
 function isValidDate(dateString: string): boolean {
-  const regex = /^\d{2}\/\d{2}\/\d{4}$/; // dd/mm/yyyy format
+  const regex = /^\d{2}-\d{2}-\d{4}$/; // dd-mm-yyyy format
   return regex.test(dateString);
 }
 

@@ -36,8 +36,8 @@ interface GetFoodLog {
 }
 
 export const getFoodLog = asyncHandler(
-  async (req: Request<{}, {}, GetFoodLog> & { user?: User }, res) => {
-    const { date } = req.body;
+  async (req: Request<{date:string}, {}, {}> & { user?: User }, res) => {
+    const date  = req.params.date;
     const currentUserId = req.user._id;
 
     try {
@@ -55,6 +55,7 @@ export const getFoodLog = asyncHandler(
 export const addNewEntry = asyncHandler(
   async (req: Request<{}, {}, CreateFoodLog> & { user?: User }, res) => {
     const { foodInfo, date, modifyId } = req.body;
+    console.log("date",date)
     const currentUserId = req.user._id;
 
     try {
@@ -80,6 +81,7 @@ export const addNewEntry = asyncHandler(
       }
 
       if (!findEntry) {
+        console.log("ss")
         const newFoodEntry = await UserFoodLogModel.create({
           user: currentUserId.toString(),
           date: date,

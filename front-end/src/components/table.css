@@ -1,0 +1,30 @@
+.calorie-table {
+  border-collapse: collapse; /* Remove default table border-spacing */
+  width: 50%;
+}
+
+.calorie-table th {
+  border: 1px solid black; /* Add border to table headers */
+  background-color: lightgray; /* Add background color to table headers */
+  padding: 8px;
+}
+
+.calorie-table th:first-child {
+  border-left: none; /* Remove left border for the first header */
+}
+
+.calorie-table th:last-child {
+  border-right: none; /* Remove right border for the last header */
+}
+
+.calorie-table td {
+  padding: 8px;
+}
+
+.calorie-table td:first-child {
+  border-left: none; /* Remove left border for the first column */
+}
+
+.calorie-table td:last-child {
+  border-right: none; /* Remove right border for the last column */
+}

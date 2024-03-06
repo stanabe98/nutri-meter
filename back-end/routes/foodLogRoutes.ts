@@ -10,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.route("/").get(protect, getFoodLog);
+router.route("/:date").get(protect, getFoodLog);
 router.route("/").post(protect, addNewEntry);
 router.route("/modify").post(protect, modifyEntry);
 router.route("/").delete(protect, deleteEntry);

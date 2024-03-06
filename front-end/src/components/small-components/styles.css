@@ -1,0 +1,7 @@
+.MuiInputBase-input {
+  display: none !important;
+}
+
+.MuiOutlinedInput-notchedOutline{
+    display: none !important;
+}
