@@ -1,163 +1,292 @@
-import React from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import "./table.css";
+import { FoodInfo, FoodLogEntry } from "./data/data-types";
+import LoadingSkeleton from "./skeleton/food-table-skeleton";
+import {
+  EditOutlined,
+  CloseCircleOutlined,
+  CheckCircleOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+import { EditableCell } from "./small-components/editable-cell";
+import UserFoodStore from "./stores/foodLogStore";
+import { deleteUserFoodLog, modifyUserFoodLog } from "./hooks/useGetUserInfo";
 
-interface mockInterface {
-  foodId: string;
-  food: string;
-  quantity: string;
-  measurement: string;
-  calories: number;
-  fat: number;
-  protein: number;
-  carbs: number;
-  time?: string;
+interface FoodInfoWithId extends FoodInfo {
+  _id: string;
 }
-
-const mockData: mockInterface[] = [
-  {
-    foodId: "123ce",
-    food: "rice",
-    quantity: "100",
-    measurement: "grams",
-    calories: 130,
-    fat: 2,
-    protein: 4,
-    carbs: 25,
-    time: "breakfast",
-  },
-  {
-    foodId: "124ce",
-    food: "egg",
-    quantity: "2",
-    measurement: "unit",
-    calories: 140,
-    fat: 8,
-    protein: 12,
-    carbs: 1,
-    time: "lunch",
-  },
-  {
-    foodId: "124c3re",
-    food: "egg",
-    quantity: "2",
-    measurement: "unit",
-    calories: 140,
-    fat: 8,
-    protein: 12,
-    carbs: 1,
-  },
-  {
-    foodId: "124c3r7e",
-    food: "egg",
-    quantity: "2",
-    measurement: "unit",
-    calories: 140,
-    fat: 8,
-    protein: 12,
-    carbs: 1,
-  },
-];
 
 interface GroupedData {
-  [key: string]: mockInterface[];
+  [key: string]: FoodInfoWithId[];
 }
 
-const FoodLogView = () => {
-  const groupedData: GroupedData = mockData.reduce((acc, item) => {
-    const time = item.time || "snacks"; // Use 'Snacks' as the default time if not specified
-    if (!acc[time]) {
-      acc[time] = [];
-    }
-    acc[time].push(item);
-    return acc;
-  }, {} as GroupedData);
+interface Macro {
+  calories: number;
+  fats: number;
+  protein: number;
+  carbs: number;
+}
 
-  const timePeriods = ["breakfast", "lunch", "dinner", "snacks"];
+const FoodLogView: React.FC<{
+  tableData: FoodLogEntry[] | null;
+  loading: boolean;
+  dateString: string;
+  refetchData: any;
+}> = ({ tableData, loading, dateString, refetchData }) => {
+  const [selectedEditId, setSelectedEditId] = useState("");
+  // const [groupedData, setGroupedData] = useState<GroupedData | null>(null);
+  const [editSubmitted, setEditSubmitted] = useState(false);
+
+  const groupedData: GroupedData | null = tableData
+    ? tableData.reduce((acc, item) => {
+        const meal = item.foodInfo.meal || "Snacks";
+        if (!acc[meal]) {
+          acc[meal] = [];
+        }
+        const _id = item._id;
+        const foodWithId = { ...item.foodInfo, _id };
+        acc[meal].push(foodWithId);
+        return acc;
+      }, {} as GroupedData)
+    : null;
+
+  const handleClickOutside = (e: any) => {
+    const targetElement = e.target as HTMLElement;
+    const closestTableRow = targetElement.closest("tr");
+    const acceptOption = "ant-select-item-option-content";
+
+    if (
+      targetElement.className == acceptOption ||
+      closestTableRow?.dataset.key === selectedEditId
+    ) {
+      return;
+    }
+    if (!closestTableRow) {
+      return;
+    }
+    setSelectedEditId("");
+  };
+
+  const modifiedTableData = () => {
+    if (tableData) {
+      const currentData = tableData.map((obj) => ({
+        ...obj,
+        foodInfo: {
+          ...obj.foodInfo,
+          calories: Number(eval(obj.foodInfo.calories)),
+          protein: Number(eval(obj.foodInfo.protein ?? "0")),
+          carbs: Number(eval(obj.foodInfo.carbs ?? "0")),
+          fats: Number(eval(obj.foodInfo.fats ?? "0")),
+        },
+      }));
+      return currentData;
+    }
+    return null;
+  };
+
+  const calculateTotals = (foods: FoodInfoWithId[] | undefined) => {
+    if (!foods) return { calories: 0, fats: 0, protein: 0, carbs: 0 };
+    return foods.reduce(
+      (totals, food) => {
+        totals.calories += Number(eval(food.calories));
+        totals.fats = (totals.fats ?? 0) + Number(eval(food.fats ?? "0"));
+        totals.protein =
+          (totals.protein ?? 0) + Number(eval(food.protein ?? "0"));
+        totals.carbs = (totals.carbs ?? 0) + Number(eval(food.carbs ?? "0"));
+        return totals;
+      },
+      { calories: 0, fats: 0, protein: 0, carbs: 0 }
+    );
+  };
+
+  const timePeriods = ["Breakfast", "Lunch", "Dinner", "Snacks"];
+
+  useEffect(() => {
+    if (selectedEditId !== "") {
+      document.addEventListener("click", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [tableData, selectedEditId]);
 
   return (
-    // <div>
-    //   <table className="calorie-table">
-    //     <thead>
-    //       <tr>
-    //         <th>-</th>
-
-    //         <th>Calories</th>
-    //         <th>Carbs</th>
-    //         <th>Fats</th>
-    //         <th>Protein</th>
-    //       </tr>
-    //       <div className="mb-2"></div>
-    //     </thead>
-
-    //     <tbody>
-    //       <th>BreakFast</th>
-
-    //       <tr>
-    //         <td>Food Description</td>
-    //         <td>2</td>
-    //         <td>2</td>
-    //         <td>2</td>
-    //         <td>2</td>
-    //       </tr>
-    //       <tr>
-    //         <td>Food Description</td>
-    //         <td>2</td>
-    //         <td>2</td>
-    //         <td>2</td>
-    //         <td>2</td>
-    //       </tr>
-    //       <th>Lunch</th>
-    //       <tr>
-    //         <td>Food Description</td>
-    //         <td>2</td>
-    //         <td>2</td>
-    //         <td>2</td>
-    //         <td>2</td>
-    //       </tr>
-    //       <tr>
-    //         <td>Food Description</td>
-    //         <td>2</td>
-    //         <td>2</td>
-    //         <td>2</td>
-    //         <td>2</td>
-    //       </tr>
-    //     </tbody>
-    //   </table>
-    // </div>
-    <div>
-      <table className="calorie-table">
-        <thead>
-          <tr>
-            <th>-</th>
-            <th>Calories</th>
-            <th>Carbs</th>
-            <th>Fats</th>
-            <th>Protein</th>
-          </tr>
-          <tr className="mb-2"></tr>
-        </thead>
-        <tbody>
-          {timePeriods.map((timePeriod) => (
-            <React.Fragment key={timePeriod}>
+    <>
+      {!loading ? (
+        <div className="mx-8 w-2/5 overflow-y-scroll h-5/6 border border-black">
+          <table className="w-full calorie-table">
+            <thead className="sticky-row">
               <tr>
-                <th colSpan={1}>{timePeriod}</th>
+                <th>-</th>
+                <th>Calories</th>
+                <th>Carbs</th>
+                <th>Fats</th>
+                <th>Protein</th>
+                {selectedEditId !== "" && <th>-</th>}
               </tr>
-              {groupedData[timePeriod]?.map((foodItem, index) => (
-                <tr key={index}>
-                  <td>{foodItem.food}</td>
-                  <td>{foodItem.calories}</td>
-                  <td>{foodItem.carbs}</td>
-                  <td>{foodItem.fat}</td>
-                  <td>{foodItem.protein}</td>
-                </tr>
+              <tr className="mb-2"></tr>
+            </thead>
+            <tbody className="main-body">
+              {timePeriods.map((timePeriod) => (
+                <React.Fragment key={timePeriod}>
+                  <tr>
+                    <th colSpan={1}>{timePeriod}</th>
+                  </tr>
+
+                  {groupedData
+                    ? groupedData[timePeriod]?.map((foodItem, index) => (
+                        <tr key={foodItem._id} data-key={foodItem._id}>
+                          <td>
+                            <div>
+                              {foodItem.name ? foodItem.name : "-"}
+                              {selectedEditId == foodItem._id ? (
+                                <>
+                                  <div className="flex">
+                                    <CloseCircleOutlined
+                                      onClick={() => setSelectedEditId("")}
+                                    />
+                                    <CheckCircleOutlined
+                                      onClick={() => {
+                                        modifyUserFoodLog(
+                                          foodItem._id,
+                                          dateString,
+                                          refetchData
+                                        );
+                                        setEditSubmitted(!editSubmitted);
+                                        setSelectedEditId("");
+                                        refetchData();
+                                      }}
+                                    />
+                                  </div>
+                                  {/* <DeleteOutlined
+                                    onClick={() => {
+                                      deleteUserFoodLog(
+                                        dateString,
+                                        foodItem._id,
+                                        refetchData
+                                      );
+                                      setSelectedEditId("");
+                                    }}
+                                  /> */}
+                                </>
+                              ) : (
+                                <EditOutlined
+                                  onClick={() =>
+                                    setSelectedEditId(foodItem._id)
+                                  }
+                                />
+                              )}
+                            </div>
+                          </td>
+                          <td
+                            className={`${
+                              selectedEditId === "" ? "w-15/100" : "w-1/10"
+                            }`}
+                          >
+                            <EditableCell
+                              selectedId={selectedEditId}
+                              cellId={foodItem._id}
+                              value={foodItem.calories}
+                              setEditedObservable={
+                                UserFoodStore.setEditedCalories
+                              }
+                            />
+                          </td>
+                          <td
+                            className={`${
+                              selectedEditId === "" ? "w-15/100" : "w-1/10"
+                            }`}
+                          >
+                            <EditableCell
+                              selectedId={selectedEditId}
+                              cellId={foodItem._id}
+                              value={foodItem.carbs ?? "0"}
+                              setEditedObservable={UserFoodStore.setEditedCarbs}
+                            />
+                          </td>
+
+                          <td
+                            className={`${
+                              selectedEditId === "" ? "w-15/100" : "w-1/10"
+                            }`}
+                          >
+                            <EditableCell
+                              selectedId={selectedEditId}
+                              cellId={foodItem._id}
+                              value={foodItem.fats ?? "0"}
+                              setEditedObservable={UserFoodStore.setEditedFats}
+                            />
+                          </td>
+                          <td
+                            className={`${
+                              selectedEditId === "" ? "w-15/100" : "w-1/10"
+                            }`}
+                          >
+                            <EditableCell
+                              selectedId={selectedEditId}
+                              cellId={foodItem._id}
+                              value={foodItem.protein ?? "0"}
+                              setEditedObservable={
+                                UserFoodStore.setEditedProtein
+                              }
+                            />
+                          </td>
+                          {selectedEditId === foodItem._id && (
+                            <td style={{ width: "4px" }}>
+                              <DeleteOutlined
+                                onClick={() => {
+                                  deleteUserFoodLog(
+                                    dateString,
+                                    foodItem._id,
+                                    refetchData
+                                  );
+                                  setSelectedEditId("");
+                                }}
+                              />
+                            </td>
+                          )}
+                        </tr>
+                      ))
+                    : null}
+
+                  {/* Row for totals */}
+                  <tr>
+                    <td className="text-gray-500 text-sm">sub-totals</td>
+                    <td>
+                      {groupedData
+                        ? calculateTotals(groupedData[timePeriod]).calories
+                        : 0}
+
+                      {/* {TimePeriodStateObj[timePeriod].calories} */}
+                    </td>
+                    <td>
+                      {groupedData
+                        ? calculateTotals(groupedData[timePeriod]).carbs
+                        : 0}
+                      {/* {TimePeriodStateObj[timePeriod].carbs} */}
+                    </td>
+                    <td>
+                      {groupedData
+                        ? calculateTotals(groupedData[timePeriod]).fats
+                        : 0}
+                      {/* {TimePeriodStateObj[timePeriod].fats} */}
+                    </td>
+                    <td>
+                      {groupedData
+                        ? calculateTotals(groupedData[timePeriod]).protein
+                        : "-"}
+                      {/* {TimePeriodStateObj[timePeriod].protein} */}
+                    </td>
+                  </tr>
+                </React.Fragment>
               ))}
-              {/* Render an empty row if no food items are logged for this time period */}
-              {!groupedData[timePeriod]?.length && <tr></tr>}
-            </React.Fragment>
-          ))}
-        </tbody>
-      </table>
-    </div>
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <LoadingSkeleton />
+      )}
+    </>
   );
 };
 

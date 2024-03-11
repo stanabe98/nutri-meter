@@ -12,12 +12,20 @@ interface AuthContextType {
   setUser: React.Dispatch<React.SetStateAction<UserInfo | null>>;
 }
 
+export interface MacroTarget {
+  calories?: number;
+  carbs?: number;
+  fats?: number;
+  protein?: number;
+}
+
 export interface UserInfo {
   email: string;
   name: string;
   pic: string;
   token: string;
   _id: string;
+  macroTarget: MacroTarget;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -28,6 +36,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const navigate = useNavigate();
   const [user, setUser] = useState<UserInfo | null>(null);
   useEffect(() => {
+
     const userInfoString = localStorage.getItem("userInfo");
     if (userInfoString) {
       const userInfo: UserInfo = JSON.parse(userInfoString);
@@ -35,7 +44,11 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     } else {
       navigate("/");
     }
-  }, [navigate, user]);
+  }, [navigate]);
+
+  // useEffect(() => {
+  //   console.log("User updated:", user);
+  // }, [user]);
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}

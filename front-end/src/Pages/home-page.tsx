@@ -14,7 +14,7 @@ const HomePage = () => {
     if (user) {
       navigate("/user");
     }
-  }, [navigate]);
+  }, [navigate, user]);
   return (
     <div className="">
       <div className="flex gap-1 items-center justify-center ">

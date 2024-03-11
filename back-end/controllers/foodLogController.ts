@@ -9,6 +9,7 @@ import UserFoodLogModel, {
   FoodLogEntry,
 } from "../data-models/userModel";
 import generateToken from "../config/generateToken";
+import dayjs from "dayjs";
 
 interface CreateFoodLog {
   foodInfo: FoodInfo;
@@ -31,13 +32,9 @@ interface DeleteFullEntry {
   date: string;
 }
 
-interface GetFoodLog {
-  date: string;
-}
-
 export const getFoodLog = asyncHandler(
-  async (req: Request<{date:string}, {}, {}> & { user?: User }, res) => {
-    const date  = req.params.date;
+  async (req: Request<{ date: string }, {}, {}> & { user?: User }, res) => {
+    const date = req.params.date;
     const currentUserId = req.user._id;
 
     try {
@@ -45,7 +42,28 @@ export const getFoodLog = asyncHandler(
         user: currentUserId.toString(),
         date: date,
       });
-      res.status(200).send(findEntry);
+      res.status(200).send(findEntry === null ? [] : findEntry);
+    } catch (error) {
+      res.status(500).json({ error: "Server Error" });
+    }
+  }
+);
+
+export const getAllFoodLogs = asyncHandler(
+  async (req: Request<{}> & { user?: User }, res) => {
+    const currentUserId = req.user._id;
+    try {
+      const findEntry = await UserFoodLogModel.find({
+        user: currentUserId.toString(),
+      }).select("date totalMacros _id");
+
+      const sortedEntries = findEntry.sort((a, b) => {
+        const dateA = dayjs(a.date, "DD-MM-YYYY");
+        const dateB = dayjs(b.date, "DD-MM-YYYY");
+        return dateA.diff(dateB);
+      });
+
+      res.status(200).send(sortedEntries === null ? [] : sortedEntries);
     } catch (error) {
       res.status(500).json({ error: "Server Error" });
     }
@@ -55,7 +73,7 @@ export const getFoodLog = asyncHandler(
 export const addNewEntry = asyncHandler(
   async (req: Request<{}, {}, CreateFoodLog> & { user?: User }, res) => {
     const { foodInfo, date, modifyId } = req.body;
-    console.log("date",date)
+    console.log("date", date);
     const currentUserId = req.user._id;
 
     try {
@@ -72,7 +90,12 @@ export const addNewEntry = asyncHandler(
         if (index === -1) {
           res.status(404).json({ error: "Food log entry not found" });
         }
-        findEntry.foodLog[index].foodInfo = foodInfo;
+
+        findEntry.foodLog[index].foodInfo = {
+          ...findEntry.foodLog[index].foodInfo,
+          ...foodInfo,
+        } as FoodInfo;
+
         findEntry.foodLog[index].updatedAt = new Date();
 
         await findEntry.save();
@@ -81,7 +104,7 @@ export const addNewEntry = asyncHandler(
       }
 
       if (!findEntry) {
-        console.log("ss")
+        console.log("ss");
         const newFoodEntry = await UserFoodLogModel.create({
           user: currentUserId.toString(),
           date: date,
