@@ -12,14 +12,13 @@
   top: 0;
 }
 
-
 .calorie-table td {
   padding: 6px;
 }
 
- .calorie-table td:not(:first-child) {
-    /* width: 15%;  */
-  }
+.calorie-table td:not(:first-child) > div {
+  width: 15%;
+}
 
 .calorie-table td:first-child {
   border-left: none;

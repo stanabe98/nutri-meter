@@ -3,9 +3,12 @@ import { Request, Response } from "express";
 import CredentialModel, {
   User,
   MacroTarget,
+  CustomFoods,
+  CustomFoodInfo,
 } from "../data-models/credentialModel";
 import UserFoodLogModel from "../data-models/userModel";
 import generateToken from "../config/generateToken";
+// import { CustomFoods } from "../data-models/credentialModel";
 
 interface CreateUserBody {
   name: string;
@@ -20,6 +23,15 @@ interface AuthUserBody {
 interface ModifyUserBody {
   pic?: string;
   macroTarget?: MacroTarget;
+}
+
+interface CreateCustomFood {
+  food: CustomFoodInfo;
+  modifyId?: string;
+}
+
+interface DeleteCustomFood {
+  modifyId?: string[];
 }
 
 interface AuthenticatedRequest extends Request {
@@ -128,6 +140,107 @@ export const modifyUser = asyncHandler(
       res
         .status(200)
         .json({ message: "User updated successfully", currentUser });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server Error" });
+    }
+  }
+);
+
+export const addSavedFood = asyncHandler(
+  async (
+    req: Request<{}, {}, CreateCustomFood> & { user?: User },
+    res: Response
+  ) => {
+    const currentUserId = req.user._id;
+    const { food } = req.body;
+
+    try {
+      const currentUser = await CredentialModel.findOne({
+        _id: currentUserId.toString(),
+      });
+      currentUser.savedFoods.push({
+        foodInfo: food,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      } as CustomFoods);
+      await currentUser.save();
+      res.status(200).json(currentUser);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server Error" });
+    }
+  }
+);
+
+export const editSavedFood = asyncHandler(
+  async (
+    req: Request<{}, {}, CreateCustomFood> & { user?: User },
+    res: Response
+  ) => {
+    const currentUserId = req.user._id;
+    const { food, modifyId } = req.body;
+
+    try {
+      const currentUser = await CredentialModel.findOne({
+        _id: currentUserId.toString(),
+      });
+
+      const index = currentUser.savedFoods.findIndex(
+        (item) => item._id.toString() === modifyId
+      );
+
+      if (index === -1) {
+        res.status(404).json({ error: "Saved Food entry not found" });
+        return;
+      }
+
+      currentUser.savedFoods[index].foodInfo = {
+        ...currentUser.savedFoods[index].foodInfo,
+        ...food,
+      } as CustomFoodInfo;
+
+      await currentUser.save();
+      res.status(200).json(currentUser);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Server Error" });
+    }
+  }
+);
+
+export const deleteSavedFood = asyncHandler(
+  async (
+    req: Request<{}, {}, DeleteCustomFood> & { user?: User },
+    res: Response
+  ) => {
+    const currentUserId = req.user._id;
+    const { modifyId } = req.body;
+
+    try {
+      const currentUser = await CredentialModel.updateOne(
+        {
+          _id: currentUserId.toString(),
+        },
+        { $pull: { savedFoods: { _id: { $in: modifyId } } } }
+      );
+
+      // const index = currentUser.savedFoods.findIndex(
+      //   (item) => item._id.toString() === modifyId
+      // );
+
+      // if (index === -1) {
+      //   res.status(404).json({ error: "Saved Food entry not found" });
+      //   return;
+      // }
+
+      // currentUser.savedFoods[index].foodInfo = {
+      //   ...currentUser.savedFoods[index].foodInfo,
+      //   ...food,
+      // } as CustomFoodInfo;
+
+      // await currentUser.save();
+      res.status(200).json({ message: "deleted saved food", currentUser });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Server Error" });

@@ -5,7 +5,7 @@ import { getConfig, postConfig } from "../helpers";
 import { error } from "console";
 import UserFoodStore from "../stores/foodLogStore";
 
-interface OptionalCaloriesFoodInfo extends Omit<FoodInfo, "calories"> {
+export interface OptionalCaloriesFoodInfo extends Omit<FoodInfo, "calories"> {
   calories?: string;
 }
 

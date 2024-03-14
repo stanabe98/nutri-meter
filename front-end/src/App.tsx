@@ -9,7 +9,13 @@ import { Tabs, Tab } from "@mui/material";
 import { Person2Outlined } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchInterval: false, 
+    },
+  },
+});
 
 const Header: React.FC = ({}) => {
   const location = useLocation();

@@ -7,6 +7,7 @@ export interface User extends Document {
   password: string;
   pic?: string;
   macroTarget: MacroTarget;
+  savedFoods: CustomFoods[];
   matchPassword(enteredPassword: string): Promise<boolean>;
 }
 
@@ -16,6 +17,39 @@ export interface MacroTarget {
   fats?: number;
   protein?: number;
 }
+
+export interface CustomFoodInfo extends Document {
+  calories: string;
+  protein?: string;
+  fats?: string;
+  carbs?: string;
+  name: string;
+  quantity: number;
+  measurement: string;
+  referenceId?: string;
+}
+
+export interface CustomFoods extends Document {
+  foodInfo: CustomFoodInfo;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+const customFoodSchema = new mongoose.Schema<CustomFoods>(
+  {
+    foodInfo: {
+      calories: { type: String, required: true },
+      carbs: { type: String, required: false },
+      fats: { type: String, required: false },
+      protein: { type: String, required: false },
+      name: { type: String, required: true },
+      quantity: { type: Number, required: true },
+      measurement: { type: String, required: true },
+      referenceId: { type: String, required: false },
+    },
+  },
+  { timestamps: true }
+);
 
 const credentialsSchema = new mongoose.Schema<User>({
   name: { type: String, required: true },
@@ -33,12 +67,12 @@ const credentialsSchema = new mongoose.Schema<User>({
       carbs: { type: Number, required: false },
       fats: { type: Number, required: false },
       protein: { type: Number, required: false },
-
     },
     default: {},
     required: false,
     _id: false,
   },
+  savedFoods: [customFoodSchema],
 });
 
 credentialsSchema.methods.matchPassword = async function (

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useGetAllFoodLogs } from "../components/hooks/useGetallLog";
 import dayjs from "dayjs";
 import { LineChart } from "@mui/x-charts";
+import SavedFoodsTable from "../components/dashboard-components/saved-foods-table";
+import TextField from "@mui/material/TextField";
 
 const Dashboard = () => {
   const [xaxisData, setxaxisData] = useState([new Date("04-12-2023")]);
@@ -20,7 +22,7 @@ const Dashboard = () => {
         const numericYear = parseInt(year, 10);
         const date = new Date(numericYear, numericMonth - 1, numericDay);
 
-        return date
+        return date;
       });
       const array2 = queryResult.map(
         (obj) => obj.totalMacros?.totalCalories ?? 0
@@ -31,30 +33,36 @@ const Dashboard = () => {
     }
   }, [queryResult]);
 
-
   return (
-    <div className="w-3/4">
-      {!isLoading ? (
-        
-        <LineChart
-        className="px-8"
-          xAxis={[
-            {
-              label: "Date",
-              data: xaxisData,
-              tickInterval: xaxisData,
-              scaleType: "time",
-              valueFormatter: (date) => dayjs(date).format("MMM D"),
-            },
-          ]}
-          yAxis={[{ label: "Calories" }]}
-          series={[{ label: "Calories", data: yaxisData }]}
-          height={400}
-        />
-      ) : (
-        <></>
-      )}
-    </div>
+    <>
+      <div className="w-3/4">
+
+        <TextField id="outlined-basic" 
+        value="3"
+        label="Outlined" variant="outlined" />
+
+        {!isLoading ? (
+          <LineChart
+            className="px-8"
+            xAxis={[
+              {
+                label: "Date",
+                data: xaxisData,
+                tickInterval: xaxisData,
+                scaleType: "time",
+                valueFormatter: (date) => dayjs(date).format("MMM D"),
+              },
+            ]}
+            yAxis={[{ label: "Calories" }]}
+            series={[{ label: "Calories", data: yaxisData }]}
+            height={400}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
+      <SavedFoodsTable />
+    </>
   );
 };
 

@@ -1,0 +1,10 @@
+.edit-icon {
+  cursor: pointer; 
+  transition: opacity 0.3s; 
+  opacity: 0.1; 
+
+}
+
+.edit-icon:hover {
+  opacity: 1; 
+}
