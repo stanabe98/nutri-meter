@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useGetCurrentUserInfo } from "../hooks/userGetUserFoods";
 import Skeleton from "@mui/material/Skeleton";
-import { Edit, SaveOutlined, Delete, Cancel } from "@mui/icons-material";
+import {
+  Edit,
+  SaveOutlined,
+  Delete,
+  Cancel,
+  Search,
+} from "@mui/icons-material";
 import { Box, IconButton, Input, Button } from "@mui/material";
-import { FoodInfo } from "../data/data-types";
+import { CustomFoods, FoodInfo } from "../data/data-types";
 import MuiInput from "../custom-components/mui-input";
 import TextField from "@mui/material/TextField";
 import { OptionalCaloriesFoodInfo } from "../hooks/useGetUserInfo";
 import { CustomFoodInfo } from "../data/data-types";
 import "./styles.css";
+import { Select } from "antd";
 import {
   editSavedFood,
   deleteSavedFood,
@@ -17,6 +24,13 @@ import {
 
 const SavedFoodsTable: React.FC = () => {
   const { queryResult, refetch, isLoading } = useGetCurrentUserInfo();
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentItems, setCurrentItems] = useState<CustomFoods[] | []>([]);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
   const [search, setSearch] = useState("");
   const [edit, setEdit] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -35,6 +49,24 @@ const SavedFoodsTable: React.FC = () => {
   const [addprotein, setaddProtein] = useState<string>("");
   const [addfats, setaddFats] = useState<string>("");
   const [addcarbs, setaddCarbs] = useState<string>("");
+  const [filteredResult, setFilteredResult] = useState<CustomFoods[] | []>([]);
+
+  useEffect(() => {
+    console.log("something");
+    // setFilteredResult(queryResult?.savedFoods ?? []);
+    filterElements(search);
+
+    if (queryResult) {
+      // setCurrentItems(
+      //   queryResult?.savedFoods.slice(indexOfFirstItem, indexOfLastItem)
+      // );
+      setCurrentItems(
+        filteredResult.slice(indexOfFirstItem, indexOfLastItem)
+      );
+    }
+  }, [queryResult]);
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   const isEmpty = (obj: Record<string, any>) => {
     return Object.keys(obj).length === 0;
@@ -52,12 +84,24 @@ const SavedFoodsTable: React.FC = () => {
     if (fats !== "") foodData.fats = fats.toString();
 
     if (isEmpty(foodData)) {
+      console.log("returning");
+      setEdit("");
       return;
     }
+
+    console.log("edit Object", foodData);
+    console.log("edit Id", edit);
 
     await editSavedFood(foodData, edit);
     setEdit("");
     refetch();
+  };
+
+  const printEntrys = () => {
+    console.log("calories", calories);
+    console.log("efats", fats);
+    console.log("protei", protein);
+    console.log("name", name);
   };
 
   const deleteFoodEntry = async (deleteId: string) => {
@@ -77,14 +121,65 @@ const SavedFoodsTable: React.FC = () => {
     if (addcarbs !== "") newEntry.carbs = addcarbs;
     if (addfats !== "") newEntry.fats = addfats;
 
+    console.log("add object", newEntry);
+
     await addtoSavedFood(newEntry);
     setEdit("");
-    setaddCarbs("")
+    setaddCarbs("");
+    setaddFats("");
+    setaddProtein("");
+    setaddCalories("");
+    setaddQuantity("");
+    setaddServing("");
+    setaddName("");
+
+    filterElements("");
+    setSearch("");
+
     refetch();
+  };
+
+  const handleSelect = (value: string) => {
+    console.log("selecting", value);
+    setaddServing(value);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    if (query.trim() === "") {
+      filterElements("");
+    }
+    setSearch(query);
+    // filterElements(query);
+  };
+  const searchClick = () => {
+    filterElements(search);
+  };
+
+  const filterElements = (query: string) => {
+    // Assuming your elements are stored in an array called `elements`
+    const filtered = queryResult?.savedFoods.filter((element) =>
+      element.foodInfo.name.toLowerCase().includes(query.toLowerCase())
+    );
+    console.log("filtered Res", filtered);
+    setFilteredResult(filtered ?? []);
+    setCurrentItems(filtered??[])
   };
 
   return (
     <>
+      <div className="flex">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={search}
+          onChange={handleSearchChange}
+        />
+        <div onClick={searchClick} className="cursor-pointer ">
+          <Search />
+        </div>
+      </div>
+
       <div className="h-[150px] overflow-y-scroll border border-black w-2/4">
         <div className="flex gap-1">
           <div className="w-32">Name</div>
@@ -95,8 +190,8 @@ const SavedFoodsTable: React.FC = () => {
           <div className="w-16">Fats</div>
           <div className="w-16">Carbs</div>
         </div>
-        {queryResult && !isLoading ? (
-          queryResult.savedFoods.map((item) => (
+        {queryResult && !isLoading && filterElements.length !== 0 ? (
+          filteredResult.map((item) => (
             <>
               {edit == item._id ? (
                 <div className="flex gap-1" id={"food-entry-" + item._id}>
@@ -107,6 +202,7 @@ const SavedFoodsTable: React.FC = () => {
                         setName("");
                         return;
                       }
+                      console.log("executing");
                       setName(e.target.value);
                     }}
                     placeholder="name"
@@ -123,6 +219,8 @@ const SavedFoodsTable: React.FC = () => {
                         setQuantity("");
                         return;
                       }
+                      console.log("executing");
+
                       setQuantity(Number(e.target.value));
                     }}
                     placeholder="quantity"
@@ -135,6 +233,8 @@ const SavedFoodsTable: React.FC = () => {
                         setServing("");
                         return;
                       }
+                      console.log("executing");
+
                       setServing(e.target.value);
                     }}
                     placeholder="serving"
@@ -224,13 +324,6 @@ const SavedFoodsTable: React.FC = () => {
                   <div
                     className="edit-icon"
                     onClick={() => {
-                      setName(item.foodInfo.name);
-                      setQuantity(Number(item.foodInfo.quantity));
-                      setServing(item.foodInfo.measurement);
-                      setCalories(Number(item.foodInfo.calories));
-                      setProtein(Number(item.foodInfo.protein) ?? 0);
-                      setCarbs(Number(item.foodInfo.carbs) ?? 0);
-                      setFats(Number(item.foodInfo.fats) ?? 0);
                       setEdit(item._id);
                       setSelectedFood({
                         name: item.foodInfo.name,
@@ -258,42 +351,56 @@ const SavedFoodsTable: React.FC = () => {
           </>
         )}
       </div>
+      <div className="flex justify-end w-2/4 gap-1">
+        {Array.from({
+          length: Math.ceil(filteredResult.length / itemsPerPage),
+        }).map((_, index) => (
+          <button
+            className="border border-black px-2"
+            key={index}
+            onClick={() => paginate(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
       <div className="flex gap-1 mt-5 ">
-        <form>
-
-
-
-
-
-
-          
-        </form>
         <MuiInput
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setaddName(e.target.value.trim())
           }
           styles="w-32"
+          value={addname}
           label="Name"
         />
         <MuiInput
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setaddQuantity(e.target.value)
           }
+          value={addquantity}
           type="number"
           styles="w-16"
           label="Amount"
         />
-        <MuiInput
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setaddServing(e.target.value)
-          }
-          styles="w-16"
-          label="Serving"
+        <Select
+          className="w-16"
+          defaultValue={addserving}
+          onChange={handleSelect}
+          options={[
+            {
+              value: "unit",
+            },
+            {
+              value: "grams",
+            },
+          ]}
         />
+
         <MuiInput
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setaddCalories(e.target.value)
           }
+          value={addcalories}
           type="number"
           styles="w-16"
           label="Calories"
@@ -302,6 +409,7 @@ const SavedFoodsTable: React.FC = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setaddProtein(e.target.value)
           }
+          value={addprotein}
           type="number"
           styles="w-16"
           label="Protein"
@@ -310,6 +418,7 @@ const SavedFoodsTable: React.FC = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setaddFats(e.target.value)
           }
+          value={addfats}
           type="number"
           styles="w-16"
           label="Fats"
@@ -318,6 +427,7 @@ const SavedFoodsTable: React.FC = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setaddCarbs(e.target.value)
           }
+          value={addcarbs}
           type="number"
           styles="w-16"
           label="Carbs"
@@ -331,7 +441,7 @@ const SavedFoodsTable: React.FC = () => {
             addcalories.trim() === "" ||
             addname.trim() === "" ||
             addquantity.trim() === "" ||
-            addserving.trim() === ""
+            addserving === ""
           }
         >
           Add
