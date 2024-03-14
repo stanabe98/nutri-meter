@@ -65,13 +65,16 @@ export const addtoSavedFood = async (food: CustomFoodInfo) => {
     postConfig(user)
   );
 };
-export const editSavedFood = async (food: OptionalCaloriesFoodInfo, modifyId: string) => {
+export const editSavedFood = async (
+  food: OptionalCaloriesFoodInfo,
+  modifyId: string
+) => {
   const user = getUserFromStorage();
   if (!user) {
     return;
   }
   const { data } = await axios.post<CurrentUser>(
-    `/api/user/currentuser/food/add`,
+    `/api/user/currentuser/food/edit`,
     { food: food, modifyId: modifyId },
     postConfig(user)
   );
@@ -83,7 +86,7 @@ export const deleteSavedFood = async (modifyId: string) => {
     return;
   }
   const { data } = await axios.post<CurrentUser>(
-    `/api/user/currentuser/food/add`,
+    `/api/user/currentuser/food/delete`,
     { modifyId: [modifyId] },
     postConfig(user)
   );
