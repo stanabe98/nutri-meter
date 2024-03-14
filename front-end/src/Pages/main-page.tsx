@@ -20,10 +20,12 @@ import {
 import MacroSubmissionForm from "../components/small-components/macro-submission";
 import MacroTotals from "../components/small-components/macro-totals";
 import MacroChart from "../components/small-components/macro-chart";
-import MacroTarget from "../components/small-components/macro-goals";
+import NutritionTarget from "../components/small-components/macro-goals";
 import PersonIcon from "@mui/icons-material/Person";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import { useGetCurrentUserInfo } from "../components/hooks/userGetUserFoods";
+import SearchSavedFood from "../components/add-saved";
 
 const MainPage = () => {
   const { date } = useParams<{ date: string }>();
@@ -39,6 +41,12 @@ const MainPage = () => {
     dataQueryKey: ["foodLog", urlDate],
     dateString: urlDate,
   });
+  const {
+    queryResult: userInfoResult,
+    isLoading: userInfoLoading,
+    error: userInfoError,
+    refetch: userInfoRefetch,
+  } = useGetCurrentUserInfo();
 
   useEffect(() => {
     if (date) {
@@ -69,13 +77,28 @@ const MainPage = () => {
           dateString={urlDate}
           refetchData={refetch}
         />
-        <div className="flex-col justify-center items-center">
-          <MacroChart data={queryResult ? queryResult.foodLog : null} />
-          <MacroTarget data={queryResult ? queryResult.foodLog : null} />
+        <div className="flex-col justify-center items-center border border-black rounded-lg gap-5">
+          <div className="p-2">
+            <MacroChart data={queryResult ? queryResult.totalMacros : null} />
+          </div>
+          <div className="p-2">
+            <NutritionTarget
+              data={queryResult ? queryResult.totalMacros : null}
+              goalsData={userInfoResult ? userInfoResult.macroTarget : null}
+            />
+          </div>
         </div>
       </div>
-      <MacroTotals tableData={queryResult ? queryResult.foodLog : null} />
+      <div className="flex items-start mt-3 gap-5">
+
+        
       <MacroSubmissionForm refetch={refetch} submissionDate={urlDate} />
+      <SearchSavedFood
+        data={userInfoResult ? userInfoResult.savedFoods : null}
+        submissionDate={urlDate}
+        refetch={refetch}
+      />
+      </div>
     </>
   );
 };

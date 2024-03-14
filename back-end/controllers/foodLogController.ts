@@ -164,13 +164,15 @@ export const deleteEntry = asyncHandler(
     const currentUserId = req.user._id;
 
     try {
-      const deleteEntry = await UserFoodLogModel.updateOne(
-        {
-          user: currentUserId.toString(),
-          date: date,
-        },
-        { $pull: { foodLog: { _id: { $in: foodIds } } } }
+      const findEntry = await UserFoodLogModel.findOne({
+        user: currentUserId.toString(),
+        date: date,
+      });
+
+      findEntry.foodLog = findEntry.foodLog.filter(
+        (log) => !foodIds.includes(log._id.toString())
       );
+      await findEntry.save();
 
       res.json({
         message: "selected food logs deleted successfully",

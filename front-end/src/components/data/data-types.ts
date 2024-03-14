@@ -10,8 +10,6 @@ export interface FoodInfo {
   referenceId?: string;
 }
 
-
-
 type mealtimes = "Breakfast" | "Lunch" | "Dinner";
 export interface FoodLogEntry {
   foodInfo: FoodInfo;
@@ -21,10 +19,18 @@ export interface FoodLogEntry {
 }
 
 export interface UserFoodLog {
+  totalMacros: TotalMacros;
   user: string;
   date: string;
   foodLog: FoodLogEntry[];
   isSubmitted: boolean;
+}
+
+export interface TotalMacros {
+  totalProtein: number;
+  totalCalories: number;
+  totalFats: number;
+  totalCarbs: number;
 }
 
 export interface CurrentUser {
@@ -45,7 +51,7 @@ export interface MacroTarget {
 
 export interface CustomFoodInfo {
   calories: string;
-   protein?: string;
+  protein?: string;
   fats?: string;
   carbs?: string;
   name: string;

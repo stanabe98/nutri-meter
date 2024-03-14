@@ -53,18 +53,16 @@ const SavedFoodsTable: React.FC = () => {
 
   useEffect(() => {
     console.log("something");
-    // setFilteredResult(queryResult?.savedFoods ?? []);
+
     filterElements(search);
 
     if (queryResult) {
       // setCurrentItems(
       //   queryResult?.savedFoods.slice(indexOfFirstItem, indexOfLastItem)
       // );
-      setCurrentItems(
-        filteredResult.slice(indexOfFirstItem, indexOfLastItem)
-      );
+      // setCurrentItems(filteredResult.slice(indexOfFirstItem, indexOfLastItem));
     }
-  }, [queryResult]);
+  }, [queryResult, currentPage]);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
@@ -163,7 +161,13 @@ const SavedFoodsTable: React.FC = () => {
     );
     console.log("filtered Res", filtered);
     setFilteredResult(filtered ?? []);
-    setCurrentItems(filtered??[])
+    if (filtered) {
+      if (filtered.length <= itemsPerPage) {
+        setCurrentItems(filtered);
+        return
+      }
+    }
+    setCurrentItems(filtered?.slice(indexOfFirstItem, indexOfLastItem) ?? []);
   };
 
   return (
@@ -191,7 +195,7 @@ const SavedFoodsTable: React.FC = () => {
           <div className="w-16">Carbs</div>
         </div>
         {queryResult && !isLoading && filterElements.length !== 0 ? (
-          filteredResult.map((item) => (
+          currentItems.map((item) => (
             <>
               {edit == item._id ? (
                 <div className="flex gap-1" id={"food-entry-" + item._id}>

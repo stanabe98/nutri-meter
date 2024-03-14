@@ -91,3 +91,16 @@ export const deleteSavedFood = async (modifyId: string) => {
     postConfig(user)
   );
 };
+
+export const submitFoodtoLog = async (foodData:FoodInfo, submissionDate:string) => {
+  const user = getUserFromStorage();
+  if (!user) {
+    return;
+  }
+
+  const url = "/api/foodlog";
+
+  await axios.post(url, 
+    { foodInfo: foodData, date: submissionDate }
+  , postConfig(user));
+};

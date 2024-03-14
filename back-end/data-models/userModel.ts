@@ -109,6 +109,35 @@ userFoodLogSchema.pre<UserFoodLog>("save", function (next) {
   next();
 });
 
+// userFoodLogSchema.post<UserFoodLog>("updateOne", function (doc,next) {
+//   let totalProtein = 0;
+//   let totalCalories = 0;
+//   let totalFats = 0;
+//   let totalCarbs = 0;
+
+//   console.log("running this");
+  
+//   this.foodLog.forEach((entry) => {
+//     if (entry.foodInfo.calories)
+//       totalCalories += Number(eval(entry.foodInfo.calories));
+//     if (entry.foodInfo.protein)
+//       totalProtein += Number(eval(entry.foodInfo.protein));
+//     if (entry.foodInfo.carbs) totalCarbs += Number(eval(entry.foodInfo.carbs));
+//     if (entry.foodInfo.fats) totalFats += Number(eval(entry.foodInfo.fats));
+//   });
+
+  
+//   this.totalMacros = {
+//     totalProtein: Math.round(totalProtein),
+//     totalCalories: Math.round(totalCalories),
+//     totalFats: Math.round(totalFats),
+//     totalCarbs: Math.round(totalCarbs),
+//   };
+
+//   next();
+// });
+
+
 
 const UserFoodLogModel = mongoose.model<UserFoodLog>(
   "UserFoodLog",
