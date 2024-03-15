@@ -9,10 +9,18 @@ export interface OptionalCaloriesFoodInfo extends Omit<FoodInfo, "calories"> {
   calories?: string;
 }
 
+const getUserFromStorage = () => {
+  const userString = localStorage.getItem("userInfo");
+  if (!userString) {
+    return null;
+  }
+  const user = JSON.parse(userString);
+  return user;
+};
+
 export const getUserFoodLog = async (dateString: string) => {
   const userString = localStorage.getItem("userInfo");
   if (!userString) {
-    
     return;
   }
   const user = JSON.parse(userString);
@@ -31,13 +39,12 @@ export const getUserFoodLog = async (dateString: string) => {
 export const modifyUserFoodLog = async (
   modifyId: string,
   dateString: string,
-  refetch:any
+  refetch: any
 ) => {
   const url = "/api/foodlog";
 
   const userString = localStorage.getItem("userInfo");
   if (!userString) {
-  
     return;
   }
   const user = JSON.parse(userString);
@@ -68,7 +75,37 @@ export const modifyUserFoodLog = async (
       postConfig(user)
     );
     UserFoodStore.resetEditingFields();
-    refetch()
+    refetch();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const modifyFoodLogSavedFood = async (
+  submissionInfo: FoodInfo,
+  modifyId: string,
+  dateString: string,
+  refetch: any,
+  cb?:any
+) => {
+  const url = "/api/foodlog";
+
+  const user = getUserFromStorage();
+  if (!user) {
+    return;
+  }
+  try {
+    await axios.post(
+      url,
+      {
+        modifyId: modifyId,
+        foodInfo: submissionInfo,
+        date: dateString,
+      },
+      postConfig(user)
+    );
+    cb()
+    refetch();
   } catch (error) {
     console.log(error);
   }
@@ -77,12 +114,11 @@ export const modifyUserFoodLog = async (
 export const deleteUserFoodLog = async (
   dateString: string,
   foodIds: string,
-  refetch:any
+  refetch: any
 ) => {
   const url = "/api/foodlog/deletelog";
   const userString = localStorage.getItem("userInfo");
   if (!userString) {
-   
     return;
   }
   const user = JSON.parse(userString);
@@ -97,7 +133,7 @@ export const deleteUserFoodLog = async (
       postConfig(user)
     );
     UserFoodStore.resetEditingFields();
-    refetch()
+    refetch();
   } catch (error) {
     console.log(error);
   }
@@ -118,7 +154,7 @@ export const useGetUserFoodLog = (
     queryKey: [...dataQueryKey],
     queryFn: async () => {
       const result = await getUserFoodLog(dateString);
-  
+
       return result;
     },
     ...config,

@@ -10,7 +10,12 @@ import {
 } from "@ant-design/icons";
 import { EditableCell } from "./small-components/editable-cell";
 import UserFoodStore from "./stores/foodLogStore";
-import { deleteUserFoodLog, modifyUserFoodLog } from "./hooks/useGetUserInfo";
+import {
+  deleteUserFoodLog,
+  modifyUserFoodLog,
+  modifyFoodLogSavedFood,
+} from "./hooks/useGetUserInfo";
+import { OptionalCaloriesFoodInfo } from "./hooks/useGetUserInfo";
 
 interface FoodInfoWithId extends FoodInfo {
   _id: string;
@@ -34,8 +39,17 @@ const FoodLogView: React.FC<{
   refetchData: any;
 }> = ({ tableData, loading, dateString, refetchData }) => {
   const [selectedEditId, setSelectedEditId] = useState("");
-  // const [groupedData, setGroupedData] = useState<GroupedData | null>(null);
   const [editSubmitted, setEditSubmitted] = useState(false);
+  const [defaultEdited, setDefaultEditted] = useState<FoodInfoWithId | null>(
+    null
+  );
+
+  const [editedcalories, setEditedCalories] = useState(0);
+  const [editedamount, setEditedAmount] = useState("");
+  const [editedprotein, setEditedProtein] = useState(0);
+  const [editedcarbs, setEditedCarbs] = useState(0);
+  const [editedfats, setEditedFats] = useState(0);
+  const [editedmeal, setEditedMeal] = useState("");
 
   const groupedData: GroupedData | null = tableData
     ? tableData.reduce((acc, item) => {
@@ -49,6 +63,70 @@ const FoodLogView: React.FC<{
         return acc;
       }, {} as GroupedData)
     : null;
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    setEditedAmount(inputValue);
+    if (defaultEdited) {
+      if (inputValue === "") {
+        setEditedCalories(Number(defaultEdited.calories));
+        if (defaultEdited.protein)
+          setEditedProtein(Number(defaultEdited.protein));
+        if (defaultEdited.fats) setEditedFats(Number(defaultEdited.fats));
+        if (defaultEdited.carbs) setEditedCarbs(Number(defaultEdited.carbs));
+
+        return;
+      }
+      const percentage =
+        Number(inputValue) / (defaultEdited.quantity ?? Number(inputValue));
+      setEditedCalories(
+        Math.round(percentage * Number(defaultEdited.calories))
+      );
+
+      if (defaultEdited.protein)
+        setEditedProtein(
+          Math.round(percentage * Number(defaultEdited.protein))
+        );
+      if (defaultEdited.fats)
+        setEditedFats(Math.round(percentage * Number(defaultEdited.fats)));
+      if (defaultEdited.carbs)
+        setEditedCarbs(Math.round(percentage * Number(defaultEdited.carbs)));
+    }
+  };
+
+  const submitEditedSavedFood = async () => {
+    if (defaultEdited?.quantity) {
+      if (
+        defaultEdited.quantity === Number(editedamount) ||
+        editedamount === ""
+      ) {
+        setDefaultEditted(null);
+        setSelectedEditId("");
+        return;
+      }
+
+      const submissionObject: FoodInfo = {
+        calories: editedcalories.toString(),
+      };
+
+      if (editedfats !== 0) submissionObject.fats = editedfats.toString();
+      if (editedprotein !== 0)
+        submissionObject.protein = editedprotein.toString();
+      if (editedcarbs !== 0) submissionObject.carbs = editedcarbs.toString();
+      submissionObject.quantity = Number(editedamount);
+     
+      await modifyFoodLogSavedFood(
+        submissionObject,
+        selectedEditId,
+        dateString,
+        refetchData,
+        ()=> setSelectedEditId("")
+      );
+     
+
+
+    }
+  };
 
   const handleClickOutside = (e: any) => {
     const targetElement = e.target as HTMLElement;
@@ -65,23 +143,7 @@ const FoodLogView: React.FC<{
       return;
     }
     setSelectedEditId("");
-  };
-
-  const modifiedTableData = () => {
-    if (tableData) {
-      const currentData = tableData.map((obj) => ({
-        ...obj,
-        foodInfo: {
-          ...obj.foodInfo,
-          calories: Number(eval(obj.foodInfo.calories)),
-          protein: Number(eval(obj.foodInfo.protein ?? "0")),
-          carbs: Number(eval(obj.foodInfo.carbs ?? "0")),
-          fats: Number(eval(obj.foodInfo.fats ?? "0")),
-        },
-      }));
-      return currentData;
-    }
-    return null;
+    setDefaultEditted(null);
   };
 
   const calculateTotals = (foods: FoodInfoWithId[] | undefined) => {
@@ -113,7 +175,7 @@ const FoodLogView: React.FC<{
   return (
     <>
       {!loading ? (
-        <div className="mx-8 w-2/5 overflow-y-scroll h-5/6 border border-black">
+        <div className="mx-8 w-2/4 overflow-y-scroll h-5/6 border border-black">
           <table className="w-full calorie-table">
             <thead className="sticky-row">
               <tr>
@@ -139,43 +201,23 @@ const FoodLogView: React.FC<{
                           <td>
                             <div>
                               {foodItem.name ? foodItem.name : "-"}
-                              {selectedEditId == foodItem._id ? (
+                              {foodItem.referenceId &&
+                              selectedEditId === foodItem._id ? (
                                 <>
-                                  <div className="flex">
-                                    <CloseCircleOutlined
-                                      onClick={() => setSelectedEditId("")}
-                                    />
-                                    <CheckCircleOutlined
-                                      onClick={() => {
-                                        modifyUserFoodLog(
-                                          foodItem._id,
-                                          dateString,
-                                          refetchData
-                                        );
-                                        setEditSubmitted(!editSubmitted);
-                                        setSelectedEditId("");
-                                        refetchData();
-                                      }}
-                                    />
-                                  </div>
-                                  {/* <DeleteOutlined
-                                    onClick={() => {
-                                      deleteUserFoodLog(
-                                        dateString,
-                                        foodItem._id,
-                                        refetchData
-                                      );
-                                      setSelectedEditId("");
-                                    }}
-                                  /> */}
+                                  <input
+                                    className="w-14"
+                                    type="number"
+                                    value={editedamount}
+                                    onChange={handleChange}
+                                  />
+                                  <span>{foodItem.measurement}</span>
                                 </>
-                              ) : (
-                                <EditOutlined
-                                  onClick={() =>
-                                    setSelectedEditId(foodItem._id)
-                                  }
-                                />
-                              )}
+                              ) : foodItem.referenceId &&
+                                selectedEditId !== foodItem._id ? (
+                                <>
+                                  <span>{` ${foodItem.quantity} ${foodItem.measurement}`}</span>
+                                </>
+                              ) : null}
                             </div>
                           </td>
                           <td
@@ -183,26 +225,48 @@ const FoodLogView: React.FC<{
                               selectedEditId === "" ? "w-15/100" : "w-1/10"
                             }`}
                           >
-                            <EditableCell
-                              selectedId={selectedEditId}
-                              cellId={foodItem._id}
-                              value={foodItem.calories}
-                              setEditedObservable={
-                                UserFoodStore.setEditedCalories
-                              }
-                            />
+                            {foodItem.referenceId ? (
+                              <div>
+                                {foodItem._id === selectedEditId
+                                  ? editedcalories
+                                  : foodItem.calories}
+                              </div>
+                            ) : (
+                              <>
+                                <EditableCell
+                                  selectedId={selectedEditId}
+                                  cellId={foodItem._id}
+                                  value={foodItem.calories}
+                                  setEditedObservable={
+                                    UserFoodStore.setEditedCalories
+                                  }
+                                />
+                              </>
+                            )}
                           </td>
                           <td
                             className={`${
                               selectedEditId === "" ? "w-15/100" : "w-1/10"
                             }`}
                           >
-                            <EditableCell
-                              selectedId={selectedEditId}
-                              cellId={foodItem._id}
-                              value={foodItem.carbs ?? "0"}
-                              setEditedObservable={UserFoodStore.setEditedCarbs}
-                            />
+                            {foodItem.referenceId ? (
+                              <div>
+                                {foodItem._id === selectedEditId
+                                  ? editedcarbs
+                                  : foodItem.carbs ?? 0}
+                              </div>
+                            ) : (
+                              <>
+                                <EditableCell
+                                  selectedId={selectedEditId}
+                                  cellId={foodItem._id}
+                                  value={foodItem.carbs ?? "0"}
+                                  setEditedObservable={
+                                    UserFoodStore.setEditedCarbs
+                                  }
+                                />
+                              </>
+                            )}
                           </td>
 
                           <td
@@ -210,40 +274,122 @@ const FoodLogView: React.FC<{
                               selectedEditId === "" ? "w-15/100" : "w-1/10"
                             }`}
                           >
-                            <EditableCell
-                              selectedId={selectedEditId}
-                              cellId={foodItem._id}
-                              value={foodItem.fats ?? "0"}
-                              setEditedObservable={UserFoodStore.setEditedFats}
-                            />
+                            {foodItem.referenceId ? (
+                              <div>
+                                {foodItem._id === selectedEditId
+                                  ? editedfats
+                                  : foodItem.fats ?? 0}
+                              </div>
+                            ) : (
+                              <>
+                                <EditableCell
+                                  selectedId={selectedEditId}
+                                  cellId={foodItem._id}
+                                  value={foodItem.fats ?? "0"}
+                                  setEditedObservable={
+                                    UserFoodStore.setEditedFats
+                                  }
+                                />
+                              </>
+                            )}
                           </td>
                           <td
                             className={`${
                               selectedEditId === "" ? "w-15/100" : "w-1/10"
                             }`}
                           >
-                            <EditableCell
-                              selectedId={selectedEditId}
-                              cellId={foodItem._id}
-                              value={foodItem.protein ?? "0"}
-                              setEditedObservable={
-                                UserFoodStore.setEditedProtein
-                              }
-                            />
+                            {foodItem.referenceId ? (
+                              <div>
+                                {foodItem._id === selectedEditId
+                                  ? editedprotein
+                                  : foodItem.protein ?? 0}
+                              </div>
+                            ) : (
+                              <>
+                                <EditableCell
+                                  selectedId={selectedEditId}
+                                  cellId={foodItem._id}
+                                  value={foodItem.protein ?? "0"}
+                                  setEditedObservable={
+                                    UserFoodStore.setEditedProtein
+                                  }
+                                />
+                              </>
+                            )}
                           </td>
-                          {selectedEditId === foodItem._id && (
-                            <td style={{ width: "4px" }}>
-                              <DeleteOutlined
-                                onClick={() => {
-                                  deleteUserFoodLog(
-                                    dateString,
-                                    foodItem._id,
-                                    refetchData
+                          {selectedEditId === foodItem._id ? (
+                            <>
+                              <td>
+                                <div
+                                  style={{ width: "40px", marginRight: "1px" }}
+                                  className="flex w-full border border-black justify-between"
+                                >
+                                  {foodItem.referenceId ? (
+                                    <>
+                                      <CheckCircleOutlined
+                                        onClick={submitEditedSavedFood}
+                                      />
+                                    </>
+                                  ) : (
+                                    <>
+                                      <CheckCircleOutlined
+                                        onClick={() => {
+                                          modifyUserFoodLog(
+                                            foodItem._id,
+                                            dateString,
+                                            refetchData
+                                          );
+                                          setEditSubmitted(!editSubmitted);
+                                          setSelectedEditId("");
+                                          setDefaultEditted(null);
+                                          // refetchData();
+                                        }}
+                                      />
+                                    </>
+                                  )}
+
+                                  <DeleteOutlined
+                                    className=""
+                                    onClick={() => {
+                                      deleteUserFoodLog(
+                                        dateString,
+                                        foodItem._id,
+                                        refetchData
+                                      );
+                                      setDefaultEditted(null);
+                                      setSelectedEditId("");
+                                    }}
+                                  />
+                                </div>
+                                <div className="border border-black w-10">
+                                  <CloseCircleOutlined
+                                    onClick={() => {
+                                      setDefaultEditted(null);
+                                      setSelectedEditId("");
+                                    }}
+                                  />
+                                </div>
+                              </td>
+                            </>
+                          ) : (
+                            <EditOutlined
+                              onClick={() => {
+                                if (foodItem.referenceId) {
+                                  setDefaultEditted(foodItem);
+                                  setEditedCalories(Number(foodItem.calories));
+                                  setEditedAmount(
+                                    foodItem.quantity?.toString() ?? ""
                                   );
-                                  setSelectedEditId("");
-                                }}
-                              />
-                            </td>
+                                  if (foodItem.carbs)
+                                    setEditedCarbs(Number(foodItem.carbs));
+                                  if (foodItem.fats)
+                                    setEditedFats(Number(foodItem.fats));
+                                  if (foodItem.protein)
+                                    setEditedProtein(Number(foodItem.protein));
+                                }
+                                setSelectedEditId(foodItem._id);
+                              }}
+                            />
                           )}
                         </tr>
                       ))

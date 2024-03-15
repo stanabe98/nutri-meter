@@ -23,6 +23,12 @@ const SelectedItem: React.FC<{
     const inputValue = event.target.value;
     setAmount(inputValue);
     if (inputValue === "") {
+      console.log("yeh");
+      setCalories(Number(data.foodInfo.calories));
+      if (data.foodInfo.protein) setProtein(Number(data.foodInfo.protein));
+      if (data.foodInfo.fats) setFats(Number(data.foodInfo.fats));
+      if (data.foodInfo.carbs) setCarbs(Number(data.foodInfo.carbs));
+
       return;
     }
     const percentage = Number(inputValue) / data.foodInfo.quantity;
@@ -36,6 +42,8 @@ const SelectedItem: React.FC<{
     if (data.foodInfo.carbs)
       setCarbs(Math.round(percentage * Number(data.foodInfo.carbs)));
   };
+
+  
   const handleChangeMeal = (value: string) => {
     setMeal(value);
   };
@@ -53,6 +61,7 @@ const SelectedItem: React.FC<{
     const s_calories =
       calories !== 0 ? calories.toString() : data.foodInfo.calories;
     const s_quantity = amount !== "" ? Number(amount) : data.foodInfo.quantity;
+    console.log("cak", s_calories);
 
     const s_protein =
       protein !== 0 ? protein.toString() : data.foodInfo.protein;
@@ -74,11 +83,11 @@ const SelectedItem: React.FC<{
 
     console.log("submissionEntry", submissionEntry);
     console.log("submission", submissionDate);
-    await submitFoodtoLog(submissionEntry,submissionDate)
+    await submitFoodtoLog(submissionEntry, submissionDate);
 
     resetFields();
-    refetch()
-    cb()
+    refetch();
+    cb();
 
     try {
     } catch (error) {
@@ -88,33 +97,46 @@ const SelectedItem: React.FC<{
 
   return (
     <>
-      <div>Selected Food:</div>
-      <div>{data.foodInfo.name}</div>
-      <input
-        className="w-14"
-        value={amount}
-        type="number"
-        onChange={handleChange}
-      />
-      <span>{data.foodInfo.measurement}</span>
-      <button className="ml-5 border border-black px-2" onClick={resetFields}>
-        Reset
-      </button>
-      <div className="flex">
-        <div className="w-16">Calories</div>
-        <div className="w-16">Protein</div>
-        <div className="w-16">carbs</div>
-        <div className="w-16">Fats</div>
+      <div className="border border-black text-center">
+        Selected Food: <span>{data.foodInfo.name}</span>
       </div>
-      <div className="flex ">
-        <div className="w-16">
+
+      <div className="flex justify-center mt-1">
+        <span>Per</span>
+
+        <input
+          className="w-12 ml-1 border border-gray-400"
+          min={data.foodInfo.quantity >= 10 ? 1 : 0.1}
+          step={data.foodInfo.measurement === "grams" ? 1 : 0.1}
+          value={amount}
+          type="number"
+          onChange={handleChange}
+        />
+        <span>{data.foodInfo.measurement}</span>
+        <button className="ml-5 border border-black px-2" onClick={resetFields}>
+          Reset
+        </button>
+      </div>
+      <div className="flex justify-center mt-2">
+        <div className="border text-center border-black w-16 mr-1">
+          Calories
+        </div>
+        <div className="border text-center border-black mr-1  w-16">
+          Protein
+        </div>
+        <div className="border text-center border-black mr-1 w-16">carbs</div>
+        <div className="border text-center border-black mr-1 w-16">Fats</div>
+        <div className=" border text-center border-black  w-24">Meal</div>
+      </div>
+      <div className="flex justify-center mt-1 ">
+        <div className="text-center border border-black mr-1 w-16">
           {amount === "" ||
           amount === data.foodInfo.quantity.toString() ||
           calories === 0
             ? data.foodInfo.calories
             : calories}
         </div>
-        <div className="w-16">
+        <div className="border  text-center border-black mr-1 w-16">
           {amount === "" ||
           amount === data.foodInfo.quantity.toString() ||
           protein === 0
@@ -123,7 +145,7 @@ const SelectedItem: React.FC<{
             ? protein
             : "-"}
         </div>
-        <div className="w-16">
+        <div className="border text-center border-black mr-1 w-16">
           {amount === "" ||
           amount === data.foodInfo.quantity.toString() ||
           carbs === 0
@@ -132,7 +154,7 @@ const SelectedItem: React.FC<{
             ? carbs
             : "-"}
         </div>
-        <div className="w-16">
+        <div className="border text-center border-black mr-1 w-16">
           {amount === "" ||
           amount === data.foodInfo.quantity.toString() ||
           fats === 0
@@ -162,7 +184,17 @@ const SelectedItem: React.FC<{
           ]}
         />
       </div>
-      <button onClick={submitFoodLog}>Add</button>
+      <div className="flex justify-center mt-5">
+        <button
+          className="px-2 mr-2 border border-black rounded-lg"
+          onClick={submitFoodLog}
+        >
+          Add
+        </button>
+        <button className="px-2 border border-black rounded-lg" onClick={cb}>
+          Back
+        </button>
+      </div>
     </>
   );
 };
