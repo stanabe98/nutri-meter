@@ -9,7 +9,7 @@ import {
   Search,
 } from "@mui/icons-material";
 import { Box, IconButton, Input, Button } from "@mui/material";
-import { CustomFoods, FoodInfo } from "../data/data-types";
+import { CurrentUser, CustomFoods, FoodInfo } from "../data/data-types";
 import MuiInput from "../custom-components/mui-input";
 import TextField from "@mui/material/TextField";
 import { OptionalCaloriesFoodInfo } from "../hooks/useGetUserInfo";
@@ -22,8 +22,12 @@ import {
   addtoSavedFood,
 } from "../hooks/userGetUserFoods";
 
-const SavedFoodsTable: React.FC = () => {
-  const { queryResult, refetch, isLoading } = useGetCurrentUserInfo();
+const SavedFoodsTable: React.FC<{
+  queryResult: CurrentUser | null | undefined;
+  refetch: any;
+  isLoading: boolean;
+}> = ({ queryResult, refetch, isLoading }) => {
+  // const { queryResult, refetch, isLoading } = useGetCurrentUserInfo();
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
   const [currentItems, setCurrentItems] = useState<CustomFoods[] | []>([]);
@@ -95,13 +99,6 @@ const SavedFoodsTable: React.FC = () => {
     refetch();
   };
 
-  const printEntrys = () => {
-    console.log("calories", calories);
-    console.log("efats", fats);
-    console.log("protei", protein);
-    console.log("name", name);
-  };
-
   const deleteFoodEntry = async (deleteId: string) => {
     await deleteSavedFood(deleteId);
     setEdit("");
@@ -164,27 +161,35 @@ const SavedFoodsTable: React.FC = () => {
     if (filtered) {
       if (filtered.length <= itemsPerPage) {
         setCurrentItems(filtered);
-        return
+        return;
       }
     }
     setCurrentItems(filtered?.slice(indexOfFirstItem, indexOfLastItem) ?? []);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      filterElements(search);
+    }
+  };
+
   return (
-    <>
+    <div className="border border-black px-5">
       <div className="flex">
         <input
           type="text"
           placeholder="Search..."
           value={search}
           onChange={handleSearchChange}
+          onKeyDown={handleKeyDown}
         />
         <div onClick={searchClick} className="cursor-pointer ">
           <Search />
         </div>
       </div>
 
-      <div className="h-[150px] overflow-y-scroll border border-black w-2/4">
+      <div className="h-[150px] overflow-y-scroll border border-black">
         <div className="flex gap-1">
           <div className="w-32">Name</div>
           <div className="w-16">Amount</div>
@@ -451,7 +456,7 @@ const SavedFoodsTable: React.FC = () => {
           Add
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

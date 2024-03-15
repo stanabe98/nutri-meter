@@ -1,6 +1,11 @@
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { CurrentUser, FoodInfo, CustomFoodInfo } from "../data/data-types";
+import {
+  CurrentUser,
+  FoodInfo,
+  CustomFoodInfo,
+  MacroTarget,
+} from "../data/data-types";
 import { getConfig, postConfig } from "../helpers";
 import { error } from "console";
 import UserFoodStore from "../stores/foodLogStore";
@@ -92,7 +97,10 @@ export const deleteSavedFood = async (modifyId: string) => {
   );
 };
 
-export const submitFoodtoLog = async (foodData:FoodInfo, submissionDate:string) => {
+export const submitFoodtoLog = async (
+  foodData: FoodInfo,
+  submissionDate: string
+) => {
   const user = getUserFromStorage();
   if (!user) {
     return;
@@ -100,7 +108,25 @@ export const submitFoodtoLog = async (foodData:FoodInfo, submissionDate:string) 
 
   const url = "/api/foodlog";
 
-  await axios.post(url, 
-    { foodInfo: foodData, date: submissionDate }
-  , postConfig(user));
+  await axios.post(
+    url,
+    { foodInfo: foodData, date: submissionDate },
+    postConfig(user)
+  );
+};
+
+export const postCurrentUserInfo = async (body: MacroTarget) => {
+  const user = getUserFromStorage();
+  if (!user) {
+    return;
+  }
+  try {
+    await axios.post(
+      `/api/user/currentuser`,
+      { macroTarget: body },
+      postConfig(user)
+    );
+  } catch (error) {
+    console.log(error);
+  }
 };

@@ -4,6 +4,8 @@ import dayjs from "dayjs";
 import { LineChart } from "@mui/x-charts";
 import SavedFoodsTable from "../components/dashboard-components/saved-foods-table";
 import TextField from "@mui/material/TextField";
+import ModifyTargets from "../components/dashboard-components/goals-component";
+import { useGetCurrentUserInfo } from "../components/hooks/userGetUserFoods";
 
 const Dashboard = () => {
   const [xaxisData, setxaxisData] = useState([new Date("04-12-2023")]);
@@ -11,6 +13,11 @@ const Dashboard = () => {
   const [yaxisData, setYaxisData] = useState([0]);
 
   const { queryResult, error, refetch, isLoading } = useGetAllFoodLogs();
+  const {
+    queryResult: currentUserData,
+    refetch: refetchData,
+    isLoading: loading,
+  } = useGetCurrentUserInfo();
 
   useEffect(() => {
     if (queryResult) {
@@ -36,10 +43,12 @@ const Dashboard = () => {
   return (
     <>
       <div className="w-3/4">
-
-        <TextField id="outlined-basic" 
-        value="3"
-        label="Outlined" variant="outlined" />
+        <TextField
+          id="outlined-basic"
+          value="3"
+          label="Outlined"
+          variant="outlined"
+        />
 
         {!isLoading ? (
           <LineChart
@@ -61,7 +70,18 @@ const Dashboard = () => {
           <></>
         )}
       </div>
-      <SavedFoodsTable />
+      <div className="flex">
+        <SavedFoodsTable
+          queryResult={currentUserData}
+          refetch={refetchData}
+          isLoading={loading}
+        />
+        <ModifyTargets
+          queryResult={currentUserData}
+          refetch={refetchData}
+          isLoading={loading}
+        />
+      </div>
     </>
   );
 };

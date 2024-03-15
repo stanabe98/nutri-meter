@@ -4,10 +4,11 @@ import "./mui-input.css";
 const MuiInput: React.FC<{
   label: string;
   styles?: string;
+  value: string;
   [key: string]: any;
-}> = ({ label, styles, ...rest }) => {
+  
+}> = ({ label, styles, value, ...rest }) => {
   const [focused, setFocused] = useState(false);
-  const [value, setValue] = useState("");
 
   const handleFocus = () => {
     setFocused(true);
@@ -19,9 +20,7 @@ const MuiInput: React.FC<{
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-  };
+
 
   return (
     <div
@@ -31,7 +30,7 @@ const MuiInput: React.FC<{
         className="input-field"
         onFocus={handleFocus}
         onBlur={handleBlur}
-        onChange={handleChange}
+        value={value}
         {...rest}
       />
       <label className="input-label">{label}</label>

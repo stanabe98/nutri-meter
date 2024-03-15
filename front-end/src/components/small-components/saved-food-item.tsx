@@ -6,7 +6,7 @@ const SavedFoodItem: React.FC<{ item: CustomFoods; [key: string]: any }> = ({
   ...restProps
 }) => {
   return (
-    <div {...restProps} className="flex hover:bg-slate-400">
+    <div {...restProps} className="flex cursor-pointer hover:bg-slate-400">
       <div className="w-32">{item.foodInfo.name}</div>
       <div className="w-16">{item.foodInfo.quantity}</div>
       <div className="w-16">{item.foodInfo.measurement}</div>

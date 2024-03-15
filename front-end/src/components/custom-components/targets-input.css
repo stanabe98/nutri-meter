@@ -1,0 +1,32 @@
+.custom-input {
+margin-bottom: 0;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  transition: border-color 0.2s;
+}
+
+.input-label {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #6c757d;
+  font-size: 16px;
+  pointer-events: none;
+  transition: top 0.2s, font-size 0.2s;
+}
+
+.input-field:not(:placeholder-shown) + .input-label {
+  top: -8px;
+  z-index: 1000;
+  font-size: 12px;
+}
+
+/* .custom-input.focused .input-field {
+  border-color: #007bff;
+} */
