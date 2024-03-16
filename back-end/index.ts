@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import http from "http";
 import userRoutes from "./routes/userRoutes";
 import foodLogRoutes from "./routes/foodLogRoutes";
-
+import foodApiRoutes from "./routes/foodApiRoutes";
 
 dotenv.config();
 connectDB(process.env.MONGO_URI);
@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/user", userRoutes);
 app.use("/api/foodlog", foodLogRoutes);
-
+app.use("/api/fatsecret", foodApiRoutes);
 
 console.log("howdy");
 

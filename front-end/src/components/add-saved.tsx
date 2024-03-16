@@ -61,7 +61,7 @@ const SearchSavedFood: React.FC<{
           <Search />
         </div>
       </div>
-      <div className="h-[200px] overflow-y-scroll w-[500px]">
+      <div className="h-2/5 overflow-y-scroll w-[500px]">
         {!searchClose ? (
           <>
             <div className="flex sticky top-0 bg-cyan-500">

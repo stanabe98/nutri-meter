@@ -26,6 +26,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useGetCurrentUserInfo } from "../components/hooks/userGetUserFoods";
 import SearchSavedFood from "../components/add-saved";
+import SearchSelect from "../components/search-select";
 
 const MainPage = () => {
   const { date } = useParams<{ date: string }>();
@@ -66,36 +67,45 @@ const MainPage = () => {
 
   return (
     <>
-      <div className="ml-20 flex">
-        <span className="p-4">Food diary for:</span>
-        <DateSelector date={date ? date : formatCurrentDate()} />
-      </div>
-      <div className="flex">
-        <FoodLogView
-          tableData={queryResult ? queryResult.foodLog : null}
-          loading={isLoading}
-          dateString={urlDate}
-          refetchData={refetch}
-        />
-        <div className="flex-col justify-center items-center border border-black rounded-lg gap-5">
-          <div className="p-2">
-            <MacroChart data={queryResult ? queryResult.totalMacros : null} />
+      <div className="flex gap-10">
+        <div>
+          <div className="ml-20 flex">
+            <span className="p-4">Food diary for:</span>
+            <DateSelector date={date ? date : formatCurrentDate()} />
           </div>
-          <div className="p-2">
-            <NutritionTarget
-              data={queryResult ? queryResult.totalMacros : null}
-              goalsData={userInfoResult ? userInfoResult.macroTarget : null}
+          <div className="">
+            <FoodLogView
+              tableData={queryResult ? queryResult.foodLog : null}
+              loading={isLoading}
+              dateString={urlDate}
+              refetchData={refetch}
             />
+            <MacroSubmissionForm refetch={refetch} submissionDate={urlDate} />
           </div>
         </div>
-      </div>
-      <div className="flex items-start mt-3 gap-5">
-        <MacroSubmissionForm refetch={refetch} submissionDate={urlDate} />
-        <SearchSavedFood
-          data={userInfoResult ? userInfoResult.savedFoods : null}
-          submissionDate={urlDate}
-          refetch={refetch}
-        />
+        <div className="items-start mt-3 gap-5">
+          <div className="flex-col justify-center items-center border border-black rounded-lg gap-5">
+            <div className="p-2">
+              <MacroChart data={queryResult ? queryResult.totalMacros : null} />
+            </div>
+            <div className="p-2">
+              <NutritionTarget
+                data={queryResult ? queryResult.totalMacros : null}
+                goalsData={userInfoResult ? userInfoResult.macroTarget : null}
+              />
+            </div>
+          </div>
+          <SearchSelect
+            data={userInfoResult ? userInfoResult.savedFoods : null}
+            submissionDate={urlDate}
+            refetch={refetch}
+          />
+          {/* <SearchSavedFood
+            data={userInfoResult ? userInfoResult.savedFoods : null}
+            submissionDate={urlDate}
+            refetch={refetch}
+          /> */}
+        </div>
       </div>
     </>
   );
