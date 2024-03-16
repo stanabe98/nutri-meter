@@ -67,7 +67,7 @@ const MainPage = () => {
   return (
     <>
       <div className="ml-20 flex">
-        <div className="p-4">Food diary for:</div>
+        <span className="p-4">Food diary for:</span>
         <DateSelector date={date ? date : formatCurrentDate()} />
       </div>
       <div className="flex">
@@ -90,14 +90,12 @@ const MainPage = () => {
         </div>
       </div>
       <div className="flex items-start mt-3 gap-5">
-
-        
-      <MacroSubmissionForm refetch={refetch} submissionDate={urlDate} />
-      <SearchSavedFood
-        data={userInfoResult ? userInfoResult.savedFoods : null}
-        submissionDate={urlDate}
-        refetch={refetch}
-      />
+        <MacroSubmissionForm refetch={refetch} submissionDate={urlDate} />
+        <SearchSavedFood
+          data={userInfoResult ? userInfoResult.savedFoods : null}
+          submissionDate={urlDate}
+          refetch={refetch}
+        />
       </div>
     </>
   );
