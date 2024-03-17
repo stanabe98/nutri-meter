@@ -46,7 +46,7 @@ export const EditableCell: React.FC<{
             />
           </div>
         ) : (
-          <div style={{ cursor: "pointer" }} className="not-editing">
+          <div style={{ cursor: "pointer" }} className="not-editing text-center">
             {doCalulation(currentValue)}
           </div>
         )}

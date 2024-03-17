@@ -8,7 +8,7 @@ import {
 } from "./hooks/useFatSecretApi";
 import SelectedApiItem from "./selected-api-item";
 
-const SearchFoodLibrary = () => {
+const SearchFoodLibrary:React.FC<{submissionDate:string, refetch:any}> = ({submissionDate, refetch}) => {
   const [query, setQuery] = useState("");
   const [searchData, setSearchData] = useState<FoodItem[] | []>([]);
   const [selectedFoodId, setSelectedFoodId] = useState<string>("");
@@ -58,9 +58,11 @@ const SearchFoodLibrary = () => {
       ) : (
         <>
           <SelectedApiItem
+            refetch={refetch}
             data={servingInfo}
             foodName={selectedFoodName}
             foodId={selectedFoodId}
+            submissionDate={submissionDate}
             cb={() => setSelectedFoodId("")}
           />
         </>

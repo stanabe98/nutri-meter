@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import MainPage from "./Pages/main-page";
 import HomePage from "./Pages/home-page";
@@ -12,17 +12,18 @@ import { useNavigate, useLocation } from "react-router-dom";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchInterval: false, 
+      refetchInterval: false,
     },
   },
 });
 
 const Header: React.FC = ({}) => {
   const location = useLocation();
-  const [value, setValue] = React.useState(
-    location.pathname !== "/profile" ? 0 : 1
-  );
+  const [value, setValue] = React.useState(0);
   const navigate = useNavigate();
+  useEffect(() => {
+    location.pathname !== "/profile" ? setValue(0) : setValue(1);
+  }, [location]);
 
   return (
     <div className="header bg-blue-300 h-10 w-full m-auto flex items-center justify-between">

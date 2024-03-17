@@ -1,40 +1,34 @@
-.calorie-table {
-  border-collapse: collapse;
+table {
   width: 100%;
+  border-spacing: 0;
+  border-collapse: separate;
+  border: 1px solid hsl(0, 21%, 8%);
 }
 
-.calorie-table th {
-  border: 1px solid black;
-  background-color: lightgray;
-  /* paddi: 8px; */
-  padding-inline: 2px;
+th,
+td {
+  padding: 8px;
+  text-align: center;
+  border-right: 1px solid hsl(0, 21%, 8%);
+}
+
+thead th {
   position: sticky;
   top: 0;
+  background-color: #f2f2f2;
+  z-index: 1;
 }
 
-.calorie-table td {
-  padding: 6px;
+
+
+.sticky-table-header {
+  border-bottom: 1px solid hwb(0 5% 94%);
+  border-top: 1px solid hwb(0 5% 94%);
 }
 
-.calorie-table td:not(:first-child) > div {
-  width: 15%;
-}
-
-.calorie-table td:first-child {
-  border-left: none;
-}
-
-.calorie-table td:last-child {
-  border-right: none;
-}
-
-.main-body {
-  height: 200px;
-
-  background-color: beige;
-}
 .calorie-table tbody::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
+  border-radius: 8px;
 }
 
 .calorie-table tbody::-webkit-scrollbar-thumb {
@@ -44,17 +38,4 @@
 
 .calorie-table tbody::-webkit-scrollbar-thumb:hover {
   background-color: #555;
-}
-
-.sticky-row {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
-.sticky-row > th {
-  position: sticky;
-  background-color: #f2f2f2;
-  top: 0;
-  z-index: 100;
 }

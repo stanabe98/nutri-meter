@@ -15,6 +15,13 @@ import {
   modifyUserFoodLog,
   modifyFoodLogSavedFood,
 } from "./hooks/useGetUserInfo";
+import {
+  IconMeat,
+  IconEggFried,
+  IconCookie,
+  IconToolsKitchen2,
+  IconToolsKitchen3,
+} from "@tabler/icons-react";
 import { OptionalCaloriesFoodInfo } from "./hooks/useGetUserInfo";
 
 interface FoodInfoWithId extends FoodInfo {
@@ -30,6 +37,10 @@ interface Macro {
   fats: number;
   protein: number;
   carbs: number;
+}
+
+interface RenderIcon {
+  [key: string]: JSX.Element;
 }
 
 const FoodLogView: React.FC<{
@@ -114,18 +125,22 @@ const FoodLogView: React.FC<{
         submissionObject.protein = editedprotein.toString();
       if (editedcarbs !== 0) submissionObject.carbs = editedcarbs.toString();
       submissionObject.quantity = Number(editedamount);
-     
+
       await modifyFoodLogSavedFood(
         submissionObject,
         selectedEditId,
         dateString,
         refetchData,
-        ()=> setSelectedEditId("")
+        () => setSelectedEditId("")
       );
-     
-
-
     }
+  };
+
+  const renderIcon: RenderIcon = {
+    Breakfast: <IconEggFried size={16} />,
+    Lunch: <IconMeat size={16} />,
+    Dinner: <IconToolsKitchen3 size={16} />,
+    Snacks: <IconCookie size={16} />,
   };
 
   const handleClickOutside = (e: any) => {
@@ -175,31 +190,39 @@ const FoodLogView: React.FC<{
   return (
     <>
       {!loading ? (
-        <div className="mx-8  overflow-y-scroll h-[500px] border border-black">
-          <table className="w-full calorie-table">
-            <thead className="sticky-row">
-              <tr>
-                <th>-</th>
-                <th>Calories</th>
-                <th>Carbs</th>
-                <th>Fats</th>
-                <th>Protein</th>
-                {selectedEditId !== "" && <th>-</th>}
+        <div className="mx-8 overflow-y-scroll h-[400px] px-2 border bg-slate-500  rounded-md border-black">
+          <table className="w-full calorie-table  bg-slate-200 ">
+            <thead className="  ">
+              <tr className="bg-lime-100">
+                <th className="sticky-table-header">-</th>
+                <th className=" sticky-table-header">Calories</th>
+                <th className="sticky-table-header ">Carbs</th>
+                <th className="sticky-table-header">Fats</th>
+                <th className=" sticky-table-header  ">Protein</th>
+                <th className=" sticky-table-header">-</th>
               </tr>
-              <tr className="mb-2"></tr>
             </thead>
             <tbody className="main-body">
               {timePeriods.map((timePeriod) => (
                 <React.Fragment key={timePeriod}>
-                  <tr>
-                    <th colSpan={1}>{timePeriod}</th>
+                  <tr className="">
+                    <th className="text-md" colSpan={6}>
+                      <div className="flex justify-center items-center">
+                        {timePeriod}
+                        {renderIcon[timePeriod]}
+                      </div>
+                    </th>
                   </tr>
 
                   {groupedData
                     ? groupedData[timePeriod]?.map((foodItem, index) => (
-                        <tr key={foodItem._id} data-key={foodItem._id}>
-                          <td>
-                            <div>
+                        <tr
+                          className="h-10  "
+                          key={foodItem._id}
+                          data-key={foodItem._id}
+                        >
+                          <td className="food-names ">
+                            <div className="text-sm overflow-hidden whitespace-nowrap pl-2 overflow-ellipsis">
                               {foodItem.name ? foodItem.name : "-"}
                               {foodItem.referenceId &&
                               selectedEditId === foodItem._id ? (
@@ -220,13 +243,9 @@ const FoodLogView: React.FC<{
                               ) : null}
                             </div>
                           </td>
-                          <td
-                            className={`${
-                              selectedEditId === "" ? "w-15/100" : "w-1/10"
-                            }`}
-                          >
+                          <td className="">
                             {foodItem.referenceId ? (
-                              <div>
+                              <div className="text-center rounded-md bg-lime-600 border-gray-300 w-full">
                                 {foodItem._id === selectedEditId
                                   ? editedcalories
                                   : foodItem.calories}
@@ -244,13 +263,9 @@ const FoodLogView: React.FC<{
                               </>
                             )}
                           </td>
-                          <td
-                            className={`${
-                              selectedEditId === "" ? "w-15/100" : "w-1/10"
-                            }`}
-                          >
+                          <td>
                             {foodItem.referenceId ? (
-                              <div>
+                              <div className="text-center rounded-md bg-lime-600">
                                 {foodItem._id === selectedEditId
                                   ? editedcarbs
                                   : foodItem.carbs ?? 0}
@@ -269,13 +284,9 @@ const FoodLogView: React.FC<{
                             )}
                           </td>
 
-                          <td
-                            className={`${
-                              selectedEditId === "" ? "w-15/100" : "w-1/10"
-                            }`}
-                          >
+                          <td>
                             {foodItem.referenceId ? (
-                              <div>
+                              <div className="text-center rounded-md bg-lime-600">
                                 {foodItem._id === selectedEditId
                                   ? editedfats
                                   : foodItem.fats ?? 0}
@@ -293,13 +304,9 @@ const FoodLogView: React.FC<{
                               </>
                             )}
                           </td>
-                          <td
-                            className={`${
-                              selectedEditId === "" ? "w-15/100" : "w-1/10"
-                            }`}
-                          >
+                          <td>
                             {foodItem.referenceId ? (
-                              <div>
+                              <div className="text-center rounded-md bg-lime-600 ">
                                 {foodItem._id === selectedEditId
                                   ? editedprotein
                                   : foodItem.protein ?? 0}
@@ -342,7 +349,6 @@ const FoodLogView: React.FC<{
                                           setEditSubmitted(!editSubmitted);
                                           setSelectedEditId("");
                                           setDefaultEditted(null);
-                                          // refetchData();
                                         }}
                                       />
                                     </>
@@ -394,34 +400,29 @@ const FoodLogView: React.FC<{
                         </tr>
                       ))
                     : null}
-
-                  {/* Row for totals */}
                   <tr>
-                    <td className="text-gray-500 text-sm">sub-totals</td>
-                    <td>
+                    <td className="text-gray-500 text-xs text-center">
+                      sub-totals
+                    </td>
+                    <td className="text-center text-gray-500 text-sm">
                       {groupedData
                         ? calculateTotals(groupedData[timePeriod]).calories
                         : 0}
-
-                      {/* {TimePeriodStateObj[timePeriod].calories} */}
                     </td>
-                    <td>
+                    <td className="text-center text-gray-500 text-sm">
                       {groupedData
                         ? calculateTotals(groupedData[timePeriod]).carbs
                         : 0}
-                      {/* {TimePeriodStateObj[timePeriod].carbs} */}
                     </td>
-                    <td>
+                    <td className="text-center text-gray-500 text-sm">
                       {groupedData
                         ? calculateTotals(groupedData[timePeriod]).fats
                         : 0}
-                      {/* {TimePeriodStateObj[timePeriod].fats} */}
                     </td>
-                    <td>
+                    <td className="text-center text-gray-500 text-sm">
                       {groupedData
                         ? calculateTotals(groupedData[timePeriod]).protein
                         : "-"}
-                      {/* {TimePeriodStateObj[timePeriod].protein} */}
                     </td>
                   </tr>
                 </React.Fragment>

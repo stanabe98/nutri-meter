@@ -1,10 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap");
 
 .App {
- 
+  background-color: #f1f5f9
+  /* #f0f9ff */
 }
 
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+
 }

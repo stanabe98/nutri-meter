@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { ServingsResult } from "./hooks/useFatSecretApi";
 import { Select } from "antd";
+import { FoodInfo } from "./data/data-types";
+import { submitFoodtoLog } from "./hooks/userGetUserFoods";
 
 const SelectedApiItem: React.FC<{
   foodName: string;
-  foodId:string;
+  foodId: string;
   data: ServingsResult[] | [];
+  submissionDate: string;
+  refetch: any;
   cb: any;
-}> = ({ foodName,foodId, data, cb }) => {
+}> = ({ foodName, foodId, data, submissionDate, cb, refetch }) => {
   const [currentData, setCurrentData] = useState<ServingsResult[] | []>(data);
   const [selectedCurrentData, setSelectedCurrentData] =
     useState<ServingsResult | null>(data[0]);
@@ -31,7 +35,7 @@ const SelectedApiItem: React.FC<{
 
     const percentage =
       Number(e.target.value) /
-      Number(selectedCurrentData?.serving_description.split(" ")[0]);
+      Number(eval(selectedCurrentData?.serving_description.split(" ")[0]??""));
     const adjusted_p = Math.round(
       percentage * Number(selectedCurrentData?.protein)
     ).toString();
@@ -58,26 +62,37 @@ const SelectedApiItem: React.FC<{
       serving_description: selectedCurrentData?.serving_description ?? "",
       metric_serving_amount: adjusted_metric ?? "",
       metric_serving_unit: selectedCurrentData?.metric_serving_unit ?? "",
-      measurement_description: selectedCurrentData?.measurement_description ?? "",
+      measurement_description:
+        selectedCurrentData?.measurement_description ?? "",
     });
   };
 
+  const submitFoodtoEntry = async () => {
+    const quantity = Number(eval(adjustedServingAmount));
+    const referenceId = foodId;
+    const calories = Math.round(Number(adjustselectCurrentData?.calories));
+    const fats = Math.round(Number(adjustselectCurrentData?.fat));
+    const carbs = Math.round(Number(adjustselectCurrentData?.carbohydrate));
+    const protein = Math.round(Number(adjustselectCurrentData?.protein));
+    const name = foodName.split(",")[0];
+    const measurement = selectedCurrentData?.measurement_description;
 
-  const submitFoodtoEntry=()=>{
-    const quantity= Number(adjustedServingAmount)
-    const referenceId= foodId;
-    const calories= adjustselectCurrentData?.calories
-    const fats = adjustselectCurrentData?.fat;
-    const carbs = adjustselectCurrentData?.carbohydrate;
-    const protein = adjustselectCurrentData?.protein;
-    const name= foodName.split(",")[0]
-    const measurement = selectedCurrentData?.measurement_description
+    const submissionEntry: FoodInfo = {
+      name: name,
+      measurement: measurement,
+      quantity: quantity,
+      calories: calories.toString() ?? "",
+      referenceId: referenceId,
+      carbs: carbs.toString(),
+      protein: protein.toString(),
+      fats: fats.toString(),
+    };
 
+    await submitFoodtoLog(submissionEntry, submissionDate);
 
-
-
-
-  }
+    refetch();
+    cb();
+  };
 
   useEffect(() => {
     setCurrentData(data);
@@ -127,14 +142,14 @@ const SelectedApiItem: React.FC<{
           })}
         />
         <input
-          value={adjustedServingAmount}
+          value={eval(adjustedServingAmount)}
           onChange={adjustServing}
           type="number"
           className="border w-16 border-indigo-800"
         />
         <span>{selectedCurrentData?.serving_description.split(" ")[1]}</span>
       </div>
-      <button>Add to diary</button>
+      <button onClick={submitFoodtoEntry}>Add to diary</button>
     </div>
   );
 };

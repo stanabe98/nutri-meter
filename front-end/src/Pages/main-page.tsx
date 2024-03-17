@@ -68,7 +68,7 @@ const MainPage = () => {
   return (
     <>
       <div className="flex gap-10">
-        <div>
+        <div className="md:w-2/4 sm:w-full">
           <div className="ml-20 flex">
             <span className="p-4">Food diary for:</span>
             <DateSelector date={date ? date : formatCurrentDate()} />
@@ -83,7 +83,7 @@ const MainPage = () => {
             <MacroSubmissionForm refetch={refetch} submissionDate={urlDate} />
           </div>
         </div>
-        <div className="items-start mt-3 gap-5">
+        <div className="items-start mt-3 gap-5 ">
           <div className="flex-col justify-center items-center border border-black rounded-lg gap-5">
             <div className="p-2">
               <MacroChart data={queryResult ? queryResult.totalMacros : null} />

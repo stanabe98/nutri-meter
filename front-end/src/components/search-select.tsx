@@ -27,7 +27,9 @@ const SearchSelect: React.FC<{
           refetch={refetch}
         />
       ) : (
-        <SearchFoodLibrary/>
+        <SearchFoodLibrary 
+        refetch={refetch}
+        submissionDate={submissionDate} />
       )}
     </div>
   );
