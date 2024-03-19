@@ -2,14 +2,21 @@ table {
   width: 100%;
   border-spacing: 0;
   border-collapse: separate;
-  border: 1px solid hsl(0, 21%, 8%);
+  border-right: 1px solid hsl(0, 21%, 8%); 
+  border-left: 1px solid hsl(0, 21%, 8%); 
 }
 
 th,
 td {
-  padding: 8px;
   text-align: center;
-  border-right: 1px solid hsl(0, 21%, 8%);
+}
+
+th:not(:last-child){
+  width: 10%;
+}
+
+th:last-child{
+  width: 7%;
 }
 
 thead th {
@@ -19,11 +26,23 @@ thead th {
   z-index: 1;
 }
 
+/* .Breakfast-div{
+  background-color: bisque;
+  margin-top: -7px;
+} */
+
+
+.Snacks-div, .Breakfast-div{
+
+  /* margin-top: -7px; */
+
+}
+
+
 
 
 .sticky-table-header {
   border-bottom: 1px solid hwb(0 5% 94%);
-  border-top: 1px solid hwb(0 5% 94%);
 }
 
 .calorie-table tbody::-webkit-scrollbar {

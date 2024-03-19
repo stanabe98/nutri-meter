@@ -7,6 +7,7 @@ import CredentialModel, {
 import UserFoodLogModel, {
   FoodInfo,
   FoodLogEntry,
+  UserFoodLog,
 } from "../data-models/userModel";
 import generateToken from "../config/generateToken";
 import dayjs from "dayjs";
@@ -57,12 +58,7 @@ export const getAllFoodLogs = asyncHandler(
         user: currentUserId.toString(),
       }).select("date totalMacros _id");
 
-      const sortedEntries = findEntry.sort((a, b) => {
-        const dateA = dayjs(a.date, "DD-MM-YYYY");
-        const dateB = dayjs(b.date, "DD-MM-YYYY");
-        return dateA.diff(dateB);
-      });
-
+      const sortedEntries = findEntry.sort(compareDateStrings);
       res.status(200).send(sortedEntries === null ? [] : sortedEntries);
     } catch (error) {
       res.status(500).json({ error: "Server Error" });
@@ -204,3 +200,13 @@ export const deleteFullEntry = asyncHandler(
     }
   }
 );
+
+const compareDateStrings = (dateObj1: UserFoodLog, dateObj2: UserFoodLog) => {
+  const [day1, month1, year1] = dateObj1.date.split("-").map(Number);
+  const [day2, month2, year2] = dateObj2.date.split("-").map(Number);
+
+  const date1 = new Date(year1, month1 - 1, day1);
+  const date2 = new Date(year2, month2 - 1, day2);
+
+  return date1.getTime() - date2.getTime();
+};
