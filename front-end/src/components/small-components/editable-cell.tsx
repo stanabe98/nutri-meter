@@ -10,7 +10,16 @@ export const EditableCell: React.FC<{
   const [editing, setEditing] = useState(false);
   const [currentValue, setValue] = useState(value);
   const [result, setResult] = useState("23");
+  const [onfocus, setonFocus] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const notEditingRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (onfocus && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [onfocus]);
 
   useEffect(() => {
     setEditing(selectedId === cellId);
@@ -38,15 +47,26 @@ export const EditableCell: React.FC<{
         {editing ? (
           <div className="">
             <input
-              className="w-24"
+              ref={inputRef}
+              className={`w-3/4 text-sm ${!onfocus ? "hidden" : ""}`}
               type="text"
+              onBlur={() => setonFocus(false)}
               value={currentValue}
               onChange={handleChange}
               pattern="[0-9+*\/()\-.]*"
             />
+            <div
+              className={`w-3/4 bg-slate-100 ${onfocus ? "hidden" : ""}`}
+              onClick={() => setonFocus(true)}
+            >
+              {doCalulation(currentValue)}
+            </div>
           </div>
         ) : (
-          <div style={{ cursor: "pointer" }} className="not-editing text-center">
+          <div
+            style={{ cursor: "pointer" }}
+            className="text-sm not-editing text-center"
+          >
             {doCalulation(currentValue)}
           </div>
         )}

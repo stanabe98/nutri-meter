@@ -190,7 +190,7 @@ const SavedFoodsTable: React.FC<{
       </div>
 
       <div className="h-[150px] overflow-y-scroll border border-black">
-        <div className="flex gap-1">
+        <div style={{ backgroundColor: "#1fa1af" }} className="flex gap-1">
           <div className="w-32">Name</div>
           <div className="w-16">Amount</div>
           <div className="w-16">Serving</div>

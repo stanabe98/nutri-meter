@@ -30,7 +30,18 @@ const Header: React.FC = ({}) => {
       <div className="flex">
         <Tabs
           value={value}
+          sx={{
+            "& button:hover": { color: "#1fa1af" },
+            "& button:active": { color: "#1fa1af" },
+            "& button.Mui-selected": { color: "#1fa1af" },
+          }}
+          TabIndicatorProps={{
+            sx: { backgroundColor: "#1fa1af", height:4 },
+          }}
           // onChange={handleChange}
+          className=" text-blue-500"
+          textColor="secondary"
+          indicatorColor="secondary"
           aria-label="basic tabs example"
         >
           <Tab

@@ -64,7 +64,10 @@ const SearchSavedFood: React.FC<{
       <div className="h-2/5 overflow-y-scroll w-[500px]">
         {!searchClose ? (
           <>
-            <div className="flex sticky top-0 bg-cyan-500">
+            <div
+              style={{  backgroundColor: "#1fa1af" }}
+              className="flex sticky top-0"
+            >
               <div className="w-32">Name</div>
               <div className="w-16">Amount</div>
               <div className="w-16">Serving</div>

@@ -18,6 +18,28 @@ const MuiCalendar: React.FC<{ date: string; cb?: (date: string) => any }> = ({
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DesktopDatePicker
+        slotProps={{
+          layout: {
+            sx: {
+              ".MuiPickersDay-today": {
+                color: "black",
+                borderRadius: 20,
+                borderWidth: 1,
+                borderColor: "#1fa1af",
+                border: "1px solid ",
+                backgroundColor: "#1fa1af",
+              },
+              ".MuiPickersCalendarHeader-root": {
+                color: "black",
+                borderRadius: 20,
+                borderWidth: 1,
+                borderColor: "#1fa1af",
+                border: "1px solid",
+                backgroundColor: "#aedadf",
+              },
+            },
+          },
+        }}
         value={value}
         onChange={(newValue) => {
           setValue(newValue);

@@ -15,6 +15,14 @@ const SearchSelect: React.FC<{
       <Tabs
         value={value}
         // onChange={handleChange}
+        sx={{
+          "& button:hover": { color: "#1fa1af" },
+          "& button:active": { color: "#1fa1af" },
+          "& button.Mui-selected": { color: "#1fa1af" },
+        }}
+        TabIndicatorProps={{
+          sx: { backgroundColor: "#1fa1af", height: 4 },
+        }}
         aria-label="basic tabs example"
       >
         <Tab onClick={() => setValue(0)} label="Saved Foods" />
@@ -27,9 +35,7 @@ const SearchSelect: React.FC<{
           refetch={refetch}
         />
       ) : (
-        <SearchFoodLibrary 
-        refetch={refetch}
-        submissionDate={submissionDate} />
+        <SearchFoodLibrary refetch={refetch} submissionDate={submissionDate} />
       )}
     </div>
   );
