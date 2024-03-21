@@ -4,21 +4,33 @@ import { postConfig } from "../helpers";
 import axios from "axios";
 import { useAuthContext } from "../../context/AuthContext";
 import { FoodLogEntry } from "../data/data-types";
+import FoodInputStore from "../stores/macroInputStore";
 import { FoodInfo } from "../data/data-types";
 import { message, Select } from "antd";
+import InputCalculator from "../custom-components/input-calculator";
 
 const MacroSubmissionForm: React.FC<{
   refetch: any;
   submissionDate: string;
 }> = ({ refetch, submissionDate }) => {
   const { user } = useAuthContext();
-  const [protein, setProtein] = useState("");
   const [meal, setMeal] = useState("");
   const [name, setName] = useState("");
+  
+  const [protein, setProtein] = useState("");
+  const [evalprotein, setEvalProtein] = useState("");
+
   const [fats, setFats] = useState("");
+  const [evalfats, setEvalFats] = useState("");
+
   const [carbs, setCarbs] = useState("");
+  const [evalcarbs, setEvalCarbs] = useState("");
+
   const [calories, setCalories] = useState("");
-  const pattern = "[0-9+*/()-.]*";
+  const [evalcalories, setEvalCalories] = useState("");
+
+  const [isError, setisError] = useState(false);
+  
   const [messageApi, contextHolder] = message.useMessage();
 
   const errorMessage = (message = "") => {
@@ -57,12 +69,16 @@ const MacroSubmissionForm: React.FC<{
           postConfig(user)
         );
         refetch();
-   
+
         setProtein("");
+        setEvalProtein("")
         setMeal("");
         setName("");
         setFats("");
+        setEvalFats("");
+        setEvalCarbs("");
         setCarbs("");
+        setEvalCalories("");
         setCalories("");
       } catch (error) {
         errorMessage("Unable to add entry");
@@ -100,40 +116,46 @@ const MacroSubmissionForm: React.FC<{
         placeholder="Name"
         type="text"
       />
-      <CustomInput
+      <InputCalculator
         value={calories}
-        moreStyles="w-16"
-        onChange={(e) => setCalories(e.target.value)}
-        placeholder="Calories"
-        type="text"
-        pattern={pattern}
+        evalue={evalcalories}
+        className="w-16"
+        label="Calories"
+        cbError={(state) => setisError(state)}
+        cb={(state) => setCalories(state)}
+        cbEval={(state) => setEvalCalories(state)}
       />
-      <CustomInput
+
+      <InputCalculator
+        className="w-16"
         value={carbs}
-        moreStyles="w-16"
-        onChange={(e) => setCarbs(e.target.value)}
-        placeholder="Carbs"
-        type="text"
-        pattern={pattern}
+        evalue={evalcarbs}
+        label="Carbs"
+        cbError={(state) => setisError(state)}
+        cb={(state) => setCarbs(state)}
+        cbEval={(state) => setEvalCarbs(state)}
       />
-      <CustomInput
+      <InputCalculator
         value={fats}
-        moreStyles="w-16"
-        onChange={(e) => setFats(e.target.value)}
-        placeholder="Fats"
-        type="text"
-        pattern={pattern}
+        evalue={evalfats}
+        className="w-16"
+        label="Fats"
+        cbError={(state) => setisError(state)}
+        cb={(state) => setFats(state)}
+        cbEval={(state) => setEvalFats(state)}
       />
-      <CustomInput
-        onChange={(e) => setProtein(e.target.value)}
+      <InputCalculator
         value={protein}
-        moreStyles="w-16"
-        placeholder="Protein"
-        type="text"
-        pattern={pattern}
+        evalue={evalprotein}
+        className="w-16"
+        label="Protein"
+        cbError={(state) => setisError(state)}
+        cb={(state) => setProtein(state)}
+        cbEval={(state) => setEvalProtein(state)}
       />
+
       <button
-        disabled={calories.trim() === ""}
+        disabled={calories.trim() === "" || isError}
         onClick={() => {
           submitFoodLog();
         }}

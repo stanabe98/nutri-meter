@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { SetPropertyFunction } from "../stores/foodLogStore";
 
-export const EditableCell: React.FC<{
+export const EditableDiv: React.FC<{
   value: string;
   selectedId: string;
   cellId: string;
@@ -9,8 +9,17 @@ export const EditableCell: React.FC<{
 }> = ({ value, selectedId, cellId, setEditedObservable }) => {
   const [editing, setEditing] = useState(false);
   const [currentValue, setValue] = useState(value);
-  const [isFocused, setIsFocused] = useState(false);
-  const [eValue, setEvalue] = useState(currentValue);
+  const [result, setResult] = useState("23");
+  const [onfocus, setonFocus] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const notEditingRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (onfocus && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [onfocus]);
 
   useEffect(() => {
     setEditing(selectedId === cellId);
@@ -18,20 +27,9 @@ export const EditableCell: React.FC<{
 
   const handleChange = (event: any) => {
     const inputValue = event.target.value;
-    const filteredValue = inputValue.replace(/[^0-9+*\/()\-.]/g, "");
-
+    const filteredValue = inputValue.replace(/[^0-9+*\/()\-.]/g, ""); // Allow only numbers and specified operators
     setValue(filteredValue);
-    let result = filteredValue;
-    try {
-      result = eval(filteredValue);
-    } catch (error) {}
-    setEvalue(result);
-
     setEditedObservable(value, filteredValue);
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
   };
 
   const doCalulation = (val: string) => {
@@ -43,25 +41,26 @@ export const EditableCell: React.FC<{
     }
   };
 
-   const handleFocus = () => {
-     setIsFocused(true);
-   };
-
   return (
     <>
       <>
         {editing ? (
           <div className="">
             <input
-              className={`w-3/4 text-sm `}
+              ref={inputRef}
+              className={`w-3/4 text-sm ${!onfocus ? "hidden" : ""}`}
               type="text"
-              onBlur={handleBlur}
-              onFocus={handleFocus}
-              value={isFocused ? currentValue : ""}
-              placeholder={eValue}
+              onBlur={() => setonFocus(false)}
+              value={currentValue}
               onChange={handleChange}
               pattern="[0-9+*\/()\-.]*"
             />
+            <div
+              className={`w-3/4 bg-slate-100 ${onfocus ? "hidden" : ""}`}
+              onClick={() => setonFocus(true)}
+            >
+              {doCalulation(currentValue)}
+            </div>
           </div>
         ) : (
           <div
