@@ -27,6 +27,7 @@ import Tab from "@mui/material/Tab";
 import { useGetCurrentUserInfo } from "../components/hooks/userGetUserFoods";
 import SearchSavedFood from "../components/add-saved";
 import SearchSelect from "../components/search-select";
+import { observer } from "mobx-react";
 
 const MainPage = () => {
   const { date } = useParams<{ date: string }>();
@@ -111,4 +112,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default observer(MainPage);

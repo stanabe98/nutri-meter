@@ -4,6 +4,7 @@ import {
   observable,
   runInAction,
   reaction,
+  computed,
 } from "mobx";
 
 class MacroInputStore {
@@ -29,15 +30,25 @@ class MacroInputStore {
     makeObservable(this);
 
     reaction(
-      () =>
-        Number(this.evalcarbs) * 4 +
-        Number(this.evalprotein) * 4 +
-        Number(this.evalfats) * 9, // The expression to observe
-      (sum) => {
-        if (sum > Number(this.evalcalories)) {
-          const val = Math.round(sum);
-          this.evalcalories = val.toString();
-          this.calories = val.toString();
+      () => ({
+        car: this.evalcarbs,
+        pro: this.evalprotein,
+        fat: this.evalfats,
+      }),
+      ({ car, pro, fat }) => {
+        const carbsTot = isNaN(Number(car)) ? 0 : Number(car) * 4;
+        const protsTot = isNaN(Number(pro)) ? 0 : Number(pro) * 4;
+        const fatsTot = isNaN(Number(fat)) ? 0 : Number(fat) * 9;
+        const calTot = isNaN(Number(this.evalcalories))
+          ? 0
+          : Number(this.evalcalories);
+
+        const total = carbsTot + protsTot + fatsTot;
+
+        const rounded = Math.round(total);
+        if (rounded > calTot) {
+          this.evalcalories = rounded.toString();
+          this.calories = rounded.toString();
         }
       }
     );
@@ -85,6 +96,27 @@ class MacroInputStore {
     this.evalcarbs = "";
     this.evalfats = "";
   };
+
+  @computed get totalMacroCount() {
+    const carbsTot = isNaN(Number(this.evalcarbs))
+      ? 0
+      : Number(this.evalcarbs) * 4;
+    const protsTot = isNaN(Number(this.evalprotein))
+      ? 0
+      : Number(this.evalprotein) * 4;
+    const fatsTot = isNaN(Number(this.evalfats))
+      ? 0
+      : Number(this.evalfats) * 9;
+    return Math.round(carbsTot + protsTot + fatsTot);
+  }
+
+  @computed get totalCalorieCount() {
+    const calTot = isNaN(Number(this.evalcalories))
+      ? 0
+      : Number(this.evalcalories);
+
+    return calTot;
+  }
 }
 
 const FoodInputStore = new MacroInputStore();

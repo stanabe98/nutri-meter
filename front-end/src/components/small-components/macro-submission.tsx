@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { observer } from "mobx-react";
 import CustomInput from "../custom-components/custom-input";
 import { postConfig } from "../helpers";
 import axios from "axios";
@@ -16,7 +17,7 @@ const MacroSubmissionForm: React.FC<{
   const { user } = useAuthContext();
   const [meal, setMeal] = useState("");
   const [name, setName] = useState("");
-  
+
   const [protein, setProtein] = useState("");
   const [evalprotein, setEvalProtein] = useState("");
 
@@ -30,7 +31,7 @@ const MacroSubmissionForm: React.FC<{
   const [evalcalories, setEvalCalories] = useState("");
 
   const [isError, setisError] = useState(false);
-  
+
   const [messageApi, contextHolder] = message.useMessage();
 
   const errorMessage = (message = "") => {
@@ -54,13 +55,16 @@ const MacroSubmissionForm: React.FC<{
 
     if (user) {
       const foodData: FoodInfo = {
-        calories: calories,
+        calories: FoodInputStore.calories,
       };
       if (name.trim() !== "") foodData.name = name;
       if (meal.trim() !== "") foodData.meal = meal;
-      if (fats.trim() !== "") foodData.fats = fats;
-      if (carbs.trim() !== "") foodData.carbs = carbs;
-      if (protein.trim() !== "") foodData.protein = protein;
+      if (FoodInputStore.fats.trim() !== "")
+        foodData.fats = FoodInputStore.fats;
+      if (FoodInputStore.carbs.trim() !== "")
+        foodData.carbs = FoodInputStore.carbs;
+      if (FoodInputStore.protein.trim() !== "")
+        foodData.protein = FoodInputStore.protein;
 
       try {
         const postFood = await axios.post(
@@ -71,7 +75,7 @@ const MacroSubmissionForm: React.FC<{
         refetch();
 
         setProtein("");
-        setEvalProtein("")
+        setEvalProtein("");
         setMeal("");
         setName("");
         setFats("");
@@ -117,45 +121,45 @@ const MacroSubmissionForm: React.FC<{
         type="text"
       />
       <InputCalculator
-        value={calories}
-        evalue={evalcalories}
+        value={FoodInputStore.calories}
+        evalue={FoodInputStore.evalcalories}
         className="w-16"
         label="Calories"
         cbError={(state) => setisError(state)}
-        cb={(state) => setCalories(state)}
-        cbEval={(state) => setEvalCalories(state)}
+        cb={(state) => FoodInputStore.setCalories(state)}
+        cbEval={(state) => FoodInputStore.setEvalCalories(state)}
       />
 
       <InputCalculator
         className="w-16"
-        value={carbs}
-        evalue={evalcarbs}
+        value={FoodInputStore.carbs}
+        evalue={FoodInputStore.evalcarbs}
         label="Carbs"
         cbError={(state) => setisError(state)}
-        cb={(state) => setCarbs(state)}
-        cbEval={(state) => setEvalCarbs(state)}
+        cb={(state) => FoodInputStore.setCarbs(state)}
+        cbEval={(state) => FoodInputStore.setEvalCarbs(state)}
       />
       <InputCalculator
-        value={fats}
-        evalue={evalfats}
+        value={FoodInputStore.fats}
+        evalue={FoodInputStore.evalfats}
         className="w-16"
         label="Fats"
         cbError={(state) => setisError(state)}
-        cb={(state) => setFats(state)}
-        cbEval={(state) => setEvalFats(state)}
+        cb={(state) => FoodInputStore.setFats(state)}
+        cbEval={(state) => FoodInputStore.setEvalFats(state)}
       />
       <InputCalculator
-        value={protein}
-        evalue={evalprotein}
+        value={FoodInputStore.protein}
+        evalue={FoodInputStore.evalprotein}
         className="w-16"
         label="Protein"
         cbError={(state) => setisError(state)}
-        cb={(state) => setProtein(state)}
-        cbEval={(state) => setEvalProtein(state)}
+        cb={(state) => FoodInputStore.setProtein(state)}
+        cbEval={(state) => FoodInputStore.setEvalProtein(state)}
       />
 
       <button
-        disabled={calories.trim() === "" || isError}
+        disabled={FoodInputStore.calories.trim() === "" || isError}
         onClick={() => {
           submitFoodLog();
         }}
@@ -166,4 +170,4 @@ const MacroSubmissionForm: React.FC<{
   );
 };
 
-export default MacroSubmissionForm;
+export default observer(MacroSubmissionForm);
