@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./input-calculator.css";
 
 const InputCalculator: React.FC<{
   cb: (state: string) => any;
@@ -19,6 +20,33 @@ const InputCalculator: React.FC<{
       let result = filteredValue;
       try {
         result = eval(filteredValue);
+        console.log("result", result);
+        if (
+          label.toLocaleLowerCase() === "carbs" ||
+          label.toLocaleLowerCase() === "protein"
+        ) {
+          if (Number(result > 1000)) {
+            result = "1000";
+            cb(result);
+          }
+        }
+        if (
+          label.toLocaleLowerCase() === "fats"
+        ) {
+          if (Number(result > 222)) {
+            result = "222";
+            cb(result);
+          }
+        }
+        if (
+          label.toLocaleLowerCase() === "calories" &&
+          result.toString().length > 4
+        ) {
+          console.log("yess");
+          result = "9999";
+          cb(result);
+        }
+
         cbError(false);
       } catch (error) {
         cbError(true);
@@ -36,18 +64,20 @@ const InputCalculator: React.FC<{
   };
 
   return (
-    <div className="">
+    <div>
       <span>{label}</span>
-      <input
-        className={` text-sm ${className} `}
-        type="text"
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-        value={isFocused ? value : ""}
-        placeholder={evalue}
-        onChange={handleChange}
-        pattern="[0-9+*\/()\-.]*"
-      />
+      <div className="custom-inputLoginDiv">
+        <input
+          className={`custom-inputLogin text-sm rounded-md ${className} `}
+          type="text"
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          value={isFocused ? value : ""}
+          placeholder={evalue}
+          onChange={handleChange}
+          pattern="[0-9+*\/()\-.]*"
+        />
+      </div>
     </div>
   );
 };

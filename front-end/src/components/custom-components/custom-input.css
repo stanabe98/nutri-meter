@@ -1,0 +1,10 @@
+.custom-input {
+  background-color: var(--input-colour);
+  outline: none;
+  border: 1px solid transparent;
+}
+
+.custom-input:hover,
+.custom-input:focus {
+  border-color: var(--header-colour);
+}

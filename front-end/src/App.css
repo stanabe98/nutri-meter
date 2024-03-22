@@ -9,9 +9,18 @@
   height: 40vmin;
   pointer-events: none;
 }
+.header {
+  background-color: rgb(141, 232, 244);
+}
 
 :root {
   --header-colour: #1fa1af;
-  --header-colour2:#aedadf;
+  --header-colour2: #aedadf;
+  --input-colour: #b3cbcefc;
+  --selected-hover: #c3cccd;
+  --selected-option: #839395;
+  --button-colour: #1a8b97;
+  --button-hover: #3e9099;
+
 
 }

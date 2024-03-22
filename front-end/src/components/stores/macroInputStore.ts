@@ -36,19 +36,19 @@ class MacroInputStore {
         fat: this.evalfats,
       }),
       ({ car, pro, fat }) => {
-        const carbsTot = isNaN(Number(car)) ? 0 : Number(car) * 4;
-        const protsTot = isNaN(Number(pro)) ? 0 : Number(pro) * 4;
-        const fatsTot = isNaN(Number(fat)) ? 0 : Number(fat) * 9;
-        const calTot = isNaN(Number(this.evalcalories))
-          ? 0
-          : Number(this.evalcalories);
+        // const carbsTot = isNaN(Number(car)) ? 0 : Number(car) * 4;
+        // const protsTot = isNaN(Number(pro)) ? 0 : Number(pro) * 4;
+        // const fatsTot = isNaN(Number(fat)) ? 0 : Number(fat) * 9;
+        // const calTot = isNaN(Number(this.evalcalories))
+        //   ? 0
+        //   : Number(this.evalcalories);
 
-        const total = carbsTot + protsTot + fatsTot;
+        // const total = carbsTot + protsTot + fatsTot;
 
-        const rounded = Math.round(total);
-        if (rounded > calTot) {
-          this.evalcalories = rounded.toString();
-          this.calories = rounded.toString();
+        // const rounded = Math.round(total);
+        if (this.totalMacroCount > this.totalCalorieCount) {
+          this.evalcalories = this.totalMacroCount.toString();
+          this.calories = this.totalMacroCount.toString();
         }
       }
     );

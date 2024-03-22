@@ -1,0 +1,13 @@
+input {
+  background-color: var(--input-colour);
+}
+
+.custom-inputLogin {
+  outline: none;
+  border: 2px solid transparent;
+}
+.custom-inputLogin:hover,
+.custom-inputLogin:focus {
+  border-color: var(--header-colour)
+}
+

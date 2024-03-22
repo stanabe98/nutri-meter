@@ -46,9 +46,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [navigate]);
 
-  // useEffect(() => {
-  //   console.log("User updated:", user);
-  // }, [user]);
+
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}

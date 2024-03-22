@@ -2,6 +2,31 @@
   display: none !important;
 }
 
-.MuiOutlinedInput-notchedOutline{
-    display: none !important;
+.MuiOutlinedInput-notchedOutline {
+  display: none !important;
+}
+
+/* .select-meal{
+  background-color: var(--input-colour);
+} */
+
+.ant-select-outlined > div {
+  background-color: var(--input-colour) !important;
+  border-color: transparent !important;
+  outline: none !important;
+}
+
+
+.ant-select-outlined > div:hover {
+  border-color: var(--header-colour) !important;
+}
+
+
+.ant-select-item-option:hover {
+    /* Your custom hover styles here */
+    background-color: var(--selected-hover) !important
+}
+
+.ant-select-item-option-selected{
+    background-color: var(--selected-option) !important
 }

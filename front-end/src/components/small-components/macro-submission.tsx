@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { observer } from "mobx-react";
 import CustomInput from "../custom-components/custom-input";
+import Button from "@mui/material/Button";
 import { postConfig } from "../helpers";
 import axios from "axios";
 import { useAuthContext } from "../../context/AuthContext";
@@ -9,6 +10,7 @@ import FoodInputStore from "../stores/macroInputStore";
 import { FoodInfo } from "../data/data-types";
 import { message, Select } from "antd";
 import InputCalculator from "../custom-components/input-calculator";
+import "./styles.css";
 
 const MacroSubmissionForm: React.FC<{
   refetch: any;
@@ -17,19 +19,6 @@ const MacroSubmissionForm: React.FC<{
   const { user } = useAuthContext();
   const [meal, setMeal] = useState("");
   const [name, setName] = useState("");
-
-  const [protein, setProtein] = useState("");
-  const [evalprotein, setEvalProtein] = useState("");
-
-  const [fats, setFats] = useState("");
-  const [evalfats, setEvalFats] = useState("");
-
-  const [carbs, setCarbs] = useState("");
-  const [evalcarbs, setEvalCarbs] = useState("");
-
-  const [calories, setCalories] = useState("");
-  const [evalcalories, setEvalCalories] = useState("");
-
   const [isError, setisError] = useState(false);
 
   const [messageApi, contextHolder] = message.useMessage();
@@ -49,13 +38,19 @@ const MacroSubmissionForm: React.FC<{
   const submitFoodLog = async () => {
     const url = "/api/foodlog";
 
-    if (calories.trim() === "") {
+    if (FoodInputStore.calories.trim() === "") {
       errorMessage("Must enter calories");
     }
 
     if (user) {
+      let calorieSubmission = FoodInputStore.calories;
+      if (FoodInputStore.totalMacroCount > FoodInputStore.totalCalorieCount) {
+        calorieSubmission = FoodInputStore.totalMacroCount.toString();
+        FoodInputStore.setCalories(calorieSubmission);
+        FoodInputStore.setEvalCalories(calorieSubmission);
+      }
       const foodData: FoodInfo = {
-        calories: FoodInputStore.calories,
+        calories: calorieSubmission,
       };
       if (name.trim() !== "") foodData.name = name;
       if (meal.trim() !== "") foodData.meal = meal;
@@ -73,17 +68,10 @@ const MacroSubmissionForm: React.FC<{
           postConfig(user)
         );
         refetch();
+        FoodInputStore.resetMacros();
 
-        setProtein("");
-        setEvalProtein("");
         setMeal("");
         setName("");
-        setFats("");
-        setEvalFats("");
-        setEvalCarbs("");
-        setCarbs("");
-        setEvalCalories("");
-        setCalories("");
       } catch (error) {
         errorMessage("Unable to add entry");
         console.log(error);
@@ -94,32 +82,42 @@ const MacroSubmissionForm: React.FC<{
   };
 
   return (
-    <div className="flex gap-1">
-      <Select
-        value={meal}
-        style={{ width: 120 }}
-        onChange={handleChange}
-        options={[
-          {
-            value: "Breakfast",
-            label: "Breakfast",
-          },
-          {
-            value: "Lunch",
-            label: "Lunch",
-          },
-          {
-            value: "Dinner",
-            label: "Dinner",
-          },
-        ]}
-      />
-      <CustomInput
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
-        type="text"
-      />
+    <div className="flex gap-1 items-center">
+      <div style={{ width: "12%" }} className="ml-8">
+        <span className="block">Meal</span>
+
+        <Select
+          className="select-meal"
+          value={meal}
+          style={{ width: "100%" }}
+          onChange={handleChange}
+          options={[
+            {
+              value: "Breakfast",
+              label: "Breakfast",
+            },
+            {
+              value: "Lunch",
+              label: "Lunch",
+            },
+            {
+              value: "Dinner",
+              label: "Dinner",
+            },
+          ]}
+        />
+      </div>
+      <div style={{ width: "27%" }}>
+        <span>Name</span>
+        <div>
+          <CustomInput
+            maxLength={30}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            type="text"
+          />
+        </div>
+      </div>
       <InputCalculator
         value={FoodInputStore.calories}
         evalue={FoodInputStore.evalcalories}
@@ -158,14 +156,22 @@ const MacroSubmissionForm: React.FC<{
         cbEval={(state) => FoodInputStore.setEvalProtein(state)}
       />
 
-      <button
+      <Button
+        className="h-2/4"
+        variant="contained"
+        sx={{
+          backgroundColor: 'var(--button-colour)',
+          "&:hover": {
+            backgroundColor: 'var(--button-hover)', // Change color on hover
+          },
+        }}
         disabled={FoodInputStore.calories.trim() === "" || isError}
         onClick={() => {
           submitFoodLog();
         }}
       >
         Add
-      </button>
+      </Button>
     </div>
   );
 };

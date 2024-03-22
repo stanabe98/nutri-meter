@@ -1,4 +1,5 @@
 import React from "react";
+import "./custom-input.css";
 
 interface InputProps {
   placeholder?: string;
@@ -6,8 +7,9 @@ interface InputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onKeyDown?: () => {};
   moreStyles?: string;
-  type?: string
-  pattern?:string
+  type?: string;
+  pattern?: string;
+  [key: string]: any;
 }
 
 const CustomInput: React.FC<InputProps> = ({
@@ -17,22 +19,22 @@ const CustomInput: React.FC<InputProps> = ({
   onKeyDown,
   moreStyles,
   type,
-  pattern
+  pattern,
+  ...rest
 }) => {
   return (
-    <div
-      className={`flex items-center bg-slate-700 rounded-md custom-inputLogindiv border border-black ${moreStyles}`}
-    >
+    <>
       <input
         placeholder={placeholder}
         value={value}
         type={type}
-        className="w-full bg-slate-700  pl-2 py-2 w-full rounded-md mr-1 text-white text-sm"
+        className="custom-input w-full pl-2 py-[2px]  rounded-md text-sm"
         onChange={onChange}
         onKeyDown={onKeyDown}
         pattern={pattern}
+        {...rest}
       />
-    </div>
+    </>
   );
 };
 
