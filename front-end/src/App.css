@@ -27,6 +27,7 @@
   --table-height: calc(100vh - 510px);
   --table-height2: calc(100vh - (40px+364px+48px +12px +8px));
   --app-header:#b4cfe0;
+  --border-colour: #9ca3af;
 }
 
 @media screen and (max-width: 1000px) {

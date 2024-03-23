@@ -83,8 +83,11 @@ const MacroSubmissionForm: React.FC<{
 
   return (
     <div className="flex gap-1 items-center">
-      <div style={{ width: "12%" }} className="ml-8">
-        <span className="block text-sm text-center">Meal</span>
+      <div
+        // style={{ width: "15%" }}
+        className="ml-2 meal-form"
+      >
+        <span className="block text-md text-center font-semibold">Meal</span>
 
         <Select
           className="select-meal h-8 drop-shadow-md"
@@ -107,8 +110,11 @@ const MacroSubmissionForm: React.FC<{
           ]}
         />
       </div>
-      <div className=" text-center" style={{ width: "27%" }}>
-        <span className="text-sm ">Name</span>
+      <div
+        className="food-name-form text-center"
+        //  style={{ width: "35%" }}
+      >
+        <span className="text-md font-semibold ">Name</span>
         <div>
           <CustomInput
             maxLength={30}
@@ -120,9 +126,10 @@ const MacroSubmissionForm: React.FC<{
         </div>
       </div>
       <InputCalculator
+
         value={FoodInputStore.calories}
         evalue={FoodInputStore.evalcalories}
-        className="w-16 h-8"
+        className=" h-8"
         label="Calories"
         cbError={(state) => setisError(state)}
         cb={(state) => FoodInputStore.setCalories(state)}
@@ -130,6 +137,7 @@ const MacroSubmissionForm: React.FC<{
       />
 
       <InputCalculator
+
         className="w-16 h-8"
         value={FoodInputStore.carbs}
         evalue={FoodInputStore.evalcarbs}
@@ -139,6 +147,7 @@ const MacroSubmissionForm: React.FC<{
         cbEval={(state) => FoodInputStore.setEvalCarbs(state)}
       />
       <InputCalculator
+    
         value={FoodInputStore.fats}
         evalue={FoodInputStore.evalfats}
         className="w-16 h-8"
@@ -148,6 +157,7 @@ const MacroSubmissionForm: React.FC<{
         cbEval={(state) => FoodInputStore.setEvalFats(state)}
       />
       <InputCalculator
+      
         value={FoodInputStore.protein}
         evalue={FoodInputStore.evalprotein}
         className="w-16 h-8"

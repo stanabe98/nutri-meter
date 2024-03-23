@@ -189,11 +189,11 @@ const FoodLogView: React.FC<{
   return (
     <>
       {!loading ? (
-        <div className="ml-2 overflow-y-scroll calorie-table-div px-1  rounded-md ">
+        <div className="ml-2 overflow-y-scroll calorie-table-div pl-1  rounded-md mb-2 drop-shadow-md ">
           <table className="w-full calorie-table  ">
             <thead className="  ">
               <tr className="drop-shadow-lg">
-                <th className="sticky-table-header border-r food-name-header border-black">
+                <th className="sticky-table-header border-r food-name-header border-gray-400">
                   -
                 </th>
                 <th className=" sticky-table-header text-sm macro-header">
@@ -219,7 +219,7 @@ const FoodLogView: React.FC<{
                       className={`text-md p-0 ${timePeriod}-header`}
                       colSpan={6}
                     >
-                      <div className="flex justify-center p-1 -mt-[1px]  border-y border-black  items-center">
+                      <div className="flex justify-center p-1 -mt-[1px]   border-y border-gray-400   items-center">
                         {timePeriod}
                         {renderIcon[timePeriod]}
                       </div>
@@ -234,7 +234,7 @@ const FoodLogView: React.FC<{
                           data-key={foodItem._id}
                         >
                           <td
-                            className={`food-names border-r border-black ${
+                            className={`food-names border-r border-gray-400 ${
                               index === groupedData[timePeriod].length - 1
                                 ? "border-b"
                                 : ""
@@ -264,7 +264,7 @@ const FoodLogView: React.FC<{
                           <td
                             className={`${
                               index === groupedData[timePeriod].length - 1
-                                ? "border-b border-black"
+                                ? "border-b border-gray-400"
                                 : ""
                             }`}
                           >
@@ -290,7 +290,7 @@ const FoodLogView: React.FC<{
                           <td
                             className={`${
                               index === groupedData[timePeriod].length - 1
-                                ? "border-b border-black"
+                                ? "border-b border-gray-400"
                                 : ""
                             }`}
                           >
@@ -317,7 +317,7 @@ const FoodLogView: React.FC<{
                           <td
                             className={`${
                               index === groupedData[timePeriod].length - 1
-                                ? "border-b border-black"
+                                ? "border-b border-gray-400"
                                 : ""
                             }`}
                           >
@@ -343,7 +343,7 @@ const FoodLogView: React.FC<{
                           <td
                             className={`${
                               index === groupedData[timePeriod].length - 1
-                                ? "border-b border-black"
+                                ? "border-b border-gray-400"
                                 : ""
                             }`}
                           >
@@ -371,7 +371,7 @@ const FoodLogView: React.FC<{
                               <td
                                 className={`${
                                   index === groupedData[timePeriod].length - 1
-                                    ? "border-b border-black"
+                                    ? "border-b border-gray-400"
                                     : ""
                                 }`}
                               >
@@ -426,7 +426,7 @@ const FoodLogView: React.FC<{
                             <td
                               className={`${
                                 index === groupedData[timePeriod].length - 1
-                                  ? "border-b border-black"
+                                  ? "border-b border-gray-400"
                                   : ""
                               }`}
                             >
@@ -457,39 +457,46 @@ const FoodLogView: React.FC<{
                         </tr>
                       ))
                     : null}
-                  <tr className="">
+                  <tr className={`${timePeriod}-subtotal drop-shadow-md `}>
                     <td
-                      className="text-gray-500 
-                   p-0
-                    text-xs text-center"
+                      className={`text-gray-500  ${timePeriod}-subtotal p-0 drop-shadow-md
+                    text-xs text-center`}
                     >
-                      <div className={` ${timePeriod}-div border-t   `}>
-                        sub-totals
-                      </div>
+                      <div className={`  border-t   `}>sub-totals</div>
                     </td>
-                    <td className="text-center text-gray-500 text-xs ">
-                      <div className={` ${timePeriod}-div border-t    `}>
+                    <td
+                      className={`text-gray-500  ${timePeriod}-subtotal text-xs text-center`}
+                    >
+                      <div className={` ${timePeriod}-div    `}>
                         {groupedData
                           ? calculateTotals(groupedData[timePeriod]).calories
                           : 0}
                       </div>
                     </td>
-                    <td className="text-center text-gray-500 text-xs">
+                    <td
+                      className={`text-gray-500  ${timePeriod}-subtotal text-xs text-center`}
+                    >
                       {groupedData
                         ? calculateTotals(groupedData[timePeriod]).carbs
                         : 0}
                     </td>
-                    <td className="text-center text-gray-500 text-xs ">
+                    <td
+                      className={`text-gray-500  ${timePeriod}-subtotal text-xs text-center`}
+                    >
                       {groupedData
                         ? calculateTotals(groupedData[timePeriod]).fats
                         : 0}
                     </td>
-                    <td className="text-center text-gray-500 text-xs ">
+                    <td
+                      className={`text-gray-500  ${timePeriod}-subtotal text-xs text-center`}
+                    >
                       {groupedData
                         ? calculateTotals(groupedData[timePeriod]).protein
                         : 0}
                     </td>
-                    <td className="text-center text-gray-500 text-xs "></td>
+                    <td
+                      className={`text-gray-500  ${timePeriod}-subtotal text-xs text-center`}
+                    ></td>
                   </tr>
                 </React.Fragment>
               ))}
