@@ -11,32 +11,42 @@ td {
   text-align: center;
 }
 
-th:not(:last-child) {
-  width: 12%;
+.food-name-header {
+  width: 55%;
 }
 
-th:first-child {
-  width: 42%;
+.macro-header {
+  width: 9%;
 }
 
-th:last-child {
-  width: 10%;
+.edit-header {
 }
+
+@media screen and (min-width: 1650px) {
+  .food-name-header {
+    width: 65%;
+  }
+
+  .macro-header {
+    width: 7%;
+  }
+}
+/* 
+@media screen and (max-width: 800px) {
+  .food-name-header {
+    width: 65%;
+  }
+
+  .macro-header {
+    width: 7%;
+  }
+} */
 
 thead th {
   position: sticky;
   top: 0;
   background-color: var(--header-colour);
   z-index: 1;
-}
-
-.nutrition-detail {
-  /* background-color: #81aeb4; */
-}
-
-.Snacks-div,
-.Breakfast-div {
-  /* margin-top: -7px; */
 }
 
 .sticky-table-header {
@@ -61,6 +71,11 @@ thead th {
   background-color: #abd4d9;
 }
 
-.calorie-table-div{
+.calorie-table-div {
   height: 60vh;
+  background-color: var(--table-bg);
+}
+
+.tab-panel {
+  background: linear-gradient(to bottom, var(--app-bg), var(--app-header));
 }

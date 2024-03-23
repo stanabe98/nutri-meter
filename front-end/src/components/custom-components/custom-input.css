@@ -4,8 +4,16 @@
   border: 1px solid transparent;
 }
 
+.adjust-input {
+  background-color: var(--input-colour);
+  outline: none;
+  border-bottom: 1px solid transparent;
+}
+
 .custom-input:hover,
-.custom-input:focus {
+.custom-input:focus,
+.adjust-input:hover,
+.adjust-input:focus {
   border-color: var(--header-colour);
 }
 
@@ -60,7 +68,8 @@
   background-color: var(--header-colour);
 }
 
-.result-description, .result-name{
+.result-description,
+.result-name {
   height: 40px;
 }
 
@@ -104,9 +113,10 @@
   }
 }
 
-
-.food-search-table{
-  height:var(--table-height);
-  overflow: hidden;
+.food-search-table {
+  height: var(--table-height);
+  background-color: var(--table-bg);
   overflow-y: scroll;
+  border: 1px solid rgb(116, 115, 115);
+  border-radius: 10px;
 }

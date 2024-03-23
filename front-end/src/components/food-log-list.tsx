@@ -19,7 +19,6 @@ import {
   IconMeat,
   IconEggFried,
   IconCookie,
-  IconToolsKitchen2,
   IconToolsKitchen3,
 } from "@tabler/icons-react";
 import { OptionalCaloriesFoodInfo } from "./hooks/useGetUserInfo";
@@ -190,16 +189,26 @@ const FoodLogView: React.FC<{
   return (
     <>
       {!loading ? (
-        <div className="mx-8 overflow-y-scroll calorie-table-div px-1 border  rounded-md border-black">
-          <table className="w-full calorie-table  bg-slate-200 ">
+        <div className="ml-2 overflow-y-scroll calorie-table-div px-1  rounded-md ">
+          <table className="w-full calorie-table  ">
             <thead className="  ">
-              <tr className="bg-lime-400">
-                <th className="sticky-table-header border-r border-black">-</th>
-                <th className=" sticky-table-header text-sm">Calories</th>
-                <th className="sticky-table-header text-sm">Carbs</th>
-                <th className="sticky-table-header text-sm">Fats</th>
-                <th className=" sticky-table-header text-sm ">Protein</th>
-                <th className=" sticky-table-header">-</th>
+              <tr className="drop-shadow-lg">
+                <th className="sticky-table-header border-r food-name-header border-black">
+                  -
+                </th>
+                <th className=" sticky-table-header text-sm macro-header">
+                  Calories
+                </th>
+                <th className="sticky-table-header text-sm macro-header">
+                  Carbs
+                </th>
+                <th className="sticky-table-header text-sm macro-header">
+                  Fats
+                </th>
+                <th className=" sticky-table-header text-sm macro-header ">
+                  Protein
+                </th>
+                <th className=" sticky-table-header edit-header">-</th>
               </tr>
             </thead>
             <tbody className="main-body p-0">

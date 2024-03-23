@@ -4,10 +4,9 @@ input {
 
 .custom-inputLogin {
   outline: none;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
 }
 .custom-inputLogin:hover,
 .custom-inputLogin:focus {
-  border-color: var(--header-colour)
+  border-color: var(--header-colour);
 }
-

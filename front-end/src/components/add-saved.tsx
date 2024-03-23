@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { CustomFoods } from "./data/data-types";
+import { Divider } from "@mui/material";
 import SavedFoodItem from "./small-components/saved-food-item";
 import SelectedItem from "./small-components/selected-food-item";
 import { Search } from "@mui/icons-material";
-import "./custom-components/custom-input.css"
+import "./custom-components/custom-input.css";
 const SearchSavedFood: React.FC<{
   data: CustomFoods[] | null;
   submissionDate: string;
@@ -37,12 +38,12 @@ const SearchSavedFood: React.FC<{
     filterElements(search);
   };
 
-  const handleKeyDown=(e:React.KeyboardEvent<HTMLInputElement>)=>{
-     if (e.key === "Enter") {
-       e.preventDefault();
-       filterElements(search)
-     }
-  }
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      filterElements(search);
+    }
+  };
 
   useEffect(() => {
     filterElements(search);
@@ -50,27 +51,30 @@ const SearchSavedFood: React.FC<{
 
   return (
     <div>
-      <div className="flex my-1">
-        <input
-          className="custom-input pl-2 rounded-md "
-          style={{ display: "inline" }}
-          placeholder="Search saved foods"
-          onChange={handleSearchChange}
-          onKeyDown={handleKeyDown}
-        />
-        <div onClick={searchClick} className="cursor-pointer ">
-          <Search />
+      <div className="flex justify-center">
+        <div className="flex my-1">
+          <input
+            className="custom-input pl-2 rounded-md drop-shadow-sm"
+            style={{ display: "inline" }}
+            placeholder="Search saved foods"
+            onChange={handleSearchChange}
+            onKeyDown={handleKeyDown}
+          />
+          <div onClick={searchClick} className="cursor-pointer ">
+            <Search />
+          </div>
         </div>
       </div>
-      <div className="food-search-table  ">
+
+      <div className="">
         {!searchClose ? (
-          <>
+          <div className="food-search-table overflow-y-scroll">
             <div
               style={{ backgroundColor: "#1fa1af" }}
-              className="flex sticky top-0"
+              className="flex sticky top-0 drop-shadow-lg"
             >
-              <div className="w-32 name-div">Name</div>
-              <div className="w-16 amount-div">Amount</div>
+              <div className=" name-div">Name</div>
+              <div className=" amount-div">Amount</div>
               <div className="w-16 serving-div">Serving</div>
               <div className="w-16 macro-div">Calories</div>
               <div className="w-16 macro-div">Protein</div>
@@ -79,15 +83,18 @@ const SearchSavedFood: React.FC<{
             </div>
             {data &&
               filterdItems.map((element) => (
-                <SavedFoodItem
-                  onClick={() => {
-                    setSelectedFood(element);
-                    setSearchClose(true);
-                  }}
-                  item={element}
-                />
+                <>
+                  <SavedFoodItem
+                    onClick={() => {
+                      setSelectedFood(element);
+                      setSearchClose(true);
+                    }}
+                    item={element}
+                  />
+                  <Divider />
+                </>
               ))}
-          </>
+          </div>
         ) : (
           <>
             {selectedFood && (

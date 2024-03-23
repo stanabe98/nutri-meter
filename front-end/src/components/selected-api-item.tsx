@@ -149,7 +149,7 @@ const SelectedApiItem: React.FC<{
         />
         <span>{selectedCurrentData?.serving_description.split(" ")[1]}</span>
       </div>
-      <button onClick={submitFoodtoEntry}>Add to diary</button>
+      <button onClick={submitFoodtoEntry}>ADD</button>
     </div>
   );
 };

@@ -87,7 +87,7 @@ const MacroSubmissionForm: React.FC<{
         <span className="block text-sm text-center">Meal</span>
 
         <Select
-          className="select-meal h-8"
+          className="select-meal h-8 drop-shadow-md"
           value={meal}
           style={{ width: "100%" }}
           onChange={handleChange}
@@ -112,7 +112,7 @@ const MacroSubmissionForm: React.FC<{
         <div>
           <CustomInput
             maxLength={30}
-            moreStyles="h-8"
+            moreStyles="h-8 drop-shadow-md"
             value={name}
             onChange={(e) => setName(e.target.value)}
             type="text"

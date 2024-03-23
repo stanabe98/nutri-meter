@@ -68,7 +68,7 @@ const InputCalculator: React.FC<{
       <span className="text-center text-sm">{label}</span>
       <div className="custom-inputLoginDiv">
         <input
-          className={`custom-inputLogin text-sm rounded-md ${className} `}
+          className={`custom-inputLogin drop-shadow-md text-sm rounded-md ${className} `}
           type="text"
           onBlur={handleBlur}
           onFocus={handleFocus}

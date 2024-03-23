@@ -3,6 +3,7 @@ import { Tabs, Tab } from "@mui/material";
 import SearchSavedFood from "./add-saved";
 import { CustomFoods } from "./data/data-types";
 import SearchFoodLibrary from "./searchfood-library";
+import "./table.css"
 
 const SearchSelect: React.FC<{
   data: CustomFoods[] | null;
@@ -12,7 +13,7 @@ const SearchSelect: React.FC<{
   const [value, setValue] = useState(0);
   return (
     <div>
-      <div className="flex justify-center w-full border border-black text-center">
+      <div className="flex justify-center w-full tab-panel text-center drop-shadow-md">
         <Tabs
           value={value}
           sx={{
@@ -25,8 +26,12 @@ const SearchSelect: React.FC<{
           }}
           aria-label="basic tabs example"
         >
-          <Tab className="w-64" onClick={() => setValue(0)} label="Saved Foods" />
-          <Tab  className="w-64" onClick={() => setValue(1)} label="Search" />
+          <Tab
+            className="w-64"
+            onClick={() => setValue(0)}
+            label="Saved Foods"
+          />
+          <Tab className="w-64" onClick={() => setValue(1)} label="Search" />
         </Tabs>
       </div>
       {value === 0 ? (

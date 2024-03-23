@@ -66,21 +66,23 @@ const SearchFoodLibrary: React.FC<{ submissionDate: string; refetch: any }> = ({
   return (
     <div>
       <div className="flex my-1">
-        <input
-          className="custom-input pl-2 rounded-md "
-          value={query}
-          onKeyDown={handleKeyDown}
-          placeholder="search database"
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <div onClick={submitSearch} className="cursor-pointer ">
-          <Search />
+        <div className="flex w-full justify-center">
+          <input
+            className="custom-input pl-2 rounded-md "
+            value={query}
+            onKeyDown={handleKeyDown}
+            placeholder="search database"
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <div onClick={submitSearch} className="cursor-pointer ">
+            <Search />
+          </div>
         </div>
       </div>
 
       {selectedFoodId === "" ? (
-        <>
-          <div className="flex  food-list-header border border-black">
+        <div className="food-search-table overflow-hidden">
+          <div className="flex sticky top-0 food-list-header border border-black">
             <div className="header-name ">
               <span>Name</span>
             </div>
@@ -125,7 +127,7 @@ const SearchFoodLibrary: React.FC<{ submissionDate: string; refetch: any }> = ({
               <Divider />
             </>
           ))}
-        </>
+        </div>
       ) : (
         <>
           <SelectedApiItem

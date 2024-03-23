@@ -26,7 +26,7 @@ const Header: React.FC = ({}) => {
   }, [location]);
 
   return (
-    <div className="header bg-blue-300 h-10 w-full m-auto flex items-center justify-between">
+    <div className="header app-header h-10 w-full m-auto flex items-center justify-between drop-shadow-md">
       <div className="flex">
         <Tabs
           value={value}
@@ -60,7 +60,7 @@ const Header: React.FC = ({}) => {
           />
         </Tabs>
       </div>
-      <span style={{ textAlign: "center" }}>JUST-MACROS</span>
+      <span className="font-bold" style={{ textAlign: "center" }}>JUST-MACROS</span>
       <div
         className="cursor-pointer w-56 text-end"
         onClick={() => navigate("/profile")}

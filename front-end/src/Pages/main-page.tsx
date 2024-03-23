@@ -72,7 +72,7 @@ const MainPage = () => {
 
   return (
     <>
-      <div className="flex gap-10 border border-black main-page">
+      <div className="flex main-page">
         <div className={`w-2/4 main-div   ${showChart ? "main-div-hide" : ""}`}>
           <div className="ml-20 flex items-center">
             <span className="p-4">Food diary for:</span>
@@ -101,7 +101,7 @@ const MainPage = () => {
             showChart ? "secondary-div-show" : ""
           }`}
         >
-          <div className="flex-col flex justify-center items-center border border-black rounded-lg gap-5">
+          <div className="flex-col flex justify-center items-center  rounded-lg gap-5">
             <div
               onClick={() => {
                 setShowChart(false);

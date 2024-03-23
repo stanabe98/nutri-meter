@@ -1,8 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@300&display=swap");
 
 .App {
-  background-color: #f1f5f9;
+  background-color: var(--app-bg);
   height: 100vh;
+  min-width: 650px;
   /* #f0f9ff */
 }
 
@@ -10,12 +11,11 @@
   height: 40vmin;
   pointer-events: none;
 }
-.header {
-  background-color: rgb(141, 232, 244);
-}
+
 
 :root {
   --header-colour: #1fa1af;
+  --app-bg: #f1f5f9;
   --header-colour2: #aedadf;
   --input-colour: #d2e8ecfc;
   --selected-hover: #c3cccd;
@@ -24,10 +24,10 @@
   --button-hover: #3e9099;
   --table-bg: rgb(235, 238, 239);
   --page-height: calc(100vh - 40px);
-  --table-height: calc(100vh - 490px);
+  --table-height: calc(100vh - 510px);
   --table-height2: calc(100vh - (40px+364px+48px +12px +8px));
+  --app-header:#b4cfe0;
 }
-
 
 @media screen and (max-width: 1000px) {
   .secondary-div {
@@ -69,4 +69,8 @@
 .main-page {
   height: var(--page-height);
   overflow: hidden;
+}
+
+.app-header{
+  background-color: var(--app-header);
 }
