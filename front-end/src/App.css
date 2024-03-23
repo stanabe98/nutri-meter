@@ -21,23 +21,22 @@
   --selected-option: #839395;
   --button-colour: #1a8b97;
   --button-hover: #3e9099;
+  --table-bg: rgb(235, 238, 239);
 }
 
 @media screen and (max-width: 1000px) {
   .secondary-div {
     display: none;
+
     transition: width 0.5s ease;
     transition: opacity 0.5s ease;
     opacity: 0;
-
   }
   .main-div {
     width: 100%;
     transition: width 0.5s ease-in;
     transition: opacity 0.5s ease;
     opacity: 1;
-
-
   }
   .secondary-div-show {
     display: block;
@@ -45,15 +44,13 @@
     transition: width 0.5s ease;
     transition: opacity 0.5s ease;
     opacity: 1;
-
-
   }
   .main-div-hide {
-    display: none;
+    width: 0%;
+
     transition: width 0.5s ease;
     opacity: 0;
     transition: opacity 0.5s ease;
-
   }
   .arrow-div {
     display: inline !important ;

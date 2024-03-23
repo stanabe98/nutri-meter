@@ -110,7 +110,7 @@ const MainPage = () => {
             >
               <EastRounded />
             </div>
-            <div className="p-2 ">
+            <div className="p-0">
               <MacroChart data={queryResult ? queryResult.totalMacros : null} />
             </div>
             <div className="p-2">

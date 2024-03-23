@@ -21,6 +21,10 @@
   border-color: var(--header-colour) !important;
 }
 
+tspan{
+  font-size: 14px;
+  /* font-weight: 100; */
+}
 
 .ant-select-item-option:hover {
     /* Your custom hover styles here */
@@ -29,4 +33,14 @@
 
 .ant-select-item-option-selected{
     background-color: var(--selected-option) !important
+}
+
+
+.tally{
+  background-color: var(--header-colour);
+  border-radius: 2px;
+}
+
+.info-container{
+  background-color: var(--table-bg);
 }

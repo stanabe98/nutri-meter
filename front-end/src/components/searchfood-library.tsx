@@ -7,6 +7,7 @@ import {
   ServingsResult,
 } from "./hooks/useFatSecretApi";
 import SelectedApiItem from "./selected-api-item";
+import "../components/small-components/styles.css"
 
 const SearchFoodLibrary:React.FC<{submissionDate:string, refetch:any}> = ({submissionDate, refetch}) => {
   const [query, setQuery] = useState("");
@@ -33,10 +34,11 @@ const SearchFoodLibrary:React.FC<{submissionDate:string, refetch:any}> = ({submi
 
   return (
     <div>
-      <h3>searchfood-library</h3>
+      
       <input
         className="border border-gray-500 px-1 mx-2"
         value={query}
+        placeholder="search database"
         onChange={(e) => setQuery(e.target.value)}
       />
       <button onClick={submitSearch} disabled={query === ""}>
@@ -49,9 +51,9 @@ const SearchFoodLibrary:React.FC<{submissionDate:string, refetch:any}> = ({submi
               className="flex gap-3 cursor-pointer"
               onClick={() => submitSelectFood(item.food_id)}
             >
-              <span>{item.brand_name}</span>
-              <span>{item.food_description}</span>
+              <span>{item.brand_name?? item.food_type}</span>
               <span>{item.food_name}</span>
+              <span>{item.food_description}</span>
             </div>
           ))}
         </>

@@ -60,7 +60,7 @@ const Header: React.FC = ({}) => {
           />
         </Tabs>
       </div>
-      <span style={{ textAlign: "center" }}>Just-Macros</span>
+      <span style={{ textAlign: "center" }}>JUST-MACROS</span>
       <div
         className="cursor-pointer w-56 text-end"
         onClick={() => navigate("/profile")}

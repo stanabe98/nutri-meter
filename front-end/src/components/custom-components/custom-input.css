@@ -9,11 +9,46 @@
   border-color: var(--header-colour);
 }
 
-
-.food-option{
-    background-color: rgb(235, 238, 239)
+.food-option {
+  background-color: rgb(235, 238, 239);
 }
 
-.food-option:hover{
-    background-color: var(--selected-hover);
+.food-option:hover {
+  background-color: var(--selected-hover);
+}
+
+.name-div {
+  width: 35%;
+  text-align: left;
+  font-size: 14px;
+}
+
+.serving-div {
+  width: 15%;
+  text-align: center;
+  font-size: 14px;
+}
+
+.amount-div {
+  width: 10%;
+  text-align: center;
+  font-size: 14px;
+}
+
+.macro-div {
+  width: 10%;
+  text-align: center;
+  font-size: 14px
+}
+
+@media screen and (max-width:1140px) {
+  .macro-div, .amount-div, .name-div,.serving-div{
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width:1000px) {
+  .macro-div, .amount-div, .name-div,.serving-div{
+    font-size: 14px;
+  }
 }

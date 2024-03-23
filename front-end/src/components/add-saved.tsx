@@ -69,13 +69,13 @@ const SearchSavedFood: React.FC<{
               style={{ backgroundColor: "#1fa1af" }}
               className="flex sticky top-0"
             >
-              <div className="w-32">Name</div>
-              <div className="w-16">Amount</div>
-              <div className="w-16">Serving</div>
-              <div className="w-16">Calories</div>
-              <div className="w-16">Protein</div>
-              <div className="w-16">Carbs</div>
-              <div className="w-16">Fats</div>
+              <div className="w-32 name-div">Name</div>
+              <div className="w-16 amount-div">Amount</div>
+              <div className="w-16 serving-div">Serving</div>
+              <div className="w-16 macro-div">Calories</div>
+              <div className="w-16 macro-div">Protein</div>
+              <div className="w-16 macro-div">Carbs</div>
+              <div className="w-16 macro-div">Fats</div>
             </div>
             {data &&
               filterdItems.map((element) => (

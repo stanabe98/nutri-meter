@@ -17,6 +17,7 @@ export interface FoodItem {
   food_description: string;
   food_id: string;
   food_name: string;
+  food_type: string;
 }
 
 export interface FoodSearchIdResult {
