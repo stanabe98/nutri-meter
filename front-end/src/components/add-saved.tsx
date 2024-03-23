@@ -62,7 +62,7 @@ const SearchSavedFood: React.FC<{
           <Search />
         </div>
       </div>
-      <div className="h-2/5 overflow-y-scroll ">
+      <div className="food-search-table  ">
         {!searchClose ? (
           <>
             <div

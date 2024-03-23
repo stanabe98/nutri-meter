@@ -72,8 +72,8 @@ const MainPage = () => {
 
   return (
     <>
-      <div className="flex gap-10">
-        <div className={`w-2/4 main-div ${showChart ? "main-div-hide" : ""}`}>
+      <div className="flex gap-10 border border-black main-page">
+        <div className={`w-2/4 main-div   ${showChart ? "main-div-hide" : ""}`}>
           <div className="ml-20 flex items-center">
             <span className="p-4">Food diary for:</span>
             <DateSelector date={date ? date : formatCurrentDate()} />

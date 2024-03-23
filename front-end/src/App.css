@@ -2,6 +2,7 @@
 
 .App {
   background-color: #f1f5f9;
+  height: 100vh;
   /* #f0f9ff */
 }
 
@@ -22,7 +23,11 @@
   --button-colour: #1a8b97;
   --button-hover: #3e9099;
   --table-bg: rgb(235, 238, 239);
+  --page-height: calc(100vh - 40px);
+  --table-height: calc(100vh - 490px);
+  --table-height2: calc(100vh - (40px+364px+48px +12px +8px));
 }
+
 
 @media screen and (max-width: 1000px) {
   .secondary-div {
@@ -59,4 +64,9 @@
 
 .arrow-div {
   display: none;
+}
+
+.main-page {
+  height: var(--page-height);
+  overflow: hidden;
 }

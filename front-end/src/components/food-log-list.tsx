@@ -190,7 +190,7 @@ const FoodLogView: React.FC<{
   return (
     <>
       {!loading ? (
-        <div className="mx-8 overflow-y-scroll h-[400px] px-1 border  rounded-md border-black">
+        <div className="mx-8 overflow-y-scroll calorie-table-div px-1 border  rounded-md border-black">
           <table className="w-full calorie-table  bg-slate-200 ">
             <thead className="  ">
               <tr className="bg-lime-400">

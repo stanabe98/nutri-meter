@@ -36,7 +36,7 @@ const Header: React.FC = ({}) => {
             "& button.Mui-selected": { color: "#1fa1af" },
           }}
           TabIndicatorProps={{
-            sx: { backgroundColor: "#1fa1af", height:4 },
+            sx: { backgroundColor: "#1fa1af", height: 4 },
           }}
           // onChange={handleChange}
           className=" text-blue-500"
@@ -101,8 +101,10 @@ function App() {
             path="/user/:date"
             element={
               <>
-                <Header />
-                <MainPage />
+
+                  <Header />
+                  <MainPage />
+            
               </>
             }
           />

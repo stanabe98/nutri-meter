@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Skeleton from "@mui/material/Skeleton";
+import { Divider } from "@mui/material";
 import {
   getAccesstoken,
   getSearchFoodResult,
@@ -7,20 +9,42 @@ import {
   ServingsResult,
 } from "./hooks/useFatSecretApi";
 import SelectedApiItem from "./selected-api-item";
-import "../components/small-components/styles.css"
+import { Search } from "@mui/icons-material";
+import "../components/custom-components/custom-input.css";
 
-const SearchFoodLibrary:React.FC<{submissionDate:string, refetch:any}> = ({submissionDate, refetch}) => {
+const SearchFoodLibrary: React.FC<{ submissionDate: string; refetch: any }> = ({
+  submissionDate,
+  refetch,
+}) => {
   const [query, setQuery] = useState("");
+  const [submittedQuery, setSubmittedQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const [searchData, setSearchData] = useState<FoodItem[] | []>([]);
   const [selectedFoodId, setSelectedFoodId] = useState<string>("");
   const [servingInfo, setServingInfo] = useState<ServingsResult[] | []>([]);
   const [selectedFoodName, setSelectedFoodName] = useState("");
 
   const submitSearch = async () => {
+    if (submittedQuery !== query) {
+      console.log("submitted query", submittedQuery, "current", query);
+      setLoading(true);
+      setSearchData([]);
+    }
     const result = await getSearchFoodResult(query);
+    setSubmittedQuery(query);
     if (result) {
+      setLoading(false);
+      console.log("total number", result.foods.total_results);
+      if (result.foods.total_results === "0") {
+        console.log("exectuing");
+        setSearchData([]);
+
+        return;
+      }
       setSearchData(result.foods.food);
     }
+    setLoading(false);
   };
 
   const submitSelectFood = async (foodId: string) => {
@@ -32,29 +56,74 @@ const SearchFoodLibrary:React.FC<{submissionDate:string, refetch:any}> = ({submi
     setSelectedFoodId(foodId);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      submitSearch();
+    }
+  };
+
   return (
     <div>
-      
-      <input
-        className="border border-gray-500 px-1 mx-2"
-        value={query}
-        placeholder="search database"
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <button onClick={submitSearch} disabled={query === ""}>
-        Search
-      </button>
+      <div className="flex my-1">
+        <input
+          className="custom-input pl-2 rounded-md "
+          value={query}
+          onKeyDown={handleKeyDown}
+          placeholder="search database"
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <div onClick={submitSearch} className="cursor-pointer ">
+          <Search />
+        </div>
+      </div>
+
       {selectedFoodId === "" ? (
         <>
-          {searchData.map((item) => (
-            <div
-              className="flex gap-3 cursor-pointer"
-              onClick={() => submitSelectFood(item.food_id)}
-            >
-              <span>{item.brand_name?? item.food_type}</span>
-              <span>{item.food_name}</span>
-              <span>{item.food_description}</span>
+          <div className="flex  food-list-header border border-black">
+            <div className="header-name ">
+              <span>Name</span>
             </div>
+            <div className="header-description ">
+              <span>Description</span>
+            </div>
+          </div>
+          {loading && (
+            <>
+              {[...Array(12)].map((_) => (
+                <div className="flex  ">
+                  <div className="result-name">
+                    <Skeleton />
+                  </div>
+                  <div className="result-description">
+                    <Skeleton />
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+          {searchData.length == 0 && submittedQuery !== "" && !loading && (
+            <>No results matching query</>
+          )}
+          {searchData.map((item) => (
+            <>
+              <div
+                className="flex gap-3 cursor-pointer food-list-item"
+                onClick={() => submitSelectFood(item.food_id)}
+              >
+                <div className="result-name ">
+                  <span className="food-description">
+                    {`${item.brand_name ?? item.food_type} ${item.food_name}`}
+                  </span>
+                </div>
+                <div className="result-description">
+                  <span className="food-description header-description-skeleton">
+                    {item.food_description}
+                  </span>
+                </div>
+              </div>
+              <Divider />
+            </>
           ))}
         </>
       ) : (

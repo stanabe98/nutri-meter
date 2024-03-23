@@ -38,17 +38,75 @@
 .macro-div {
   width: 10%;
   text-align: center;
-  font-size: 14px
+  font-size: 14px;
 }
 
-@media screen and (max-width:1140px) {
-  .macro-div, .amount-div, .name-div,.serving-div{
+.food-description {
+  font-size: 14px;
+}
+
+.header-name,
+.result-name {
+  width: 30%;
+}
+
+.header-description,
+.result-description {
+  width: 70%;
+}
+
+.header-description,
+.header-name {
+  background-color: var(--header-colour);
+}
+
+.result-description, .result-name{
+  height: 40px;
+}
+
+@media screen and (min-width: 1600px) {
+  .header-name,
+  .result-name {
+    width: 40% !important;
+  }
+
+  .header-description,
+  .result-description {
+    width: 60% !important;
+  }
+}
+
+.food-list-item {
+  background-color: var(--table-bg);
+}
+
+.food-list-item:hover {
+  background-color: var(--selected-hover);
+}
+
+@media screen and (max-width: 1140px) {
+  .macro-div,
+  .amount-div,
+  .name-div,
+  .serving-div,
+  .food-description {
     font-size: 12px;
   }
 }
 
-@media screen and (max-width:1000px) {
-  .macro-div, .amount-div, .name-div,.serving-div{
+@media screen and (max-width: 1000px) {
+  .macro-div,
+  .amount-div,
+  .name-div,
+  .serving-div,
+  .food-description {
     font-size: 14px;
   }
+}
+
+
+.food-search-table{
+  height:var(--table-height);
+  overflow: hidden;
+  overflow-y: scroll;
 }

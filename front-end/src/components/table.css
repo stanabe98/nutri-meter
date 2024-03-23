@@ -60,3 +60,7 @@ thead th {
 .timeperiod {
   background-color: #abd4d9;
 }
+
+.calorie-table-div{
+  height: 60vh;
+}
