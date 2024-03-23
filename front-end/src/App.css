@@ -12,7 +12,6 @@
   pointer-events: none;
 }
 
-
 :root {
   --header-colour: #1fa1af;
   --app-bg: #f1f5f9;
@@ -26,7 +25,8 @@
   --page-height: calc(100vh - 40px);
   --table-height: calc(100vh - 510px);
   --table-height2: calc(100vh - (40px+364px+48px +12px +8px));
-  --app-header:#b4cfe0;
+  --app-header: #b4cfe0;
+  --app-header-dark:#9eb6c5;
   --border-colour: #9ca3af;
 }
 
@@ -72,6 +72,6 @@
   overflow: hidden;
 }
 
-.app-header{
+.app-header {
   background-color: var(--app-header);
 }

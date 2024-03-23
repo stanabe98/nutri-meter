@@ -74,7 +74,7 @@ const MainPage = () => {
     <>
       <div className="flex main-page">
         <div className={`w-2/4 main-div   ${showChart ? "main-div-hide" : ""}`}>
-          <div className="ml-20 flex items-center">
+          <div className=" flex items-center justify-center font-semibold">
             <span className="p-4">Food diary for:</span>
             <DateSelector date={date ? date : formatCurrentDate()} />
             <div

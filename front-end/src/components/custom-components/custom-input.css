@@ -19,6 +19,7 @@
 
 .food-option {
   background-color: rgb(235, 238, 239);
+  height: 30px;
 }
 
 .food-option:hover {
@@ -33,7 +34,6 @@
 
 .serving-div {
   width: 15%;
-  height: 30px;
   text-align: center;
   font-size: 14px;
 }
@@ -48,6 +48,11 @@
   width: 10%;
   text-align: center;
   font-size: 14px;
+}
+.header-div {
+  height: 28px;
+  border-bottom: 1px solid var(--border-colour);
+  font-weight: 500;
 }
 
 .food-description {
@@ -66,13 +71,15 @@
 
 .header-description,
 .header-name {
+  font-size: 14px;
+  height: 28px;
   background-color: var(--header-colour);
 }
 
-.result-description,
+/* .result-description,
 .result-name {
   height: 40px;
-}
+} */
 
 @media screen and (min-width: 1600px) {
   .header-name,
@@ -88,6 +95,9 @@
 
 .food-list-item {
   background-color: var(--table-bg);
+  height: 40px;
+  overflow-y: hidden;
+  font-size: 14px;
 }
 
 .food-list-item:hover {
@@ -120,4 +130,29 @@
   overflow-y: scroll;
   border: 1px solid rgb(116, 115, 115);
   border-radius: 10px;
+}
+
+.food-list-header {
+  font-weight: 500;
+}
+
+.add-btn {
+  background-color: #059669;
+  border: 1px solid transparent;
+}
+
+.add-btn:hover {
+  background-color: #15803d;
+  border-color: var(--header-colour);
+}
+
+.back-btn {
+  background-color: var(--app-header);
+  border: 1px solid transparent;
+}
+
+
+.back-btn:hover {
+  background-color: var(--app-header-dark);
+  border-color: var(--header-colour);
 }

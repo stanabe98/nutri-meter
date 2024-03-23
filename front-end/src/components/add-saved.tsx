@@ -71,7 +71,7 @@ const SearchSavedFood: React.FC<{
           <div className="food-search-table overflow-y-scroll">
             <div
               style={{ backgroundColor: "#1fa1af" }}
-              className="flex sticky top-0 drop-shadow-lg"
+              className="flex sticky top-0 drop-shadow-lg items-center header-div"
             >
               <div className=" name-div">Name</div>
               <div className=" amount-div">Amount</div>

@@ -22,7 +22,7 @@ const DateSelector: React.FC<{ date: string }> = ({ date }) => {
       >
         <CaretLeftFilled />
       </div>
-      <div className="w-64 text-center">{dayDateFormat(date)}</div>
+      <div className="w-64 text-center font-semibold ">{dayDateFormat(date)}</div>
       <div
         onClick={() => {
           navigateNext(date);

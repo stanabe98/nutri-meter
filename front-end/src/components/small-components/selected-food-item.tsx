@@ -28,7 +28,6 @@ const SelectedItem: React.FC<{
     const inputValue = event.target.value;
     setAmount(inputValue);
     if (inputValue === "") {
-    
       setCalories(Number(data.foodInfo.calories));
       if (data.foodInfo.protein) setProtein(Number(data.foodInfo.protein));
       if (data.foodInfo.fats) setFats(Number(data.foodInfo.fats));
@@ -101,7 +100,7 @@ const SelectedItem: React.FC<{
 
   return (
     <div className="submission-form">
-      <div className="font-semibold text-center">
+      <div className="font-semibold text-center pt-4 pb-4">
         <span>{data.foodInfo.name}</span>
       </div>
 
@@ -109,7 +108,7 @@ const SelectedItem: React.FC<{
         <span>Per</span>
 
         <input
-          className="w-12 ml-1 adjust-input drop-shadow-md"
+          className="w-12 mx-1 pl-1 adjust-input drop-shadow-md"
           min={data.foodInfo.quantity >= 10 ? 1 : 0.1}
           step={data.foodInfo.measurement === "grams" ? 1 : 0.1}
           value={amount}
@@ -135,29 +134,34 @@ const SelectedItem: React.FC<{
         <span>{data.foodInfo.measurement}</span>
         <button
           style={{ width: "20px" }}
-          className="reset-btn px-0"
+          className="reset-btn px-0 ml-2"
           onClick={resetFields}
         >
           <RestartAlt />
         </button>
       </div>
-      <div className="flex justify-center border-b border-b-black mx-12  mt-2">
-        <div className=" text-center  w-16 mr-1">Calories</div>
-        <div className=" text-center  mr-1  w-16">Protein</div>
-        <div className=" text-center mr-1 w-16">Carbs</div>
-        <div className=" text-center  mr-1 w-16">Fats</div>
-        <div className="  text-center   w-24">Meal</div>
+      <div className="flex justify-center font-semibol my-4 ">
+        <div
+          style={{ backgroundColor: "var(--header-colour)" }}
+          className="flex w-96 border-b border-gray-400 drop-shadow-md"
+        >
+          <div className=" text-center   w-16 mr-1">Calories</div>
+          <div className=" text-center  mr-1  w-16">Protein</div>
+          <div className=" text-center mr-1 w-16">Carbs</div>
+          <div className=" text-center  mr-1 w-16">Fats</div>
+          <div className="  text-center   w-24">Meal</div>
+        </div>
       </div>
 
-      <div className="flex justify-center mt-1  ">
-        <div className="text-center border-b border-black mr-1 w-16">
+      <div className="flex justify-center mt-1 font-semibold ">
+        <div className="text-center border-b border-gray-400 mr-1 w-16">
           {amount === "" ||
           amount === data.foodInfo.quantity.toString() ||
           calories === 0
             ? data.foodInfo.calories
             : calories}
         </div>
-        <div className="border-b  text-center border-black mr-1 w-16">
+        <div className="border-b  text-center border-gray-400 mr-1 w-16">
           {amount === "" ||
           amount === data.foodInfo.quantity.toString() ||
           protein === 0
@@ -166,7 +170,7 @@ const SelectedItem: React.FC<{
             ? protein
             : "-"}
         </div>
-        <div className="border-b text-center border-black mr-1 w-16">
+        <div className="border-b text-center border-gray-400 mr-1 w-16">
           {amount === "" ||
           amount === data.foodInfo.quantity.toString() ||
           carbs === 0
@@ -175,7 +179,7 @@ const SelectedItem: React.FC<{
             ? carbs
             : "-"}
         </div>
-        <div className="border-b text-center border-black mr-1 w-16">
+        <div className="border-b text-center border-gray-400 mr-1 w-16">
           {amount === "" ||
           amount === data.foodInfo.quantity.toString() ||
           fats === 0
@@ -186,7 +190,6 @@ const SelectedItem: React.FC<{
         </div>
         <Select
           value={meal}
-         
           className="w-24 h-6 drop-shadow-md"
           onChange={handleChangeMeal}
           options={[
@@ -206,11 +209,11 @@ const SelectedItem: React.FC<{
         />
       </div>
       <div className="flex gap-2 justify-center mt-5">
-        <button className="px-2 border border-black rounded-lg" onClick={cb}>
+        <button className="px-2 back-btn rounded-lg" onClick={cb}>
           <ArrowBack />
         </button>
         <button
-          className="px-2 mr-2 border border-black rounded-lg"
+          className="px-2 mr-2 add-btn rounded-lg font-semibold"
           onClick={submitFoodLog}
         >
           ADD

@@ -82,8 +82,8 @@ const SearchFoodLibrary: React.FC<{ submissionDate: string; refetch: any }> = ({
 
       {selectedFoodId === "" ? (
         <div className="food-search-table overflow-hidden">
-          <div className="flex sticky top-0 food-list-header border border-black">
-            <div className="header-name ">
+          <div className="flex sticky top-0  items-center food-list-header border-b border-gray-400">
+            <div className="pl-1 header-name ">
               <span>Name</span>
             </div>
             <div className="header-description ">
@@ -94,7 +94,7 @@ const SearchFoodLibrary: React.FC<{ submissionDate: string; refetch: any }> = ({
             <>
               {[...Array(12)].map((_) => (
                 <div className="flex  ">
-                  <div className="result-name">
+                  <div className="pl-1 result-name">
                     <Skeleton />
                   </div>
                   <div className="result-description">
@@ -113,7 +113,7 @@ const SearchFoodLibrary: React.FC<{ submissionDate: string; refetch: any }> = ({
                 className="flex gap-3 cursor-pointer food-list-item"
                 onClick={() => submitSelectFood(item.food_id)}
               >
-                <div className="result-name ">
+                <div className="pl-1 result-name ">
                   <span className="food-description">
                     {`${item.brand_name ?? item.food_type} ${item.food_name}`}
                   </span>
