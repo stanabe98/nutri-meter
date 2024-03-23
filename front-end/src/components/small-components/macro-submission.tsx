@@ -84,10 +84,10 @@ const MacroSubmissionForm: React.FC<{
   return (
     <div className="flex gap-1 items-center">
       <div style={{ width: "12%" }} className="ml-8">
-        <span className="block">Meal</span>
+        <span className="block text-sm text-center">Meal</span>
 
         <Select
-          className="select-meal"
+          className="select-meal h-8"
           value={meal}
           style={{ width: "100%" }}
           onChange={handleChange}
@@ -107,11 +107,12 @@ const MacroSubmissionForm: React.FC<{
           ]}
         />
       </div>
-      <div style={{ width: "27%" }}>
-        <span>Name</span>
+      <div className=" text-center" style={{ width: "27%" }}>
+        <span className="text-sm ">Name</span>
         <div>
           <CustomInput
             maxLength={30}
+            moreStyles="h-8"
             value={name}
             onChange={(e) => setName(e.target.value)}
             type="text"
@@ -121,7 +122,7 @@ const MacroSubmissionForm: React.FC<{
       <InputCalculator
         value={FoodInputStore.calories}
         evalue={FoodInputStore.evalcalories}
-        className="w-16"
+        className="w-16 h-8"
         label="Calories"
         cbError={(state) => setisError(state)}
         cb={(state) => FoodInputStore.setCalories(state)}
@@ -129,7 +130,7 @@ const MacroSubmissionForm: React.FC<{
       />
 
       <InputCalculator
-        className="w-16"
+        className="w-16 h-8"
         value={FoodInputStore.carbs}
         evalue={FoodInputStore.evalcarbs}
         label="Carbs"
@@ -140,7 +141,7 @@ const MacroSubmissionForm: React.FC<{
       <InputCalculator
         value={FoodInputStore.fats}
         evalue={FoodInputStore.evalfats}
-        className="w-16"
+        className="w-16 h-8"
         label="Fats"
         cbError={(state) => setisError(state)}
         cb={(state) => FoodInputStore.setFats(state)}
@@ -149,29 +150,31 @@ const MacroSubmissionForm: React.FC<{
       <InputCalculator
         value={FoodInputStore.protein}
         evalue={FoodInputStore.evalprotein}
-        className="w-16"
+        className="w-16 h-8"
         label="Protein"
         cbError={(state) => setisError(state)}
         cb={(state) => FoodInputStore.setProtein(state)}
         cbEval={(state) => FoodInputStore.setEvalProtein(state)}
       />
 
-      <Button
-        className="h-2/4"
-        variant="contained"
-        sx={{
-          backgroundColor: 'var(--button-colour)',
-          "&:hover": {
-            backgroundColor: 'var(--button-hover)', // Change color on hover
-          },
-        }}
-        disabled={FoodInputStore.calories.trim() === "" || isError}
-        onClick={() => {
-          submitFoodLog();
-        }}
-      >
-        Add
-      </Button>
+      <div className="mt-6">
+        <Button
+          className="h-8"
+          variant="contained"
+          sx={{
+            backgroundColor: "var(--button-colour)",
+            "&:hover": {
+              backgroundColor: "var(--button-hover)", // Change color on hover
+            },
+          }}
+          disabled={FoodInputStore.calories.trim() === "" || isError}
+          onClick={() => {
+            submitFoodLog();
+          }}
+        >
+          Add
+        </Button>
+      </div>
     </div>
   );
 };

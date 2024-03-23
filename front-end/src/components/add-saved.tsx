@@ -3,7 +3,7 @@ import { CustomFoods } from "./data/data-types";
 import SavedFoodItem from "./small-components/saved-food-item";
 import SelectedItem from "./small-components/selected-food-item";
 import { Search } from "@mui/icons-material";
-
+import "./custom-components/custom-input.css"
 const SearchSavedFood: React.FC<{
   data: CustomFoods[] | null;
   submissionDate: string;
@@ -50,8 +50,9 @@ const SearchSavedFood: React.FC<{
 
   return (
     <div>
-      <div className="flex">
+      <div className="flex my-1">
         <input
+          className="custom-input pl-2 rounded-md "
           style={{ display: "inline" }}
           placeholder="Search saved foods"
           onChange={handleSearchChange}
@@ -61,11 +62,11 @@ const SearchSavedFood: React.FC<{
           <Search />
         </div>
       </div>
-      <div className="h-2/5 overflow-y-scroll w-[500px]">
+      <div className="h-2/5 overflow-y-scroll ">
         {!searchClose ? (
           <>
             <div
-              style={{  backgroundColor: "#1fa1af" }}
+              style={{ backgroundColor: "#1fa1af" }}
               className="flex sticky top-0"
             >
               <div className="w-32">Name</div>

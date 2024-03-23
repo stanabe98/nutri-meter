@@ -64,8 +64,8 @@ const InputCalculator: React.FC<{
   };
 
   return (
-    <div>
-      <span>{label}</span>
+    <div className="text-center">
+      <span className="text-center text-sm">{label}</span>
       <div className="custom-inputLoginDiv">
         <input
           className={`custom-inputLogin text-sm rounded-md ${className} `}

@@ -12,22 +12,23 @@ const SearchSelect: React.FC<{
   const [value, setValue] = useState(0);
   return (
     <div>
-      <Tabs
-        value={value}
-        // onChange={handleChange}
-        sx={{
-          "& button:hover": { color: "#1fa1af" },
-          "& button:active": { color: "#1fa1af" },
-          "& button.Mui-selected": { color: "#1fa1af" },
-        }}
-        TabIndicatorProps={{
-          sx: { backgroundColor: "#1fa1af", height: 4 },
-        }}
-        aria-label="basic tabs example"
-      >
-        <Tab onClick={() => setValue(0)} label="Saved Foods" />
-        <Tab onClick={() => setValue(1)} label="Search" />
-      </Tabs>
+      <div className="flex justify-center w-full border border-black text-center">
+        <Tabs
+          value={value}
+          sx={{
+            "& button:hover": { color: "#1fa1af" },
+            "& button:active": { color: "#1fa1af" },
+            "& button.Mui-selected": { color: "#1fa1af" },
+          }}
+          TabIndicatorProps={{
+            sx: { backgroundColor: "#1fa1af", height: 4 },
+          }}
+          aria-label="basic tabs example"
+        >
+          <Tab className="w-64" onClick={() => setValue(0)} label="Saved Foods" />
+          <Tab  className="w-64" onClick={() => setValue(1)} label="Search" />
+        </Tabs>
+      </div>
       {value === 0 ? (
         <SearchSavedFood
           data={data}

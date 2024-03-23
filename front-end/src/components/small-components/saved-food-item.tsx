@@ -1,12 +1,13 @@
 import React from "react";
 import { CustomFoods } from "../data/data-types";
+import "../custom-components/custom-input.css"
 
 const SavedFoodItem: React.FC<{ item: CustomFoods; [key: string]: any }> = ({
   item,
   ...restProps
 }) => {
   return (
-    <div {...restProps} className="flex cursor-pointer hover:bg-slate-400">
+    <div {...restProps} className="flex cursor-pointer food-option">
       <div className="w-32">{item.foodInfo.name}</div>
       <div className="w-16">{item.foodInfo.quantity}</div>
       <div className="w-16">{item.foodInfo.measurement}</div>

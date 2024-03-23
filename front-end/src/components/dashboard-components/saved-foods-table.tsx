@@ -15,6 +15,7 @@ import TextField from "@mui/material/TextField";
 import { OptionalCaloriesFoodInfo } from "../hooks/useGetUserInfo";
 import { CustomFoodInfo } from "../data/data-types";
 import "./styles.css";
+import "../custom-components/custom-input.css";
 import { Select } from "antd";
 import {
   editSavedFood,
@@ -178,6 +179,7 @@ const SavedFoodsTable: React.FC<{
     <div className="border border-black px-5">
       <div className="flex">
         <input
+          className="custom-input"
           type="text"
           placeholder="Search..."
           value={search}
@@ -189,7 +191,7 @@ const SavedFoodsTable: React.FC<{
         </div>
       </div>
 
-      <div className="h-[150px] overflow-y-scroll border border-black">
+      <div className="">
         <div style={{ backgroundColor: "#1fa1af" }} className="flex gap-1">
           <div className="w-32">Name</div>
           <div className="w-16">Amount</div>

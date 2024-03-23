@@ -13,6 +13,7 @@ import axios from "axios";
 import DateSelector from "../components/small-components/date-picker";
 import FoodLogView from "../components/food-log-list";
 import { UserFoodLog } from "../components/data/data-types";
+import { WestRounded ,EastRounded } from "@mui/icons-material";
 import {
   getUserFoodLog,
   useGetUserFoodLog,
@@ -28,11 +29,14 @@ import { useGetCurrentUserInfo } from "../components/hooks/userGetUserFoods";
 import SearchSavedFood from "../components/add-saved";
 import SearchSelect from "../components/search-select";
 import { observer } from "mobx-react";
+import "../App.css";
 
 const MainPage = () => {
   const { date } = useParams<{ date: string }>();
   const { user } = useAuthContext();
   const [apiData, setApiData] = useState<UserFoodLog | []>([]);
+  const [showChart, setShowChart] = useState(false);
+
   const urlDate =
     date && isValidDate(date) && !isCurrentDay(date)
       ? date
@@ -69,10 +73,18 @@ const MainPage = () => {
   return (
     <>
       <div className="flex gap-10">
-        <div className="md:w-2/4 sm:w-full">
-          <div className="ml-20 flex">
+        <div className={`w-2/4 main-div ${showChart ? "main-div-hide" : ""}`}>
+          <div className="ml-20 flex items-center">
             <span className="p-4">Food diary for:</span>
             <DateSelector date={date ? date : formatCurrentDate()} />
+            <div
+              onClick={() => {
+                setShowChart(true);
+              }}
+              className="arrow-div cursor-pointer"
+            >
+              <WestRounded />
+            </div>
           </div>
           <div className="">
             <FoodLogView
@@ -84,9 +96,21 @@ const MainPage = () => {
             <MacroSubmissionForm refetch={refetch} submissionDate={urlDate} />
           </div>
         </div>
-        <div className="items-start mt-3 gap-5 ">
-          <div className="flex-col justify-center items-center border border-black rounded-lg gap-5">
-            <div className="p-2">
+        <div
+          className={`secondary-div items-start mt-3 gap-5 w-2/4 px-8 ${
+            showChart ? "secondary-div-show" : ""
+          }`}
+        >
+          <div className="flex-col flex justify-center items-center border border-black rounded-lg gap-5">
+            <div
+              onClick={() => {
+                setShowChart(false);
+              }}
+              className="arrow-div cursor-pointer"
+            >
+              <EastRounded />
+            </div>
+            <div className="p-2 ">
               <MacroChart data={queryResult ? queryResult.totalMacros : null} />
             </div>
             <div className="p-2">

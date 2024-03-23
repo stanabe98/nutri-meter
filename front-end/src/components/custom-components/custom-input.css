@@ -8,3 +8,12 @@
 .custom-input:focus {
   border-color: var(--header-colour);
 }
+
+
+.food-option{
+    background-color: rgb(235, 238, 239)
+}
+
+.food-option:hover{
+    background-color: var(--selected-hover);
+}
