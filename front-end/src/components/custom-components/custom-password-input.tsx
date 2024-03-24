@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
+import "./custom-input.css"
 
 interface InputProps {
   placeholder?: string;
@@ -20,13 +21,13 @@ const PasswordInput: React.FC<InputProps> = ({
 
   return (
     <div
-      className={`flex items-center bg-slate-700 rounded-md custom-inputLogindiv border border-black ${moreStyles}`}
+      className={`flex items-center rounded-md password-input-div  ${moreStyles}`}
     >
       <input
         placeholder={placeholder}
         type={visible ? "" : "password"}
         value={value}
-        className="w-full bg-slate-700  pl-2 py-2 w-full rounded-md mr-1 text-white text-sm"
+        className="w-full  pl-2 py-2 w-full rounded-md mr-1 text-sm"
         onChange={onChange}
         onKeyDown={onKeyDown}
       />

@@ -48,7 +48,7 @@ export const registerUser = asyncHandler(
 
     const userExists = await CredentialModel.findOne({ email });
     if (userExists) {
-      res.status(400);
+      res.status(400).send({ error: "400", message: "User exists" });
       throw new Error("User already exists");
     }
 

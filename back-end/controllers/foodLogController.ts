@@ -85,6 +85,7 @@ export const addNewEntry = asyncHandler(
 
         if (index === -1) {
           res.status(404).json({ error: "Food log entry not found" });
+          return
         }
 
         findEntry.foodLog[index].foodInfo = {
@@ -110,12 +111,27 @@ export const addNewEntry = asyncHandler(
           res.status(201).json(newFoodEntry);
         }
       } else {
+        
+        
+
         findEntry.foodLog.push({
           foodInfo: foodInfo,
           createdAt: new Date(),
           updatedAt: new Date(),
         } as FoodLogEntry);
         await findEntry.save();
+
+        if(foodInfo.referenceId){
+          const result = await CredentialModel.findByIdAndUpdate(
+            {
+              currentUserId
+            },
+            { $push: { recentlyAdded: { $each: foodInfo, $slice: -10 } } },
+            { new: true, upsert: true }
+          );
+        }
+
+
         res.status(200).json(findEntry);
       }
     } catch (error) {
@@ -210,3 +226,5 @@ const compareDateStrings = (dateObj1: UserFoodLog, dateObj2: UserFoodLog) => {
 
   return date1.getTime() - date2.getTime();
 };
+
+

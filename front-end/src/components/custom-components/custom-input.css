@@ -1,3 +1,17 @@
+.password-input-div > input {
+  outline: none;
+}
+
+.password-input-div:hover {
+  border-color: var(--header-colour) !important;
+}
+
+.password-input-div {
+  transition: border-color 0.3s ease-in;
+  background-color: var(--input-colour);
+  border: 1px solid var(--border-colour);
+}
+
 .custom-input {
   background-color: var(--input-colour);
   outline: none;
@@ -52,6 +66,7 @@
 .header-div {
   height: 28px;
   border-bottom: 1px solid var(--border-colour);
+  background-color: var(--header-colour);
   font-weight: 500;
 }
 
@@ -72,8 +87,6 @@
 .header-description,
 .header-name {
   font-size: 14px;
-  height: 28px;
-  background-color: var(--header-colour);
 }
 
 /* .result-description,
@@ -128,7 +141,7 @@
   height: var(--table-height);
   background-color: var(--table-bg);
   overflow-y: scroll;
-  border: 1px solid rgb(116, 115, 115);
+  border: 1px solid #9ca3af;
   border-radius: 10px;
 }
 
@@ -150,7 +163,6 @@
   background-color: var(--app-header);
   border: 1px solid transparent;
 }
-
 
 .back-btn:hover {
   background-color: var(--app-header-dark);

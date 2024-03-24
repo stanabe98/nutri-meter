@@ -8,6 +8,7 @@ export interface User extends Document {
   pic?: string;
   macroTarget: MacroTarget;
   savedFoods: CustomFoods[];
+  recentlyAdded?: CustomFoods[];
   matchPassword(enteredPassword: string): Promise<boolean>;
 }
 
@@ -73,6 +74,10 @@ const credentialsSchema = new mongoose.Schema<User>({
     _id: false,
   },
   savedFoods: [customFoodSchema],
+  recentlyAdded: {
+    type: [customFoodSchema],
+    maxlength: 10,
+  },
 });
 
 credentialsSchema.methods.matchPassword = async function (
@@ -85,14 +90,11 @@ credentialsSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
   }
-  
+
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
-  next()
+  next();
 });
-
-
-
 
 const CredentialModel = mongoose.model<User>(
   "UserCredentials",

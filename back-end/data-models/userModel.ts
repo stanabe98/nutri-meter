@@ -5,10 +5,21 @@ export interface FoodInfo extends Document {
   protein?: string;
   fats?: string;
   carbs?: string;
-  meal?: "Breakfast" | "Lunch" | "Dinner";
+  meal?: "Breakfast" | "Lunch" | "Dinner" | "Snacks";
   name?: string;
   quantity?: number;
   measurement?: string;
+  referenceId?: string;
+}
+
+export interface CustomFoodInfo extends Document {
+  calories: string;
+  protein?: string;
+  fats?: string;
+  carbs?: string;
+  name: string;
+  quantity: number;
+  measurement: string;
   referenceId?: string;
 }
 
@@ -87,7 +98,7 @@ userFoodLogSchema.pre<UserFoodLog>("save", function (next) {
   let totalFats = 0;
   let totalCarbs = 0;
 
-  console.log("running this")
+  console.log("running this");
   // Calculate totals from each food log entry
   this.foodLog.forEach((entry) => {
     if (entry.foodInfo.calories)
@@ -116,7 +127,7 @@ userFoodLogSchema.pre<UserFoodLog>("save", function (next) {
 //   let totalCarbs = 0;
 
 //   console.log("running this");
-  
+
 //   this.foodLog.forEach((entry) => {
 //     if (entry.foodInfo.calories)
 //       totalCalories += Number(eval(entry.foodInfo.calories));
@@ -126,7 +137,6 @@ userFoodLogSchema.pre<UserFoodLog>("save", function (next) {
 //     if (entry.foodInfo.fats) totalFats += Number(eval(entry.foodInfo.fats));
 //   });
 
-  
 //   this.totalMacros = {
 //     totalProtein: Math.round(totalProtein),
 //     totalCalories: Math.round(totalCalories),
@@ -137,12 +147,9 @@ userFoodLogSchema.pre<UserFoodLog>("save", function (next) {
 //   next();
 // });
 
-
-
 const UserFoodLogModel = mongoose.model<UserFoodLog>(
   "UserFoodLog",
   userFoodLogSchema
 );
-
 
 export default UserFoodLogModel;

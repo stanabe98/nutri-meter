@@ -73,7 +73,7 @@ const SearchSavedFood: React.FC<{
               style={{ backgroundColor: "#1fa1af" }}
               className="flex sticky top-0 drop-shadow-lg items-center header-div"
             >
-              <div className=" name-div">Name</div>
+              <div className="pl-1 name-div">Name</div>
               <div className=" amount-div">Amount</div>
               <div className="w-16 serving-div">Serving</div>
               <div className="w-16 macro-div">Calories</div>

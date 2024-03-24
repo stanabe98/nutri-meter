@@ -140,7 +140,7 @@ const SelectedItem: React.FC<{
           <RestartAlt />
         </button>
       </div>
-      <div className="flex justify-center font-semibol my-4 ">
+      <div className="flex justify-center font-semibold my-4 ">
         <div
           style={{ backgroundColor: "var(--header-colour)" }}
           className="flex w-96 border-b border-gray-400 drop-shadow-md"

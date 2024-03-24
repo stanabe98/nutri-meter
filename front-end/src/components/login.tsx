@@ -54,36 +54,39 @@ const Login = () => {
 
   return (
     <div>
-      <form id="email">
-        <label className="required text-sky-200">Email</label>
+      <div className="mx-2 pt-4 mb-4">
+        <label className="required font-semibold">Email</label>
 
         <CustomInput
-          moreStyles={"mt-1 mb-1"}
+          moreStyles={"mt-1 mb-1 py-3 drop-shadow-md"}
           value={email}
           placeholder={"Email"}
           onChange={(e) => setEmail(e.target.value)}
         />
-      </form>
-      <form id="password">
-        <label className="required text-sky-200">Password</label>
+      </div>
+      <div className="mx-2 mb-8">
+        <label className="required font-semibold">Password</label>
 
         <PasswordInput
-          moreStyles={"mt-1 mb-1"}
+          moreStyles={"mt-1 mb-1 drop-shadow-md"}
           placeholder={"Password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           onKeyDown={handleKeyDown}
         />
-      </form>
+      </div>
 
-      <Button
-        className=" flex w-full border-black border rounded-md mt-4 py-5 items-center justify-center"
-        style={{ marginTop: 15 }}
-        onClick={submitHandler}
-        loading={loading}
-      >
-        Login
-      </Button>
+      <div className="mx-2"> 
+        <Button
+          className=" login-btn
+          drop-shadow-md
+          font-semibold text-lg flex w-full border-gray-400 border rounded-md  py-5 items-center justify-center"
+          onClick={submitHandler}
+          loading={loading}
+        >
+          Login
+        </Button>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,9 @@ import { UserInfo } from "../context/AuthContext";
 import dayjs from "dayjs";
 
 export const passwordError = "Invaild email or password";
-export const enterAllFields = "Please enter both email and password";
+export const enterAllFields = "Please fill all fields ";
+export const passwordMatchError = "Please ensure passwords match";
+
 export const loginConfig = {
   headers: {
     "Content-type": "application/json",

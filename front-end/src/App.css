@@ -23,11 +23,28 @@
   --button-hover: #3e9099;
   --table-bg: rgb(235, 238, 239);
   --page-height: calc(100vh - 40px);
+  --login-conatiner: calc(100vh - 85px);
+
   --table-height: calc(100vh - 510px);
   --table-height2: calc(100vh - (40px+364px+48px +12px +8px));
   --app-header: #b4cfe0;
-  --app-header-dark:#9eb6c5;
+  --app-header-dark: #9eb6c5;
   --border-colour: #9ca3af;
+}
+
+.login-container {
+  background-color: rgba(221, 220, 220, 0.973);
+  height: var(--login-conatiner);
+}
+
+.login-btn {
+  background-color: var(--button-colour);
+}
+
+.login-btn:hover {
+  background-color: var(--button-hover) !important;
+  border-color: #0e4950 !important;
+  color: black !important;
 }
 
 @media screen and (max-width: 1000px) {
@@ -74,4 +91,24 @@
 
 .app-header {
   background-color: var(--app-header);
+}
+
+.login-input {
+  padding-block: 8px;
+  border: 1px solid var(--border-colour) !important;
+}
+
+.login-input:hover,
+.login-input:focus {
+  border-color: var(--header-colour) !important;
+}
+
+
+.login-header{
+  background-color: var(--app-header) ;
+}
+
+.login-title{
+background-color: var(--app-header-dark) ;
+padding: 4px;
 }

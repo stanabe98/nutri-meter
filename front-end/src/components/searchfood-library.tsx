@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Skeleton from "@mui/material/Skeleton";
 import { Divider } from "@mui/material";
+import { Empty } from "antd";
+
 import {
   getAccesstoken,
   getSearchFoodResult,
@@ -81,31 +83,37 @@ const SearchFoodLibrary: React.FC<{ submissionDate: string; refetch: any }> = ({
       </div>
 
       {selectedFoodId === "" ? (
-        <div className="food-search-table overflow-hidden">
-          <div className="flex sticky top-0  items-center food-list-header border-b border-gray-400">
+        <div className="food-search-table overflow-y-scroll">
+          <div
+            style={{ backgroundColor: "#1fa1af" }}
+            className="flex sticky top-0 drop-shadow-lg items-center header-div border-b border-gray-400"
+          >
             <div className="pl-1 header-name ">
               <span>Name</span>
             </div>
-            <div className="header-description ">
-              <span>Description</span>
-            </div>
+            <div className="header-description ">Description</div>
           </div>
           {loading && (
             <>
-              {[...Array(12)].map((_) => (
+              {[...Array(8)].map((_) => (
                 <div className="flex  ">
-                  <div className="pl-1 result-name">
-                    <Skeleton />
+                  <div className="pl-1 h-8 result-name">
+                    <Skeleton height={40} className="h-8" />
                   </div>
-                  <div className="result-description">
-                    <Skeleton />
+                  <div className="h-8 result-description">
+                    <Skeleton height={40} className="h-8" />
                   </div>
                 </div>
               ))}
             </>
           )}
           {searchData.length == 0 && submittedQuery !== "" && !loading && (
-            <>No results matching query</>
+            <div className="flex items-center w-full h-[90%]  justify-center">
+              <div>
+                <Empty className="text-blue-400 w-20 h-20" description="" />
+                <div>No results found</div>
+              </div>
+            </div>
           )}
           {searchData.map((item) => (
             <>

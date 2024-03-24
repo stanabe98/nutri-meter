@@ -8,7 +8,7 @@ const SavedFoodItem: React.FC<{ item: CustomFoods; [key: string]: any }> = ({
 }) => {
   return (
     <div {...restProps} className="flex cursor-pointer food-option">
-      <div className="name-div">{item.foodInfo.name}</div>
+      <div className="pl-1 name-div">{item.foodInfo.name}</div>
       <div className="amount-div">{item.foodInfo.quantity}</div>
       <div className="serving-div">{item.foodInfo.measurement}</div>
       <div className="macro-div">{item.foodInfo.calories}</div>
