@@ -9,11 +9,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import CustomInput from "./custom-components/custom-input";
 import PasswordInput from "./custom-components/custom-password-input";
-import axios from "axios";
-import { useAuthContext } from "../context/AuthContext";
+import axios, { AxiosError } from "axios";
 import { Snackbar } from "@mui/material";
 
-const SignUp = () => {
+const SignUp: React.FC<{ cb?: any }> = ({ cb }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,9 +20,8 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [open, setOpen] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
 
-  const [messageApi, contextHolder] = message.useMessage();
-  const { user } = useAuthContext();
   const navigate = useNavigate();
 
   const submitHandler = async () => {
@@ -49,15 +47,27 @@ const SignUp = () => {
 
     try {
       const { data } = await axios.post(
-        "/api/user/login",
-        { email, password },
+        "/api/user/register",
+        { name, email, password },
         loginConfig
       );
-      localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
-      navigate("/user");
+      setOpenSuccess(true);
+      setErrorMessage("Successfully registered, please login");
+      setTimeout(() => {
+        cb();
+        return;
+      }, 1000);
     } catch (error) {
       setLoading(false);
+      const apiError = error as AxiosError<any>;
+      if (apiError.response?.data.error === "400") {
+        setOpen(true);
+        setErrorMessage("User exists, try login");
+        setTimeout(() => {
+          cb();
+        }, 1000);
+      }
     }
   };
 
@@ -142,6 +152,17 @@ const SignUp = () => {
             onClose={handleClose}
           >
             <div className="w-96 py-2 rounded-sm drop-shadow-md text-center bg-red-400">
+              {errorMessage}
+            </div>
+          </Snackbar>
+
+          <Snackbar
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            open={openSuccess}
+            autoHideDuration={2000}
+            onClose={handleClose}
+          >
+            <div className="w-96 py-2 rounded-sm drop-shadow-md text-center bg-green-600">
               {errorMessage}
             </div>
           </Snackbar>

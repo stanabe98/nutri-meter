@@ -16,10 +16,10 @@ const ModifyTargets: React.FC<{
   const [macroTarget, setMacroTarget] = useState();
 
   useEffect(() => {
-    setCalorieTarget(queryResult?.macroTarget.calories);
-    setProteinTarget(queryResult?.macroTarget.protein);
-    setFatsTarget(queryResult?.macroTarget.fats);
-    setCarbsTarget(queryResult?.macroTarget.carbs);
+    setCalorieTarget(queryResult?.macroTarget?.calories);
+    setProteinTarget(queryResult?.macroTarget?.protein);
+    setFatsTarget(queryResult?.macroTarget?.fats);
+    setCarbsTarget(queryResult?.macroTarget?.carbs);
   }, [queryResult]);
 
   const isEmpty = (obj: Record<string, any>) => {
@@ -30,17 +30,16 @@ const ModifyTargets: React.FC<{
     const obj: MacroTarget = {};
 
     // if (queryResult?.macroTarget.calories !== calorieTarget)
-      obj.calories = calorieTarget;
+    obj.calories = calorieTarget;
     // if (queryResult?.macroTarget.protein !== proteinTarget)
-      obj.protein = proteinTarget;
-    // if (queryResult?.macroTarget.carbs !== carbsTarget) 
+    obj.protein = proteinTarget;
+    // if (queryResult?.macroTarget.carbs !== carbsTarget)
     obj.carbs = carbsTarget;
-    // if (queryResult?.macroTarget.fats !== fatsTarget) 
+    // if (queryResult?.macroTarget.fats !== fatsTarget)
     obj.fats = fatsTarget;
 
     if (isEmpty(obj)) return;
-    console.log("obj",obj)
-
+    console.log("obj", obj);
 
     await postCurrentUserInfo(obj);
     setIsEdit(false);
@@ -54,16 +53,16 @@ const ModifyTargets: React.FC<{
         <>
           <div className="mt-5">
             <div className="mt-3">
-              Calories: <span>{queryResult?.macroTarget.calories ?? "-"}</span>
+              Calories: <span>{queryResult?.macroTarget?.calories ?? "-"}</span>
             </div>
             <div className="mt-3">
-              Protein: <span>{queryResult?.macroTarget.protein ?? "-"}</span>
+              Protein: <span>{queryResult?.macroTarget?.protein ?? "-"}</span>
             </div>
             <div className="mt-3">
-              Carbs: <span>{queryResult?.macroTarget.carbs ?? "-"}</span>
+              Carbs: <span>{queryResult?.macroTarget?.carbs ?? "-"}</span>
             </div>
             <div className="mt-3">
-              Fats: <span>{queryResult?.macroTarget.fats ?? "-"}</span>{" "}
+              Fats: <span>{queryResult?.macroTarget?.fats ?? "-"}</span>{" "}
             </div>
           </div>
         </>
@@ -75,7 +74,7 @@ const ModifyTargets: React.FC<{
               <TargetsInput
                 styles="inline-block"
                 placeholder={
-                  "current: " + queryResult?.macroTarget.calories ?? "-"
+                  "current: " + queryResult?.macroTarget?.calories ?? "-"
                 }
                 value={calorieTarget}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -88,7 +87,7 @@ const ModifyTargets: React.FC<{
               <TargetsInput
                 styles="inline-block"
                 placeholder={
-                  "current: " + queryResult?.macroTarget.protein ?? "-"
+                  "current: " + queryResult?.macroTarget?.protein ?? "-"
                 }
                 value={proteinTarget}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -101,7 +100,7 @@ const ModifyTargets: React.FC<{
               <TargetsInput
                 styles="inline-block "
                 placeholder={
-                  "current: " + (queryResult?.macroTarget.carbs ?? "-")
+                  "current: " + (queryResult?.macroTarget?.carbs ?? "-")
                 }
                 value={carbsTarget ?? "-"}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -114,7 +113,7 @@ const ModifyTargets: React.FC<{
               <TargetsInput
                 styles="inline-block "
                 placeholder={
-                  "current: " + (queryResult?.macroTarget.fats ?? "-")
+                  "current: " + (queryResult?.macroTarget?.fats ?? "-")
                 }
                 value={fatsTarget ?? "-"}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

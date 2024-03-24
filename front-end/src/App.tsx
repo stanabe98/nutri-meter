@@ -3,6 +3,7 @@ import "./App.css";
 import MainPage from "./Pages/main-page";
 import HomePage from "./Pages/home-page";
 import Dashboard from "./Pages/dashboard";
+import Settings from "./Pages/settings";
 import { Route, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { Tabs, Tab } from "@mui/material";
@@ -60,7 +61,9 @@ const Header: React.FC = ({}) => {
           />
         </Tabs>
       </div>
-      <span className="font-bold" style={{ textAlign: "center" }}>JUST-MACROS</span>
+      <span className="font-bold" style={{ textAlign: "center" }}>
+        JUST-MACROS
+      </span>
       <div
         className="cursor-pointer w-56 text-end"
         onClick={() => navigate("/profile")}
@@ -101,10 +104,17 @@ function App() {
             path="/user/:date"
             element={
               <>
-
-                  <Header />
-                  <MainPage />
-            
+                <Header />
+                <MainPage />
+              </>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <>
+                <Header />
+                <Settings />
               </>
             }
           />

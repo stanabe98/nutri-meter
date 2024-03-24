@@ -58,7 +58,7 @@ const Login = () => {
         <label className="required font-semibold">Email</label>
 
         <CustomInput
-          moreStyles={"mt-1 mb-1 py-3 drop-shadow-md"}
+          moreStyles={"mt-1 mb-1 py-3 drop-shadow-md login-input"}
           value={email}
           placeholder={"Email"}
           onChange={(e) => setEmail(e.target.value)}
@@ -76,7 +76,7 @@ const Login = () => {
         />
       </div>
 
-      <div className="mx-2"> 
+      <div className="mx-2">
         <Button
           className=" login-btn
           drop-shadow-md

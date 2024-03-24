@@ -19,7 +19,10 @@ const HomePage = () => {
   }, [navigate, user]);
   return (
     <div className="">
-      <div className="flex m-auto w-1/3 text-xl font-bold justify-center login-title"> JUST-MACROS</div>
+      <div className="flex m-auto w-1/3 text-xl font-bold justify-center login-title">
+        {" "}
+        JUST-MACROS
+      </div>
       <div className="flex m-auto w-1/3 login-header border-b border-gray-400 items-center justify-center drop-shadow-md ">
         <Tabs
           value={login}
@@ -55,7 +58,7 @@ const HomePage = () => {
       </div>
 
       <div className="m-auto w-1/3 login-container">
-        {login === 0 ? <Login /> : <Signup />}
+        {login === 0 ? <Login /> : <Signup cb={() => setLogin(0)} />}
       </div>
     </div>
   );
