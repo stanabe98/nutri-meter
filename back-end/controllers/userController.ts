@@ -115,6 +115,8 @@ export const modifyUser = asyncHandler(
     const { pic, macroTarget } = req.body;
     const currentUserId = req.user._id;
 
+    console.log("currentuser executing", currentUserId);
+
     if (!pic && !macroTarget) {
       res.status(400);
       throw new Error("Nothing passed to body");
@@ -133,6 +135,7 @@ export const modifyUser = asyncHandler(
         console.log("exec", currentUser.macroTarget);
         currentUser.macroTarget = macroTarget;
       }
+
       await currentUser.save();
       const modifiedUser = { ...currentUser.toObject() };
       delete modifiedUser.password;

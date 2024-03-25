@@ -21,7 +21,7 @@ export const searchFoodbyName = asyncHandler(
     const cookie = req.headers.cookie;
 
     if (!cookie) {
-      res.status(401).json( "No Auth" );
+      res.status(401).json({ code: 10, error: "No auth" });
       return;
     }
 
@@ -39,6 +39,11 @@ export const searchFoodbyName = asyncHandler(
         },
       }
     );
+
+    if (data.error) {
+      res.status(401).json(data.error);
+      return;
+    }
 
     res.status(200).send(data ?? []);
 

@@ -3,14 +3,13 @@ import { Request, Response } from "express";
 import CredentialModel, {
   User,
   MacroTarget,
+  CustomFoodInfo,
 } from "../data-models/credentialModel";
 import UserFoodLogModel, {
   FoodInfo,
   FoodLogEntry,
   UserFoodLog,
 } from "../data-models/userModel";
-import generateToken from "../config/generateToken";
-import dayjs from "dayjs";
 
 interface CreateFoodLog {
   foodInfo: FoodInfo;
@@ -85,7 +84,7 @@ export const addNewEntry = asyncHandler(
 
         if (index === -1) {
           res.status(404).json({ error: "Food log entry not found" });
-          return
+          return;
         }
 
         findEntry.foodLog[index].foodInfo = {
@@ -111,9 +110,6 @@ export const addNewEntry = asyncHandler(
           res.status(201).json(newFoodEntry);
         }
       } else {
-        
-        
-
         findEntry.foodLog.push({
           foodInfo: foodInfo,
           createdAt: new Date(),
@@ -121,16 +117,25 @@ export const addNewEntry = asyncHandler(
         } as FoodLogEntry);
         await findEntry.save();
 
-        if(foodInfo.referenceId){
+        if (foodInfo.referenceId) {
+          const res2 = await CredentialModel.findById(currentUserId);
+          console.log("found", res2);
+          const recentAddentry: CustomFoodInfo = foodInfo as CustomFoodInfo;
+
           const result = await CredentialModel.findByIdAndUpdate(
+            currentUserId,
             {
-              currentUserId
-            },
-            { $push: { recentlyAdded: { $each: foodInfo, $slice: -10 } } },
-            { new: true, upsert: true }
+              $push: {
+                recentlyAdded: {
+                  $each: [recentAddentry],
+                  $slice: -10,
+                },
+              },
+            }
+            // ,
+            // { new: true, upsert: true }
           );
         }
-
 
         res.status(200).json(findEntry);
       }
@@ -226,5 +231,3 @@ const compareDateStrings = (dateObj1: UserFoodLog, dateObj2: UserFoodLog) => {
 
   return date1.getTime() - date2.getTime();
 };
-
-

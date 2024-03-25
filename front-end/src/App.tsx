@@ -3,12 +3,16 @@ import "./App.css";
 import MainPage from "./Pages/main-page";
 import HomePage from "./Pages/home-page";
 import Dashboard from "./Pages/dashboard";
-import Settings from "./Pages/settings";
-import { Route, Routes } from "react-router-dom";
+import SettingsPage from "./Pages/settings";
+import { Settings } from "@mui/icons-material";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { Tabs, Tab } from "@mui/material";
+import { Tabs, Tab, Divider } from "@mui/material";
 import { Person2Outlined } from "@mui/icons-material";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Dropdown, MenuProps } from "antd";
+import { ItemType } from "antd/es/menu/hooks/useItems";
+import { useAuthContext } from "./context/AuthContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,10 +25,66 @@ const queryClient = new QueryClient({
 const Header: React.FC = ({}) => {
   const location = useLocation();
   const [value, setValue] = React.useState(0);
+  const { user } = useAuthContext();
   const navigate = useNavigate();
   useEffect(() => {
+    if (location.pathname === "/settings") {
+      setValue(2);
+      return;
+    }
     location.pathname !== "/profile" ? setValue(0) : setValue(1);
   }, [location]);
+
+  const logoutHandler = () => {
+    localStorage.removeItem("userInfo");
+    navigate("/");
+  };
+
+  const dropdownItems: ItemType[] = [
+    {
+      label: (
+        <div
+          onClick={() => navigate("/settings")}
+          className="h-14 w-28 flex app-menu-greet justify-center items-center text-md text-center
+          -mx-4 -my-2 px-4 rounded-t-lg  border-gray-400"
+        >
+          {`Hi ${user?.name}`}
+        </div>
+      ),
+      key: 1,
+    },
+    {
+      type: "divider",
+    },
+    {
+      label: (
+        <div
+          onClick={() => navigate("/settings")}
+          className="h-8 w-28 flex app-menu-option justify-center items-center text-base
+          -mx-4 -my-2 px-4 rounded-md  border-gray-400"
+        >
+          <Settings />
+        </div>
+      ),
+      key: 1,
+    },
+    {
+      type: "divider",
+    },
+
+    {
+      label: (
+        <div
+          onClick={logoutHandler}
+          className="h-8 text-center w-28 flex app-menu-option justify-center items-center text-base
+          -mx-4 -my-2 px-4 rounded-md hover:bg-slate-500"
+        >
+          Logout
+        </div>
+      ),
+      key: 2,
+    },
+  ];
 
   return (
     <div className="header app-header h-10 w-full m-auto flex items-center justify-between drop-shadow-md">
@@ -64,11 +124,14 @@ const Header: React.FC = ({}) => {
       <span className="font-bold" style={{ textAlign: "center" }}>
         JUST-MACROS
       </span>
-      <div
-        className="cursor-pointer w-56 text-end"
-        onClick={() => navigate("/profile")}
-      >
-        <Person2Outlined />
+      <div className="w-56 text-end">
+        <Dropdown
+          placement="bottomRight"
+          trigger={["click"]}
+          menu={{ items: dropdownItems }}
+        >
+          <Person2Outlined className="mr-4 cursor-pointer" />
+        </Dropdown>
       </div>
     </div>
   );
@@ -114,7 +177,7 @@ function App() {
             element={
               <>
                 <Header />
-                <Settings />
+                <SettingsPage />
               </>
             }
           />

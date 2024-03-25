@@ -379,12 +379,14 @@ const FoodLogView: React.FC<{
                                   {foodItem.referenceId ? (
                                     <>
                                       <CheckCircleOutlined
+                                        className="text-green-600 font-bold"
                                         onClick={submitEditedSavedFood}
                                       />
                                     </>
                                   ) : (
                                     <>
                                       <CheckCircleOutlined
+                                        className="text-green-600 font-bold"
                                         onClick={() => {
                                           modifyUserFoodLog(
                                             foodItem._id,
@@ -400,7 +402,7 @@ const FoodLogView: React.FC<{
                                   )}
 
                                   <DeleteOutlined
-                                    className=""
+                                    className="text-red-500"
                                     onClick={() => {
                                       deleteUserFoodLog(
                                         dateString,
@@ -431,6 +433,7 @@ const FoodLogView: React.FC<{
                               }`}
                             >
                               <EditOutlined
+                                className="edit-icon"
                                 onClick={() => {
                                   if (foodItem.referenceId) {
                                     setDefaultEditted(foodItem);

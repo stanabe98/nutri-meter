@@ -59,8 +59,9 @@ export const getSearchFoodResult = async (query: string, max_results = 10) => {
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError;
-      if (axiosError.response?.data === "No Auth") {
+      const axiosError = error as any;
+      const errorCode = axiosError.response.data.code;
+      if (errorCode === 10 || errorCode === 13) {
         console.log("create cookie");
         await getAccesstoken();
         try {

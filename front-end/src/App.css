@@ -32,7 +32,26 @@
   --border-colour: #9ca3af;
 }
 
-.login-container {
+.app-menu-option:hover {
+  background-color: var(--selected-hover);
+}
+
+.app-menu-greet:hover {
+  background-color: var(--app-header);
+}
+.app-menu-greet {
+  background-color: var(--app-header) !important;
+}
+
+.ant-dropdown > ul {
+  background-color: var(--table-bg) !important;
+}
+
+.ant-dropdown > ul > li:hover {
+  background-color: var(--table-bg) !important;
+}
+
+.a .login-container {
   background-color: rgba(221, 220, 220, 0.973);
   height: var(--login-conatiner);
 }
@@ -103,12 +122,11 @@
   border-color: var(--header-colour) !important;
 }
 
-
-.login-header{
-  background-color: var(--app-header) ;
+.login-header {
+  background-color: var(--app-header);
 }
 
-.login-title{
-background-color: var(--app-header-dark) ;
-padding: 4px;
+.login-title {
+  background-color: var(--app-header-dark);
+  padding: 4px;
 }
