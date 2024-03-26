@@ -14,8 +14,9 @@ const SelectedItem: React.FC<{
   data: CustomFoods;
   submissionDate: string;
   refetch: any;
+  userRefetch: any;
   cb: any;
-}> = ({ data, submissionDate, refetch, cb }) => {
+}> = ({ data, submissionDate, refetch, cb, userRefetch }) => {
   const [amount, setAmount] = useState(data.foodInfo.quantity.toString());
   const [ratio, setRatio] = useState(1);
   const [calories, setCalories] = useState(0);
@@ -90,6 +91,7 @@ const SelectedItem: React.FC<{
 
     resetFields();
     refetch();
+    userRefetch();
     cb();
 
     try {

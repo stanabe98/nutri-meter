@@ -11,8 +11,9 @@ const SelectedApiItem: React.FC<{
   data: ServingsResult[] | [];
   submissionDate: string;
   refetch: any;
+  userRefetch: any;
   cb: any;
-}> = ({ foodName, foodId, data, submissionDate, cb, refetch }) => {
+}> = ({ foodName, foodId, data, submissionDate, cb, refetch, userRefetch }) => {
   const [currentData, setCurrentData] = useState<ServingsResult[] | []>(data);
   const [meal, setMeal] = useState("");
   const [selectedCurrentData, setSelectedCurrentData] =

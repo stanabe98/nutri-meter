@@ -100,6 +100,7 @@ const SearchSavedFood: React.FC<{
           <>
             {selectedFood && (
               <SelectedItem
+                userRefetch={userRefetch}
                 submissionDate={submissionDate}
                 data={selectedFood}
                 refetch={refetch}

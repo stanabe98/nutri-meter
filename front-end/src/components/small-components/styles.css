@@ -46,13 +46,10 @@ tspan {
   background-color: var(--table-bg);
 }
 
-
-.submission-form{
+.submission-form {
   background-color: var(--table-bg);
   height: var(--table-height);
 }
-
-
 
 .food-name-form {
   width: 40%;
@@ -62,16 +59,27 @@ tspan {
   width: 15%;
 }
 
-.macro-form{
-    width: 7%;
+.macro-form {
+  width: 7%;
 }
 
 @media screen and (min-width: 1650px) {
   .food-name-form {
     width: 50%;
   }
-  .macro-form{
+  .macro-form {
     width: 7%;
   }
+}
 
+.recent-item {
+  background-color: var(--table-bg);
+  cursor: pointer;
+}
+
+.recent-item:hover {
+  background-color: var(--selected-hover);
+}
+.recently-added-header {
+  background-color: var(--header-colour);
 }

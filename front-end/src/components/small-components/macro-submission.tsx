@@ -21,7 +21,9 @@ const MacroSubmissionForm: React.FC<{
   const [meal, setMeal] = useState("");
   const [name, setName] = useState("");
   const [isError, setisError] = useState(false);
-  const [recentadded, setRecentAdded] = useState<CustomFoodInfo[] | []>([]);
+  const [selectedFood, setSelectedFood] = useState<CustomFoodInfo | null>(null);
+
+  // const [recentadded, setRecentAdded] = useState<CustomFoodInfo[] | []>([]);
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -33,10 +35,10 @@ const MacroSubmissionForm: React.FC<{
     });
   };
 
-  useEffect(() => {
-    setRecentAdded(data?.recentlyAdded ?? []);
-    console.log("this is running");
-  }, [data]);
+  // useEffect(() => {
+  //   setRecentAdded(data?.recentlyAdded ?? []);
+  //   console.log("this is running");
+  // }, [data]);
 
   const handleChange = (value: string) => {
     setMeal(value);
@@ -191,20 +193,35 @@ const MacroSubmissionForm: React.FC<{
         </div>
       </div>
       <div className="h-[120px] overflow-y-scroll bg-gray-400 mt-1">
-        <div className="recently-added-header flex justify-center">
+        <div className="recently-added-header sticky top-0 flex justify-center">
           <span>Recently added</span>
         </div>
-        {recentadded.map((s) => (
-          <>
-            <div className="flex gap-1">
-              <div>{`${s.name} ${s.measurement}`}</div>
-              <div>{s.calories}</div>
-              <div>Calories</div>
+        {data &&
+          !selectedFood &&
+          data.recentlyAdded?.map((s) => (
+            <>
+              <div
+                onClick={() => {
+                  setSelectedFood(s);
+                }}
+                className="flex recent-item  gap-1"
+              >
+                <div>{`${s.name} ${s.measurement}`}</div>
+                <div>{s.calories}</div>
+                <div>Calories</div>
 
-              <div></div>
+                <div></div>
+              </div>
+            </>
+          ))}
+
+        {selectedFood && (
+          <>
+            <div className="flex justify-center">
+              <span>{selectedFood.name}</span>
             </div>
           </>
-        ))}
+        )}
       </div>
     </>
   );

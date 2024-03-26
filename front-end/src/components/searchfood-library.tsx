@@ -141,6 +141,7 @@ const SearchFoodLibrary: React.FC<{
         <>
           <SelectedApiItem
             refetch={refetch}
+            userRefetch={userRefetch}
             data={servingInfo}
             foodName={selectedFoodName}
             foodId={selectedFoodId}
