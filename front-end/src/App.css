@@ -25,7 +25,7 @@
   --page-height: calc(100vh - 40px);
   --login-conatiner: calc(100vh - 85px);
 
-  --table-height: calc(100vh - 510px);
+  --table-height: calc(100vh - 505px);
   --table-height2: calc(100vh - (40px+364px+48px +12px +8px));
   --app-header: #b4cfe0;
   --app-header-dark: #9eb6c5;

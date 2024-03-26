@@ -14,10 +14,11 @@ import SelectedApiItem from "./selected-api-item";
 import { Search } from "@mui/icons-material";
 import "../components/custom-components/custom-input.css";
 
-const SearchFoodLibrary: React.FC<{ submissionDate: string; refetch: any }> = ({
-  submissionDate,
-  refetch,
-}) => {
+const SearchFoodLibrary: React.FC<{
+  submissionDate: string;
+  refetch: any;
+  userRefetch: any;
+}> = ({ submissionDate, refetch, userRefetch }) => {
   const [query, setQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
   const [loading, setLoading] = useState(false);

@@ -118,6 +118,7 @@ export const addNewEntry = asyncHandler(
         await findEntry.save();
 
         if (foodInfo.referenceId) {
+          console.log("referenceId", foodInfo.referenceId);
           const res2 = await CredentialModel.findById(currentUserId);
           console.log("found", res2);
           const recentAddentry: CustomFoodInfo = foodInfo as CustomFoodInfo;

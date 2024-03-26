@@ -13,7 +13,7 @@ import axios from "axios";
 import DateSelector from "../components/small-components/date-picker";
 import FoodLogView from "../components/food-log-list";
 import { UserFoodLog } from "../components/data/data-types";
-import { WestRounded ,EastRounded } from "@mui/icons-material";
+import { WestRounded, EastRounded } from "@mui/icons-material";
 import {
   getUserFoodLog,
   useGetUserFoodLog,
@@ -93,7 +93,11 @@ const MainPage = () => {
               dateString={urlDate}
               refetchData={refetch}
             />
-            <MacroSubmissionForm refetch={refetch} submissionDate={urlDate} />
+            <MacroSubmissionForm
+              data={userInfoResult ? userInfoResult : null}
+              refetch={refetch}
+              submissionDate={urlDate}
+            />
           </div>
         </div>
         <div
@@ -124,6 +128,7 @@ const MainPage = () => {
             data={userInfoResult ? userInfoResult.savedFoods : null}
             submissionDate={urlDate}
             refetch={refetch}
+            userRefetch={userInfoRefetch}
           />
           {/* <SearchSavedFood
             data={userInfoResult ? userInfoResult.savedFoods : null}

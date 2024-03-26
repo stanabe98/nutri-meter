@@ -3,13 +3,14 @@ import { Tabs, Tab } from "@mui/material";
 import SearchSavedFood from "./add-saved";
 import { CustomFoods } from "./data/data-types";
 import SearchFoodLibrary from "./searchfood-library";
-import "./table.css"
+import "./table.css";
 
 const SearchSelect: React.FC<{
   data: CustomFoods[] | null;
   submissionDate: string;
   refetch: any;
-}> = ({ data, submissionDate, refetch }) => {
+  userRefetch: any;
+}> = ({ data, submissionDate, refetch, userRefetch }) => {
   const [value, setValue] = useState(0);
   return (
     <div>
@@ -39,9 +40,14 @@ const SearchSelect: React.FC<{
           data={data}
           submissionDate={submissionDate}
           refetch={refetch}
+          userRefetch={userRefetch}
         />
       ) : (
-        <SearchFoodLibrary refetch={refetch} submissionDate={submissionDate} />
+        <SearchFoodLibrary
+          refetch={refetch}
+          userRefetch={userRefetch}
+          submissionDate={submissionDate}
+        />
       )}
     </div>
   );

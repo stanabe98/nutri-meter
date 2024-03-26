@@ -126,11 +126,11 @@ const SelectedApiItem: React.FC<{
 
   return (
     <div className="submission-form">
-      <div className="flex justify-center pt-4 pb-4 font-semibold">
+      <div className="flex justify-center pt-2 pb-2 text-md font-semibold">
         <span>{foodName}</span>
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center text-sm">
         <div>
           {`Metric servings: ${
             selectedCurrentData?.metric_serving_amount
@@ -143,7 +143,7 @@ const SelectedApiItem: React.FC<{
           }    ${selectedCurrentData?.metric_serving_unit ?? ""}`}
         </div>
       </div>
-      <div className="flex justify-center font-semibold my-4 ">
+      <div className="flex justify-center font-semibold my-2 text-sm ">
         <div
           style={{ backgroundColor: "var(--header-colour)" }}
           className="flex w-96 border-b border-gray-400 drop-shadow-md"
@@ -155,7 +155,7 @@ const SelectedApiItem: React.FC<{
           <div className="  text-center   w-24">Meal</div>
         </div>
       </div>
-      <div className="flex justify-center mt-1 font-semibold">
+      <div className="flex justify-center mt-1 text-sm font-semibold">
         <div className="border-b text-center border-gray-400 mr-1 w-16">{`${Math.round(
           Number(adjustselectCurrentData?.calories)
         )}`}</div>
@@ -213,6 +213,7 @@ const SelectedApiItem: React.FC<{
               "ArrowLeft",
               "ArrowRight",
               "Tab",
+              ".",
             ];
             if (
               !allowedKeys.includes(key) &&
@@ -222,11 +223,11 @@ const SelectedApiItem: React.FC<{
             }
           }}
           type="number"
-          className="border w-12 adjust-input pl-1 ml-2 drop-shadow-md"
+          className="border w-14 adjust-input pl-1 ml-2 drop-shadow-md"
         />
         <span>{selectedCurrentData?.serving_description.split(" ")[1]}</span>
       </div>
-      <div className="flex justify-center mt-5">
+      <div className="flex justify-center mt-2">
         <button className=" back-btn rounded-md mr-2 px-2" onClick={cb}>
           <ArrowBack />
         </button>

@@ -45,7 +45,7 @@ const customFoodSchema = new mongoose.Schema<CustomFoods>(
       protein: { type: String, required: false },
       name: { type: String, required: true },
       quantity: { type: Number, required: true },
-      measurement: { type: String, required: true },
+      measurement: { type: String, required: false },
       referenceId: { type: String, required: false },
     },
   },
@@ -91,6 +91,7 @@ const credentialsSchema = new mongoose.Schema<User>({
   recentlyAdded: {
     type: [recentFoodSchema],
     maxlength: 10,
+    required: false,
   },
 });
 

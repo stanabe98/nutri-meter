@@ -100,11 +100,11 @@ const SelectedItem: React.FC<{
 
   return (
     <div className="submission-form">
-      <div className="font-semibold text-center pt-4 pb-4">
+      <div className="font-semibold text-center pt-2 pb-2 text-md">
         <span>{data.foodInfo.name}</span>
       </div>
 
-      <div className="flex justify-center mt-1">
+      <div className="flex justify-center">
         <span>Per</span>
 
         <input
@@ -120,6 +120,7 @@ const SelectedItem: React.FC<{
               "ArrowLeft",
               "ArrowRight",
               "Tab",
+              ".",
             ];
             if (
               !allowedKeys.includes(key) &&
@@ -143,7 +144,7 @@ const SelectedItem: React.FC<{
       <div className="flex justify-center font-semibold my-4 ">
         <div
           style={{ backgroundColor: "var(--header-colour)" }}
-          className="flex w-96 border-b border-gray-400 drop-shadow-md"
+          className="flex w-96 border-b border-gray-400 text-sm drop-shadow-md"
         >
           <div className=" text-center   w-16 mr-1">Calories</div>
           <div className=" text-center  mr-1  w-16">Protein</div>
@@ -153,7 +154,7 @@ const SelectedItem: React.FC<{
         </div>
       </div>
 
-      <div className="flex justify-center mt-1 font-semibold ">
+      <div className="flex justify-center text-sm mt-1 font-semibold ">
         <div className="text-center border-b border-gray-400 mr-1 w-16">
           {amount === "" ||
           amount === data.foodInfo.quantity.toString() ||

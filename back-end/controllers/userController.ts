@@ -115,8 +115,6 @@ export const modifyUser = asyncHandler(
     const { pic, macroTarget } = req.body;
     const currentUserId = req.user._id;
 
-    console.log("currentuser executing", currentUserId);
-
     if (!pic && !macroTarget) {
       res.status(400);
       throw new Error("Nothing passed to body");
@@ -134,6 +132,11 @@ export const modifyUser = asyncHandler(
       if (macroTarget) {
         console.log("exec", currentUser.macroTarget);
         currentUser.macroTarget = macroTarget;
+      }
+
+      if (!currentUser.recentlyAdded) {
+        console.log("not found");
+        return;
       }
 
       await currentUser.save();

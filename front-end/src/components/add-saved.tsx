@@ -9,7 +9,8 @@ const SearchSavedFood: React.FC<{
   data: CustomFoods[] | null;
   submissionDate: string;
   refetch: any;
-}> = ({ data, submissionDate, refetch }) => {
+  userRefetch: any;
+}> = ({ data, submissionDate, refetch, userRefetch }) => {
   const [search, setSearch] = useState("");
   const [searchClose, setSearchClose] = useState(false);
 

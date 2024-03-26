@@ -40,6 +40,7 @@ export interface CurrentUser {
   pic?: string;
   macroTarget: MacroTarget;
   savedFoods: CustomFoods[];
+  recentlyAdded?: CustomFoodInfo[];
 }
 
 export interface MacroTarget {
