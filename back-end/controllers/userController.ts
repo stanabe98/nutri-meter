@@ -5,6 +5,7 @@ import CredentialModel, {
   MacroTarget,
   CustomFoods,
   CustomFoodInfo,
+  RecentFoodInfo,
 } from "../data-models/credentialModel";
 import UserFoodLogModel from "../data-models/userModel";
 import generateToken from "../config/generateToken";
@@ -96,6 +97,7 @@ export const authUser = asyncHandler(
 export const getUser = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const currentUser = req.user;
+    // currentUser.recentlyAdded.sort(compareDates);
     res.send(currentUser);
   }
 );
@@ -269,3 +271,7 @@ export const deleteUser = asyncHandler(
     }
   }
 );
+
+const compareDates = (date1: RecentFoodInfo, date2: RecentFoodInfo) => {
+  return date2.createdAt.getTime() - date1.createdAt.getTime();
+};

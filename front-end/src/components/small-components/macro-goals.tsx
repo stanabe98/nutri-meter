@@ -7,19 +7,19 @@ const NutrionTarget: React.FC<{
   data: TotalMacros | null;
   goalsData: MacroTarget | null;
 }> = ({ data, goalsData }) => {
-  const [calorieTarget, setCalorieTarget] = useState(0);
   const [caloriesRemaining, setCaloriesRemaining] = useState(0);
 
-  const [proteinTarget, setProteinTarget] = useState(0);
-  const [fatTarget, setFatTarget] = useState(0);
-  const [carbsTarget, setCarbsTarget] = useState(0);
   const spanRef = useRef<HTMLSpanElement>(null);
   useEffect(() => {
-    setCaloriesRemaining(Number(spanRef.current?.innerText));
-    console.log("ref text", spanRef.current?.innerText);
-    console.log(Number(spanRef.current?.innerText) < 0);
-    console.log("ref text", typeof spanRef.current?.innerText);
-  }, [data]);
+    var remaining =
+      goalsData?.calories && data?.totalCalories
+        ? goalsData?.calories - data?.totalCalories
+        : goalsData?.calories && !data?.totalCalories
+        ? goalsData?.calories - 0
+        : 1;
+    console.log(remaining);
+    setCaloriesRemaining(remaining);
+  }, [data, goalsData]);
 
   return (
     <div className="info-container rounded-md">
@@ -63,7 +63,7 @@ const NutrionTarget: React.FC<{
         </div>
         <div
           className={`w-16 text-center bg-green-600 font-semibold transition-colors duration-300 ${
-            caloriesRemaining > 0 ? "" : "bg-red-500"
+            caloriesRemaining < 0 && "bg-red-500"
           } rounded-sm`}
         >
           <span ref={spanRef}>

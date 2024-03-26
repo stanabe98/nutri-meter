@@ -8,7 +8,7 @@ export interface User extends Document {
   pic?: string;
   macroTarget: MacroTarget;
   savedFoods: CustomFoods[];
-  recentlyAdded?: CustomFoodInfo[];
+  recentlyAdded?: RecentFoodInfo[];
   matchPassword(enteredPassword: string): Promise<boolean>;
 }
 
@@ -28,6 +28,11 @@ export interface CustomFoodInfo extends Document {
   quantity: number;
   measurement: string;
   referenceId?: string;
+}
+
+export interface RecentFoodInfo extends CustomFoodInfo {
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface CustomFoods extends Document {
@@ -52,7 +57,7 @@ const customFoodSchema = new mongoose.Schema<CustomFoods>(
   { timestamps: true }
 );
 
-const recentFoodSchema = new mongoose.Schema<CustomFoodInfo>(
+const recentFoodSchema = new mongoose.Schema<RecentFoodInfo>(
   {
     calories: { type: String, required: true },
     carbs: { type: String, required: false },
@@ -63,7 +68,7 @@ const recentFoodSchema = new mongoose.Schema<CustomFoodInfo>(
     measurement: { type: String, required: true },
     referenceId: { type: String, required: false },
   },
-  { timestamps: false }
+  { timestamps: true }
 );
 
 const credentialsSchema = new mongoose.Schema<User>({

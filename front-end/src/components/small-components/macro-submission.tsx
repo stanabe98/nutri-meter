@@ -5,7 +5,12 @@ import Button from "@mui/material/Button";
 import { postConfig } from "../helpers";
 import axios from "axios";
 import { useAuthContext } from "../../context/AuthContext";
-import { CurrentUser, CustomFoodInfo, FoodLogEntry } from "../data/data-types";
+import {
+  CurrentUser,
+  CustomFoodInfo,
+  RecentFoodInfo,
+  FoodLogEntry,
+} from "../data/data-types";
 import FoodInputStore from "../stores/macroInputStore";
 import { FoodInfo } from "../data/data-types";
 import { message, Select } from "antd";
@@ -21,7 +26,7 @@ const MacroSubmissionForm: React.FC<{
   const [meal, setMeal] = useState("");
   const [name, setName] = useState("");
   const [isError, setisError] = useState(false);
-  const [selectedFood, setSelectedFood] = useState<CustomFoodInfo | null>(null);
+  const [selectedFood, setSelectedFood] = useState<RecentFoodInfo | null>(null);
 
   // const [recentadded, setRecentAdded] = useState<CustomFoodInfo[] | []>([]);
 

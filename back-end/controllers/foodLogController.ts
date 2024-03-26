@@ -4,6 +4,7 @@ import CredentialModel, {
   User,
   MacroTarget,
   CustomFoodInfo,
+  RecentFoodInfo,
 } from "../data-models/credentialModel";
 import UserFoodLogModel, {
   FoodInfo,
@@ -118,24 +119,37 @@ export const addNewEntry = asyncHandler(
         await findEntry.save();
 
         if (foodInfo.referenceId) {
-          console.log("referenceId", foodInfo.referenceId);
-          const res2 = await CredentialModel.findById(currentUserId);
-          console.log("found", res2);
-          const recentAddentry: CustomFoodInfo = foodInfo as CustomFoodInfo;
+          const recentAddentry: RecentFoodInfo = foodInfo as RecentFoodInfo;
 
-          const result = await CredentialModel.findByIdAndUpdate(
-            currentUserId,
-            {
-              $push: {
-                recentlyAdded: {
-                  $each: [recentAddentry],
-                  $slice: -10,
-                },
-              },
-            }
-            // ,
-            // { new: true, upsert: true }
+          const recentFoodResult = await CredentialModel.findById(
+            currentUserId
           );
+          if (
+            !recentFoodResult.recentlyAdded.some(
+              (s) => s.referenceId === recentAddentry.referenceId
+            )
+          ) {
+            if (recentFoodResult.recentlyAdded.length >= 10) {
+              recentFoodResult.recentlyAdded.pop();
+            }
+            recentFoodResult.recentlyAdded.unshift(recentAddentry);
+
+            // const result = await CredentialModel.findByIdAndUpdate(
+            //   currentUserId,
+            //   {
+            //     $push: {
+            //       recentlyAdded: {
+            //         $each: [recentAddentry],
+            //         $slice: -10,
+            //       },
+            //     },
+            //   }
+            //   ,
+            //   { new: true, upsert: true }
+            // );
+
+            recentFoodResult.save();
+          }
         }
 
         res.status(200).json(findEntry);

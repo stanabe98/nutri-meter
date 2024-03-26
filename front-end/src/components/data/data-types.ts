@@ -40,7 +40,7 @@ export interface CurrentUser {
   pic?: string;
   macroTarget: MacroTarget;
   savedFoods: CustomFoods[];
-  recentlyAdded?: CustomFoodInfo[];
+  recentlyAdded?: RecentFoodInfo[];
 }
 
 export interface MacroTarget {
@@ -59,6 +59,11 @@ export interface CustomFoodInfo {
   quantity: number;
   measurement: string;
   referenceId?: string;
+}
+
+export interface RecentFoodInfo extends CustomFoodInfo {
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface CustomFoods {
