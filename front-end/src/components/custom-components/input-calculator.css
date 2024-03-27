@@ -10,3 +10,7 @@ input {
 .custom-inputLogin:focus {
   border-color: var(--header-colour);
 }
+
+.custom-inputLogin::placeholder {
+  color: black;
+}

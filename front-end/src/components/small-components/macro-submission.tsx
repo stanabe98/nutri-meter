@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import { postConfig } from "../helpers";
 import axios from "axios";
 import { useAuthContext } from "../../context/AuthContext";
+import { Divider } from "@mui/material";
 import {
   CurrentUser,
   CustomFoodInfo,
@@ -16,6 +17,7 @@ import { FoodInfo } from "../data/data-types";
 import { message, Select } from "antd";
 import InputCalculator from "../custom-components/input-calculator";
 import "./styles.css";
+import SelectedRecent from "./selected-recent";
 
 const MacroSubmissionForm: React.FC<{
   refetch: any;
@@ -197,8 +199,8 @@ const MacroSubmissionForm: React.FC<{
           </Button>
         </div>
       </div>
-      <div className="h-[120px] overflow-y-scroll bg-gray-400 mt-1">
-        <div className="recently-added-header sticky top-0 flex justify-center">
+      <div className=" recent-container ml-2 overflow-y-scroll bg-gray-400 mt-1 rounded-sm">
+        <div className="recently-added-header sticky top-0 flex justify-center drop-shadow-md">
           <span>Recently added</span>
         </div>
         {data &&
@@ -209,22 +211,34 @@ const MacroSubmissionForm: React.FC<{
                 onClick={() => {
                   setSelectedFood(s);
                 }}
-                className="flex recent-item  gap-1"
+                className="flex recent-item p-[1px] text-sm gap-1"
               >
-                <div>{`${s.name} ${s.measurement}`}</div>
-                <div>{s.calories}</div>
-                <div>Calories</div>
+                <div className="w-2/5">{`${s.name.slice(0, 30)} ${s.quantity} ${
+                  s.measurement
+                }`}</div>
+                <div className="mr-1">{`Calories: ${s.calories}`}</div>
+                {}
+                <div className="mr-1">{`Protein: ${s.protein ?? "-"}`}</div>
+                <div className="mr-1">{`Carbs: ${s.carbs ?? "-"}`}</div>
+                <div className="">{`Fats: ${s.fats ?? "-"}`}</div>
 
                 <div></div>
               </div>
+              <Divider className="bg-gray-300" />
             </>
           ))}
 
         {selectedFood && (
           <>
-            <div className="flex justify-center">
+            {/* <div className="flex justify-center">
               <span>{selectedFood.name}</span>
-            </div>
+            </div> */}
+            <SelectedRecent
+              selectedFood={selectedFood}
+              date={submissionDate}
+              cb={() => setSelectedFood(null)}
+              refetch={refetch}
+            />
           </>
         )}
       </div>

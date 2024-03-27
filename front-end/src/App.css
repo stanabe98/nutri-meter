@@ -30,6 +30,7 @@
   --app-header: #b4cfe0;
   --app-header-dark: #9eb6c5;
   --border-colour: #9ca3af;
+  --recent-container: calc(40vh - 170px);
 }
 
 .app-menu-option:hover {

@@ -51,6 +51,10 @@ tspan {
   height: var(--table-height);
 }
 
+.submission-form-recent {
+  background-color: var(--table-bg);
+}
+
 .food-name-form {
   width: 40%;
 }
@@ -82,4 +86,9 @@ tspan {
 }
 .recently-added-header {
   background-color: var(--header-colour);
+  z-index: 100;
+}
+
+.recent-container {
+  height: var(--recent-container);
 }

@@ -4,7 +4,7 @@ import UserFoodStore from "../stores/foodLogStore";
 import { useNavigate } from "react-router-dom";
 import { Macros } from "./macro-totals";
 import { FoodLogEntry, TotalMacros } from "../data/data-types";
-import "./styles.css"
+import "./styles.css";
 
 const defaultData = [
   {
@@ -89,7 +89,8 @@ const MacroChart: React.FC<{ data: TotalMacros | null }> = ({ data }) => {
           },
           {
             id: 3,
-            value: data ? !isNaN(Math.round(unaccountedPercentage ))
+            value: data
+              ? !isNaN(Math.round(unaccountedPercentage))
                 ? Math.round(unaccountedPercentage)
                 : 1
               : 1,
@@ -102,7 +103,7 @@ const MacroChart: React.FC<{ data: TotalMacros | null }> = ({ data }) => {
 
   return (
     <>
-      <div className="text-center font-bold">Nutrition Chart</div>
+      {/* <div className="text-center font-bold">Nutrition Chart</div> */}
 
       <PieChart series={chartData} width={400} height={200} />
     </>
