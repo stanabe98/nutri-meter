@@ -59,7 +59,17 @@ export const getAllFoodLogs = asyncHandler(
       }).select("date totalMacros _id");
 
       const sortedEntries = findEntry.sort(compareDateStrings);
-      res.status(200).send(sortedEntries === null ? [] : sortedEntries);
+      const groupedbyYear = groupByYear(sortedEntries);
+      const groupedbyWeek = filteredByweek(sortedEntries);
+
+      const groupedObject = {
+        ...groupedbyYear,
+        ...groupedbyWeek,
+      };
+
+      console.log("sorted object", groupedObject);
+
+      res.status(200).send(sortedEntries === null ? [] : groupedObject);
     } catch (error) {
       res.status(500).json({ error: "Server Error" });
     }
@@ -101,7 +111,6 @@ export const addNewEntry = asyncHandler(
       }
 
       if (!findEntry) {
-        console.log("ss");
         const newFoodEntry = await UserFoodLogModel.create({
           user: currentUserId.toString(),
           date: date,
@@ -246,3 +255,42 @@ const compareDateStrings = (dateObj1: UserFoodLog, dateObj2: UserFoodLog) => {
 
   return date1.getTime() - date2.getTime();
 };
+
+function groupByYear(foodEntries: UserFoodLog[]): {
+  [year: string]: UserFoodLog[];
+} {
+  return foodEntries.reduce((acc, entry) => {
+    const year = entry.date.split("-")[2];
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(entry);
+    return acc;
+  }, {} as { [year: string]: UserFoodLog[] });
+}
+
+const filteredByweek = (data: UserFoodLog[]) => {
+  const filteredWeek = data.filter((item) => isWithinPastDays(item.date, 7));
+  const filteredMonth = data.filter((item) => isWithinPastDays(item.date, 30));
+
+  return {
+    week: filteredWeek,
+    month: filteredMonth,
+  };
+};
+
+function isWithinPastDays(dateToCheck: string, range: number) {
+  const [day, month, year] = dateToCheck.split("-").map(Number);
+
+  var dateToCheckObj = new Date(year, month - 1, day);
+  var now = new Date();
+  var currentDateObj = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate()
+  );
+
+  var differenceInMs = currentDateObj.getTime() - dateToCheckObj.getTime();
+  var differenceInDays = Math.ceil(differenceInMs / (1000 * 60 * 60 * 24));
+  return differenceInDays <= range;
+}

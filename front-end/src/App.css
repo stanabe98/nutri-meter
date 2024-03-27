@@ -33,6 +33,10 @@
   --recent-container: calc(40vh - 170px);
 }
 
+.chart-bg {
+  background-color: var(--table-bg);
+}
+
 .app-menu-option:hover {
   background-color: var(--selected-hover);
 }

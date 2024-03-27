@@ -1,10 +1,13 @@
 .edit-icon {
-  cursor: pointer; 
-  transition: opacity 0.3s; 
-  opacity: 0.1; 
-
+  cursor: pointer;
+  transition: opacity 0.3s;
+  opacity: 0.1;
 }
 
 .edit-icon:hover {
-  opacity: 1; 
+  opacity: 1;
+}
+
+.nutrition-goal-header {
+  background-color: var(--header-colour);
 }

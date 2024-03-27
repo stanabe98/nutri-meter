@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { CurrentUser, MacroTarget } from "../data/data-types";
 import TargetsInput from "../custom-components/another-input";
 import { postCurrentUserInfo } from "../hooks/userGetUserFoods";
+import "./styles.css";
 
 const ModifyTargets: React.FC<{
   queryResult: CurrentUser | null | undefined;
@@ -28,18 +29,12 @@ const ModifyTargets: React.FC<{
 
   const submitModified = async () => {
     const obj: MacroTarget = {};
-
-    // if (queryResult?.macroTarget.calories !== calorieTarget)
     obj.calories = calorieTarget;
-    // if (queryResult?.macroTarget.protein !== proteinTarget)
     obj.protein = proteinTarget;
-    // if (queryResult?.macroTarget.carbs !== carbsTarget)
     obj.carbs = carbsTarget;
-    // if (queryResult?.macroTarget.fats !== fatsTarget)
     obj.fats = fatsTarget;
 
     if (isEmpty(obj)) return;
-    console.log("obj", obj);
 
     await postCurrentUserInfo(obj);
     setIsEdit(false);
@@ -47,22 +42,32 @@ const ModifyTargets: React.FC<{
   };
 
   return (
-    <div className="ml-5 border border-black  ">
-      <h3>Current Nutrition Targets</h3>
+    <div className="ml-5 border border-gray-400 rounded-md">
+      <div className="nutrition-goal-header flex justify-center">
+        <h3 className="text-semibold m-auto">Nutrition Targets</h3>
+      </div>
       {!isEdit ? (
         <>
-          <div className="mt-5">
-            <div className="mt-3">
-              Calories: <span>{queryResult?.macroTarget?.calories ?? "-"}</span>
+          <div className="flex mt-3">
+            <div className="pl-3 w-24">
+              <div className="mt-4 ">Calories:</div>
+              <div className="mt-4">Protein:</div>
+              <div className="mt-4">Carbs:</div>
+              <div className="mt-4">Fats:</div>
             </div>
-            <div className="mt-3">
-              Protein: <span>{queryResult?.macroTarget?.protein ?? "-"}</span>
-            </div>
-            <div className="mt-3">
-              Carbs: <span>{queryResult?.macroTarget?.carbs ?? "-"}</span>
-            </div>
-            <div className="mt-3">
-              Fats: <span>{queryResult?.macroTarget?.fats ?? "-"}</span>{" "}
+            <div className=" w-32">
+              <div className="mt-4 ">
+                <span>{queryResult?.macroTarget?.calories ?? "-"}</span>
+              </div>
+              <div className="mt-4">
+                <span>{queryResult?.macroTarget?.protein ?? "-"}</span>
+              </div>
+              <div className="mt-4">
+                <span>{queryResult?.macroTarget?.carbs ?? "-"}</span>
+              </div>
+              <div className="mt-4">
+                <span>{queryResult?.macroTarget?.fats ?? "-"}</span>
+              </div>
             </div>
           </div>
         </>
@@ -70,7 +75,6 @@ const ModifyTargets: React.FC<{
         <>
           <div className="mt-5">
             <div className="mt-3">
-              Calories:
               <TargetsInput
                 styles="inline-block"
                 placeholder={
@@ -83,7 +87,6 @@ const ModifyTargets: React.FC<{
               />
             </div>
             <div className="mt-3">
-              Protein:
               <TargetsInput
                 styles="inline-block"
                 placeholder={
@@ -96,7 +99,6 @@ const ModifyTargets: React.FC<{
               />
             </div>
             <div className="mt-3">
-              Carbs:
               <TargetsInput
                 styles="inline-block "
                 placeholder={
@@ -109,7 +111,6 @@ const ModifyTargets: React.FC<{
               />
             </div>
             <div className="mt-3">
-              Fats:
               <TargetsInput
                 styles="inline-block "
                 placeholder={

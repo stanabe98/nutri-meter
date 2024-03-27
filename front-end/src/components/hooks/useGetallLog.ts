@@ -3,11 +3,14 @@ import axios from "axios";
 
 import { getConfig, postConfig } from "../helpers";
 
-
 interface UserAllFoodLogs {
   date: string;
   totalMacros?: TotalMacros;
   _id: string;
+}
+
+interface GroupedFoodLogs {
+  [timePeriod: string]: UserAllFoodLogs[];
 }
 
 interface TotalMacros {
@@ -23,20 +26,20 @@ export const getAllFoodLogs = async () => {
     return;
   }
   const user = JSON.parse(userString);
-  const { data: userFoodData } = await axios.get<UserAllFoodLogs[]>(
+  const { data: userFoodData } = await axios.get<GroupedFoodLogs>(
     `/api/foodlog`,
     getConfig(user)
   );
 
-  if (userFoodData.length === 0) {
-    return null;
-  }
+  // if (userFoodData.length === 0) {
+  //   return null;
+  // }
 
   return userFoodData;
 };
 
 export const useGetAllFoodLogs = (
-  config?: UseQueryOptions<UserAllFoodLogs[] | null | undefined>
+  config?: UseQueryOptions<GroupedFoodLogs | null | undefined>
 ) => {
   const query = useQuery({
     queryKey: ["UserAllFoodLogs"],
